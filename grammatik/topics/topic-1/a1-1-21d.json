@@ -1,0 +1,12 @@
+[
+  { "text":"Du gehst in __GAP__ Büro.", "ans":["dein"], "art":"das" },
+  { "text":"Klaus repariert __GAP__ Computer.", "ans":["seinen"], "art":"der" },
+  { "text":"Ihr hört gern __GAP__ Musik.", "ans":["eure"], "art":"die" },
+  { "text":"Susi geht in __GAP__ Schule.", "ans":["ihre"], "art":"xxx" },
+  { "text":"Max fährt in __GAP__ Firma.", "ans":["seine"], "art":"die" },
+  { "text":"Silvia sieht __GAP__ Freund in Kassel.", "ans":["ihren"], "art":"der" },
+  { "text":"Wir fahren zu __GAP__ Freunden.", "ans":["unseren"], "art":"die" },
+  { "text":"Ihr kocht __GAP__ Suppe.", "ans":["eure"], "art":"die" },
+  { "text":"Sybille und Anna denken an __GAP__ Lehrer.", "ans":["ihren"], "art":"der" },
+  { "text":"Ich suche __GAP__ Kalender.", "ans":["meinen"], "art":"der" }
+]

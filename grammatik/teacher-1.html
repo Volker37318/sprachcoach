@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lehrer-Dashboard – Possessivpronomen</title>
+
+<!-- Supabase: Deine Projekt-URL & anon Key (optional Live-Modus) -->
+<script>
+  window.SUPABASE_URL = 'https://quakebahzhrbunplwebv.supabase.co';
+  window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1YWtlYmFoemhyYnVucGx3ZWJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxODYzMTIsImV4cCI6MjA3NTc2MjMxMn0.WQ7kDAsW2-Wd0CJVUw5txrpijlf6tRBgn25oQZ1gTAw';
+</script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<style>
+  :root{
+    --bg:#0b1020;--panel:#121a35;--text:#eaf1ff;--muted:#b7c4e1;--line:#223055;
+    --ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--btn:#1ea7ff;--btn2:#14d17c;
+    --tile-w:220px; --tile-h:160px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  header{padding:20px 16px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#0b1020 0%,#121a35 100%)}
+  h1{margin:0 0 6px}
+  .sub{color:var(--muted)}
+  main{max-width:1100px;margin:0 auto;padding:18px 16px 60px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0}
+  .row{display:grid;gap:10px}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+  input,button,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f1630;color:var(--text)}
+  button{cursor:pointer;border:1px solid #2a3a6a}
+  .btn{background:var(--btn)} .btn2{background:var(--btn2)}
+  .tiny{font-size:12px;color:var(--muted)}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  .flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .banner{background:#2c1a1a;color:#ffdada;border-bottom:1px solid #553;padding:10px 12px}
+
+  /* kleine Icon-Buttons */
+  .iconbtn{
+    background:transparent; border:1px solid var(--line);
+    color:#ffdada; border-color:#3b425f;
+    padding:4px 8px; border-radius:8px; font-size:12px; line-height:1;
+  }
+  .iconbtn.danger{ border-color:#ef4444; color:#ffdada }
+  .iconbtn:hover{ filter:brightness(1.1) }
+
+  .board-wrap{display:flex; gap:12px; flex-direction:column; align-items:stretch; margin-bottom:10px}
+  #board{
+    position:relative; width:100%; min-height:560px; border:1px dashed var(--line); border-radius:12px;
+    background:
+      linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px;
+    overflow:hidden;
+  }
+  .toolbar{
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+    background:rgba(255,255,255,.03); border:1px solid var(--line);
+    border-radius:10px; padding:8px 10px; font-size:14px;
+  }
+  .toolbar .group{display:flex; gap:8px; align-items:center}
+  .toolbar input[type="range"]{ width:180px }
+  .toolbar .val{min-width:36px; text-align:right; opacity:.9}
+
+  .tile{
+    position:absolute; width:var(--tile-w); min-height:var(--tile-h);
+    padding:10px 12px; background:#0f1630; border:3px solid var(--line);
+    border-radius:12px; color:var(--text);
+    box-shadow:0 6px 16px rgba(0,0,0,.25); cursor:grab; user-select:none; touch-action:none;
+  }
+  .tile:active{cursor:grabbing}
+  .tile.lvl-A1_1{ border-color:#3b82f6; box-shadow:0 6px 16px rgba(0,0,0,.25), 0 0 0 2px rgba(59,130,246,.22) inset; }
+  .tile.lvl-A1_2{ border-color:#06b6d4; box-shadow:0 6px 16px rgba(0,0,0,.25), 0 0 0 2px rgba(6,182,212,.22) inset; }
+  .tile.lvl-A2  { border-color:#10b981; box-shadow:0 6px 16px rgba(0,0,0,.25), 0 0 0 2px rgba(16,185,129,.22) inset; }
+  .tile.lvl-B1  { border-color:#f59e0b; box-shadow:0 6px 16px rgba(0,0,0,.25), 0 0 0 2px rgba(245,158,11,.22) inset; }
+  .tile.hidden { display:none !important; }
+  .tile .name{font-weight:800; margin-bottom:4px}
+  .tile .meta{font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .tile .meta .avg{opacity:.95}
+  .tile .score{margin-top:6px; font-size:13px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
+
+  .xbtn{
+    position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:8px;
+    background:#1f2a4d; border:1px solid var(--line); color:#fff; font-weight:700; line-height:1;
+  }
+  .xbtn:hover{filter:brightness(1.1)}
+
+  .hist{
+    margin-top:8px; border-top:1px dashed var(--line); padding-top:6px;
+    max-height: calc(var(--tile-h) - 98px);
+    overflow:auto; font-size:12px; color:var(--muted);
+    direction: rtl; padding-left:10px; scrollbar-gutter: stable both-edges;
+  }
+  .hist *{ direction:ltr; }
+  .hist .item{ padding:4px 2px; border-bottom:1px dotted rgba(255,255,255,.06);}
+  .hist .item:last-child{ border-bottom:none }
+
+  footer{padding:12px;text-align:center;color:var(--muted);font-size:12px}
+  .hidden-soft { display:none !important; }
+
+  #trashDrawer{ display:none; margin-top:10px; padding:10px; border:1px dashed var(--line); border-radius:10px; background:rgba(255,255,255,.03) }
+  #trashList .row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px dotted rgba(255,255,255,.07) }
+  #trashList .row:last-child{ border-bottom:none }
+  #trashList .name{ font-weight:600 }
+
+  .ghostbtn{
+    background:transparent;border:1px solid var(--line);color:var(--muted);padding:6px 10px;border-radius:8px;font-size:12px;line-height:1;
+  }
+  .ghostbtn:hover{ filter:brightness(1.1); color:var(--text); }
+  .ghostbtn.has-items{ border-color:#3b82f6; color:#cfe1ff; }
+  .ghostbtn .counter{ font-variant-numeric: tabular-nums; padding-left:4px; opacity:.9 }
+  .toolbar .group.compact{ gap:6px; }
+
+  /* Share-Hinweis: zweite Zeile unter den Buttons, links; erst weiß – bei Link gelb + Puls */
+  .share-row { align-items:center; gap:8px; }
+  .share-input { font-size:12px !important; }
+  .share-hint {
+    color:#ffffff;
+    font-weight:700;
+    font-size:16px;
+    white-space:nowrap;
+  }
+  .share-hint.active {
+    color:#ffd54a;
+    animation:pulseGlow 1.6s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity:.7; text-shadow:0 0 0 rgba(255,213,74,0.0); transform:scale(1.00); }
+    50%      { opacity:1;  text-shadow:0 0 10px rgba(255,213,74,0.35); transform:scale(1.02); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Lehrer-Dashboard · Possessivpronomen</h1>
+  <div class="sub" id="headerSub">
+    Klasse anlegen · Link teilen · Sitzplan · Abgaben
+    · Aktiver Code: <span class="badge mono" id="activeCodeBadge">—</span>
+  </div>
+</header>
+<main>
+  <div id="modeBanner" class="banner" style="display:none"></div>
+
+  <!-- SETUP -->
+  <section class="card" id="setupCard">
+    <div class="row grid-2">
+      <div>
+        <label>Klasse anlegen</label>
+        <button id="btnCreate" class="btn2">Neuen 6-stelligen Klassen-Code erzeugen</button>
+        <div class="tiny" style="margin-top:6px">
+          Gespeicherte Codes (nur lokal):
+          <select id="codeHistory" style="max-width:240px"></select>
+          <button id="btnLoadCode" class="ghostbtn">Laden</button>
+        </div>
+      </div>
+      <div>
+        <label for="classCode">Klassen-Code</label>
+        <div class="flex">
+          <input id="classCode" class="mono" placeholder="z. B. 5J7KQ9" style="flex:1" />
+          <button id="btnBanCode" class="iconbtn danger" title="Code löschen & 3 Monate sperren">Klassen-Code löschen</button>
+        </div>
+        <!-- Hinweis unter dem Code entfernt -->
+      </div>
+    </div>
+
+    <!-- Zeile 1: Buttons -->
+    <div class="flex" style="margin-top:10px">
+      <button id="btnSave" class="btn">Speichern</button>
+      <button id="btnCopyLink">Link kopieren</button>
+      <button id="btnOpenLink" title="Link im neuen Tab testen">Link öffnen (Test)</button>
+    </div>
+
+    <!-- Zeile 2: Hinweis links + Linkfeld rechts -->
+    <div class="flex share-row" style="margin-top:8px">
+      <span id="shareHint" class="share-hint">diesen Link den Teilnehmern geben -&gt;</span>
+      <input id="shareUrl" class="mono share-input" placeholder="Teilen-Link erscheint nach ›Speichern‹" readonly style="flex:1" />
+    </div>
+  </section>
+
+  <!-- BOARD -->
+  <section class="card">
+    <div class="board-wrap">
+      <div class="flex" style="justify-content:space-between;align-items:center">
+        <strong>Sitzplan – Teilnehmer-Kästchen</strong>
+        <!-- Kurzanleitung entfernt -->
+      </div>
+
+      <div class="toolbar">
+        <div class="group">Breite:
+          <input type="range" id="widthRange" min="160" max="300" step="1">
+          <span class="val" id="widthVal">220</span>px
+        </div>
+        <div class="group compact">Höhe:
+          <input type="range" id="heightRange" min="110" max="260" step="1">
+          <span class="val" id="heightVal">160</span>px
+          <button id="btnTrash" class="ghostbtn" title="Gelöschte Teilnehmer anzeigen">🗑️ <span class="counter" id="trashCount">0</span></button>
+        </div>
+        <button id="btnAutoLayout">Auto-Layout</button>
+        <button id="btnClearPositions">Positionen zurücksetzen</button>
+        <button id="btnUndoHide" disabled>Aktion rückgängig (Ausblenden)</button>
+      </div>
+
+      <div id="trashDrawer">
+        <div class="flex" style="justify-content:space-between;align-items:center">
+          <strong>Gelöschte Teilnehmer</strong>
+          <button id="btnTrashClose">Schließen</button>
+        </div>
+        <div id="trashList" class="tiny" style="margin-top:6px">Keine gelöschten Teilnehmer.</div>
+      </div>
+
+      <div id="board" aria-label="Sitzplan-Board"></div>
+    </div>
+  </section>
+
+  <!-- KOMPAKT-LISTE -->
+  <section class="card" id="attemptsCard">
+    <div class="flex" style="justify-content:space-between">
+      <strong>Letzte Abgaben (kompakt)</strong>
+    </div>
+    <div id="attemptsList" class="tiny">Noch keine Abgaben…</div>
+  </section>
+</main>
+<footer>© Content Connect Academy Thüringen · <a href="index.html">Start</a></footer>
+
+<!-- Detail-Modal -->
+<div id="detailsModal" class="modal" role="dialog" aria-modal="true" aria-label="Abgabe-Details" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5);z-index:1000">
+  <div class="box" style="width:min(560px, 92vw); background:#0f1630; border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow:0 20px 40px rgba(0,0,0,.5);">
+    <button class="close" id="modalClose" type="button" style="float:right; background:#1f2a4d; border:1px solid var(--line); border-radius:10px; padding:6px 10px; cursor:pointer">Schließen</button>
+    <h3 id="modalTitle" style="margin:0 0 6px 0">Abgabe</h3>
+    <div class="tiny" id="modalSub" style="color:var(--muted)"></div>
+    <div class="kv" id="modalKV" style="display:grid; grid-template-columns:140px 1fr; gap:6px; font-size:14px; margin-top:10px"></div>
+  </div>
+</div>
+
+<script type="module">
+/* === Guard: nur mit aktivem Trial/Lizenz + Lehrerflag === */
+import { guardAccess } from '/js/core-access.js';
+const TOPIC = 'poss';
+if(!guardAccess(TOPIC, { requireTeacher:true, fallback:'/Possessiv-pronomen-21d.html' })){
+  throw new Error('Kein Zugriff');
+}
+</script>
+
+<script>
+/* ===== Backend-Init ===== */
+const SUPABASE_URL = window.SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || '';
+let supa = null; let MODE = 'LOCAL';
+
+async function initBackend(){
+  if(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase){
+    supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    MODE = 'SUPABASE';
+  }
+  const b=document.getElementById('modeBanner');
+  b.style.display='block';
+  b.textContent = MODE==='SUPABASE' ? 'Live-Modus: Supabase verbunden.' : 'Demo-Modus: lokale Speicherung (nur dieses Gerät).';
+}
+
+function rndCode(len=6){ const ABC='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:len},()=>ABC[Math.floor(Math.random()*ABC.length)]).join(''); }
+
+/* ===== Konstante Sperrfrist (Monate) ===== */
+const DEFAULT_BAN_MONTHS = 3;
+
+/* ===== LOCAL Store ===== */
+const K = {
+  CLASS:'cc_class::poss', STUDENTS:'cc_students::poss', ATTEMPTS:'cc_attempts::poss',
+  POS:(code)=>`cc_seating::poss::${code}`,
+  REMOVED:(code)=>`cc_removed::poss::${code}`,
+  DELETED:(code)=>`cc_deleted::poss::${code}`,
+  CODES:'cc_codes::poss',
+  TW:'cc_tile_w', TH:'cc_tile_h'
+};
+const LS = { set:(k,v)=>localStorage.setItem(k, JSON.stringify(v)), get:(k)=>JSON.parse(localStorage.getItem(k)||'null'), del:(k)=>localStorage.removeItem(k) };
+
+/* Teilnehmer-Link → robust relativ zu aktueller Seite auf teilnehmer-1.html */
+function buildShareLink(code){
+  const base = document.baseURI || location.href;
+  const url = new URL('teilnehmer-1.html', base);
+  url.searchParams.set('class', String(code || '').toUpperCase());
+  url.searchParams.set('topic', 'poss');
+  url.searchParams.set('reset', '1');
+  return url.toString();
+}
+function setShareLink(link){
+  const input = document.getElementById('shareUrl');
+  if(input) input.value = link || '';
+  const hint = document.getElementById('shareHint');
+  if(hint) hint.classList.toggle('active', !!link);
+}
+
+/* ===== Code-History (nur lokal) ===== */
+function rememberCode(code){
+  if(!code) return;
+  const arr = LS.get(K.CODES) || [];
+  const up = [code, ...arr.filter(c=>c!==code)].slice(0,30);
+  LS.set(K.CODES, up);
+  renderCodeHistory();
+}
+function renderCodeHistory(){
+  const sel = document.getElementById('codeHistory');
+  if(!sel) return;
+  const arr = LS.get(K.CODES)||[];
+  sel.innerHTML = `<option value="">Gespeicherte Codes…</option>` + arr.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+function updateActiveBadge(code){
+  const b = document.getElementById('activeCodeBadge');
+  if(b) b.textContent = code || '—';
+}
+
+/* ===== Aktionen ===== */
+async function createClass(){
+  const code = rndCode();
+  document.getElementById('classCode').value = code;
+  setShareLink(buildShareLink(code));
+  updateActiveBadge(code);
+}
+
+async function saveClass(){
+  let code = (document.getElementById('classCode').value||'').trim();
+  if(!code){ alert('Bitte Klassen-Code eintragen.'); return; }
+  code = code.toUpperCase();
+  document.getElementById('classCode').value = code;
+
+  if(MODE==='LOCAL'){
+    LS.set(K.CLASS, code);
+  } else {
+    try {
+      const { error } = await supa.from('classes').upsert({ code, title:'Klasse Possessiv' });
+      if(error) console.warn('Supabase upsert(classes):', error);
+    } catch(e){ console.warn(e); }
+  }
+  const link = buildShareLink(code);
+  setShareLink(link);
+  updateActiveBadge(code);
+  rememberCode(code);
+
+  demoEnsureSomeData();
+  await refreshAll();
+
+  if(MODE==='SUPABASE'){ subscribeRealtime(code); }
+
+  return {code, link};
+}
+
+function copyLink(){
+  const input = document.getElementById('shareUrl'); const text = (input && input.value) ? input.value : '';
+  if(!text){ alert('Bitte erst Speichern klicken.'); return; }
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>alert('Link kopiert.')).catch(()=>fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); alert('Link kopiert.'); }catch(e){ prompt('Zum Kopieren STRG+C:', text); }
+  ta.remove();
+}
+
+/* ===== Daten laden ===== */
+async function loadStudents(code){
+  const codeUC = String(code||'').toUpperCase();
+  if(MODE==='LOCAL'){ const all = LS.get(K.STUDENTS)||[]; return all.filter(s=>String(s.class_code||'').toUpperCase()===codeUC); }
+  const { data } = await supa.from('students').select('*').eq('class_code', codeUC).order('created_at', {ascending:true});
+  return data||[];
+}
+async function loadAttempts(code){
+  const codeUC = String(code||'').toUpperCase();
+  if(MODE==='LOCAL'){ const all = LS.get(K.ATTEMPTS)||[]; return all.filter(a=>String(a.class_code||'').toUpperCase()===codeUC).sort((a,b)=> (new Date(b.submitted_at||b.t))-(new Date(a.submitted_at||a.t))); }
+  const { data } = await supa.from('attempts').select('*').eq('class_code', codeUC).order('submitted_at', {ascending:false});
+  return data||[];
+}
+
+/* ===== Helpers ===== */
+function levelClass(level){
+  if(!level) return '';
+  const L = String(level).trim();
+  if(L==='A1_1') return 'lvl-A1_1';
+  if(L==='A1_2') return 'lvl-A1_2';
+  if(L==='A2')   return 'lvl-A2';
+  if(L==='B1')   return 'lvl-B1';
+  return '';
+}
+function escapeHtml(s){
+  return (s==null?'':String(s)).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+function fmtTime(t){ if(!t) return '-'; const d = typeof t==='number'? new Date(t): new Date(t); if(isNaN(d)) return '-'; return d.toLocaleString(); }
+
+function avgScore(list){
+  let ok=0, tot=0;
+  for(const r of list){ ok += (+r.points_ok||0); tot += (+r.points_total||0); }
+  const pct = tot>0 ? Math.round((ok/tot)*100) : 0;
+  return {ok, tot, pct};
+}
+
+/* ===== Duplikate nach Alias zusammenführen ===== */
+function normalizeName(s){ return (s||'').trim().toLowerCase(); }
+function groupStudents(students){
+  const byName = {};
+  students.forEach(s=>{
+    const key = normalizeName(s.display_name);
+    if(!key) return;
+    (byName[key] = byName[key] || []).push(s);
+  });
+  const groups = [];
+  Object.keys(byName).forEach(k=>{
+    const arr = byName[k];
+    arr.sort((a,b)=> new Date(a.created_at||a.t||0) - new Date(b.created_at||b.t||0));
+    const primary = arr[0];
+    groups.push({ key:k, name: primary.display_name, primaryId: primary.id, ids: arr.map(x=>x.id) });
+  });
+  return groups;
+}
+function attemptsByName(attemptRows, nameGroups){
+  const idToKey = {};
+  nameGroups.forEach(g=> g.ids.forEach(id=> idToKey[id]=g.key ));
+  const map = {};
+  attemptRows.forEach(r=>{
+    const key = idToKey[r.student_id] || normalizeName(r.display_name||r.student_name);
+    if(!key) return;
+    (map[key] = map[key] || []).push(r);
+  });
+  Object.keys(map).forEach(k=> map[k].sort((a,b)=> new Date(b.submitted_at||b.t) - new Date(a.submitted_at||a.t)));
+  return map;
+}
+
+/* ===== Sitzplan & Persistenz ===== */
+const board = ()=>document.getElementById('board');
+
+function autoLayoutByGroups(groups){
+  const b = board().getBoundingClientRect();
+  const pad=12, w=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-w'))||220;
+  const h=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-h'))||160;
+  const gap=16;
+  const cols = Math.max(1, Math.floor((b.width - pad*2)/(w+gap)));
+  const pos = {};
+  groups.forEach((g,idx)=>{
+    const col = idx % cols;
+    const row = Math.floor(idx/cols);
+    const x = pad + col*(w+gap);
+    const y = pad + row*(h+gap);
+    pos[g.primaryId] = {x,y};
+  });
+  return pos;
+}
+
+function countsLastNDays(list, n=14){
+  const now = new Date();
+  const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const ONE = 86400000;
+  const arr = Array(n).fill(0);
+  for(const r of list){
+    const t = new Date(r.submitted_at||r.t).getTime();
+    if(isNaN(t)) continue;
+    const diff = Math.floor((today0 - t)/ONE);
+    if(diff<0) { arr[0]++; continue; }
+    if(diff < n) arr[diff]++;
+  }
+  return arr;
+}
+
+let currentStudentsRaw = [];
+let groups = [];
+let latestAttempts  = [];
+let attemptsMapByName = {};
+let SEATING_REMOTE_OK = false;
+let saveDebounceTO = null;
+
+function getLocalPositions(code){ return (LS.get(K.POS(code))||{}); }
+function saveLocalPositions(code, map){ LS.set(K.POS(code), map); }
+
+function getRemovedSet(code){ return new Set(LS.get(K.REMOVED(code)) || []); }
+function saveRemovedSet(code, set){ LS.set(K.REMOVED(code), Array.from(set)); }
+
+function getDeletedSet(code){ return new Set(LS.get(K.DELETED(code)) || []); }
+function saveDeletedSet(code, set){ LS.set(K.DELETED(code), Array.from(set)); }
+
+async function loadRemotePositions(code){
+  if(!supa) return null;
+  try{
+    const { data, error } = await supa.from('seating').select('positions, removed_ids, updated_at').eq('class_code', code).maybeSingle();
+    if(error){ return null; }
+    return data || null;
+  }catch(e){ return null; }
+}
+async function saveRemotePositionsDebounced(code, map, removedIdsOpt){
+  if(!supa) return;
+  clearTimeout(saveDebounceTO);
+  saveDebounceTO = setTimeout(async ()=>{
+    try{
+      const row = { class_code: code, positions: map, updated_at: new Date().toISOString() };
+      if(Array.isArray(removedIdsOpt)) row.removed_ids = removedIdsOpt;
+      const { error } = await supa.from('seating').upsert(row);
+      if(!error) SEATING_REMOTE_OK = true;
+    }catch(e){ /* ignore */ }
+  }, 300);
+}
+
+function ensureBoardHeight(positions, pad=12){
+  const h=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-h'))||160;
+  const ys = Object.values(positions).map(p=>p.y);
+  const maxY = ys.length ? Math.max(...ys) : 0;
+  const needed = pad + (maxY + h) + pad;
+  const b = board();
+  if(needed > b.clientHeight){ b.style.minHeight = needed + 'px'; }
+}
+
+/* Undo-Stack für Ausblenden (soft) */
+let undoStack = [];
+
+function renderBoard(groups, attemptsByNameMap, code, positions){
+  const b = board();
+  b.innerHTML = '';
+  const removedSet = getRemovedSet(code);
+  const deletedSet = getDeletedSet(code);
+
+  const base = positions && Object.keys(positions).length ? positions : autoLayoutByGroups(groups);
+  const newMap = {};
+
+  groups.forEach(g=>{
+    const primaryId = g.primaryId;
+    if(deletedSet.has(primaryId)) return;
+
+    const p = base[primaryId] || {x:12, y:12};
+    const tile = document.createElement('div');
+    tile.className='tile';
+    tile.dataset.sid = primaryId;
+    tile.dataset.nameKey = g.key;
+
+    const list = attemptsByNameMap[g.key] || [];
+    const last = list[0] || null;
+
+    const scoreTxt = last ? `${last.points_ok||0}/${last.points_total||0}` : '—';
+    const levelRaw = last ? (last.level||'') : '';
+    const levelTxt = levelRaw ? levelRaw.replace('_','.') : '–';
+    const lvlClass = levelClass(levelRaw); if(lvlClass) tile.classList.add(lvlClass);
+
+    const { pct } = avgScore(list);
+    const arr = countsLastNDays(list, 14);
+    const rows = arr.map((c,idx)=>{
+      if(idx===0) return `<div class="item">heute: ${c} Ü.</div>`;
+      if(idx===1) return `<div class="item">gestern: ${c} Ü.</div>`;
+      if(idx===2) return `<div class="item">vorgestern: ${c} Ü.</div>`;
+      return `<div class="item">vor ${idx} Tagen: ${c} Ü.</div>`;
+    }).join('');
+
+    tile.innerHTML = `
+      <button class="xbtn" title="In den Papierkorb">✕</button>
+      <div class="name">${escapeHtml(g.name||'-')}</div>
+      <div class="meta">
+        <span class="badge lvlchip" style="border-color:var(--line)">Level ${levelTxt}</span>
+        <span class="avg">· Ø ${pct}%</span>
+      </div>
+      <div class="score">Letzte Punkte: <strong class="${last? ( (last.points_ok/Math.max(1,last.points_total))>=0.7?'ok':(last.points_ok?'warn':'err') ):'tiny'}">${scoreTxt}</strong></div>
+      <div class="hist">${rows}</div>
+    `;
+
+    tile.addEventListener('click', (e)=>{
+      if(e.target.closest('.xbtn')) return;
+      if(e.target.closest('.hist')) return;
+      const rec = list[0];
+      if(rec){ openDetailsModal({display_name:g.name}, rec); }
+    });
+
+    tile.addEventListener('dblclick', ()=>{
+      tile.classList.add('hidden');
+      const set = getRemovedSet(code);
+      set.add(primaryId);
+      saveRemovedSet(code, set);
+      undoStack.push(primaryId);
+      updateUndoBtn();
+    });
+
+    tile.querySelector('.xbtn').addEventListener('click', (ev)=>{
+      ev.preventDefault();
+      ev.stopPropagation();
+      const del = getDeletedSet(code); 
+      del.add(primaryId); 
+      saveDeletedSet(code, del);
+      tile.remove();
+      renderTrashDrawer();
+      updateTrashCount();
+      const codeNow = getCurrentCodeUC();
+      const map = getLocalPositions(codeNow) || {};
+      saveRemotePositionsDebounced(codeNow, map, Array.from(del));
+    });
+
+    tile.style.left = Math.max(4, p.x) + 'px';
+    tile.style.top  = Math.max(4, p.y) + 'px';
+    if(removedSet.has(primaryId)) tile.classList.add('hidden');
+
+    enableDrag(tile, code);
+    b.appendChild(tile);
+    newMap[primaryId] = {x:p.x, y:p.y};
+  });
+
+  saveLocalPositions(code, newMap);
+  ensureBoardHeight(newMap);
+  updateUndoBtn();
+}
+
+/* Drag & Drop */
+function enableDrag(el, code){
+  let start=null, orig=null, dragging=false;
+  const b = board();
+
+  function clamp(x,y){
+    const bw = b.clientWidth, bh = b.clientHeight;
+    const ew = el.offsetWidth, eh = el.offsetHeight;
+    const nx = Math.min(Math.max(0, x), Math.max(0, bw - ew));
+    const ny = Math.min(Math.max(0, y), Math.max(0, bh - eh));
+    return {x:nx, y:ny};
+  }
+
+  el.addEventListener('pointerdown', (e)=>{
+    if(e.target.closest('.hist') || e.target.closest('.xbtn')) return;
+    el.setPointerCapture(e.pointerId);
+    dragging=true;
+    start = {x:e.clientX, y:e.clientY};
+    const rect = el.getBoundingClientRect();
+    const brect = b.getBoundingClientRect();
+    orig = {x: rect.left - brect.left, y: rect.top - brect.top};
+  });
+  el.addEventListener('pointermove', (e)=>{
+    if(!dragging) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    const {x,y} = clamp(orig.x + dx, orig.y + dy);
+    el.style.left = x+'px';
+    el.style.top  = y+'px';
+  });
+  el.addEventListener('pointerup', ()=>{
+    if(!dragging) return;
+    dragging=false;
+    const sid = el.dataset.sid;
+    const left = parseInt(el.style.left,10)||0;
+    const top  = parseInt(el.style.top,10)||0;
+
+    const codeNow = getCurrentCodeUC();
+    const map = getLocalPositions(codeNow) || {};
+    map[sid] = {x:left, y:top};
+    saveLocalPositions(codeNow, map);
+    ensureBoardHeight(map);
+    if(SEATING_REMOTE_OK || MODE==='SUPABASE'){ saveRemotePositionsDebounced(codeNow, map, Array.from(getDeletedSet(codeNow))); }
+  });
+}
+
+/* ===== Kompakte Abgabenliste ===== */
+function renderAttemptsCompact(rows){
+  const box = document.getElementById('attemptsList');
+  if(!rows.length){ box.textContent='Noch keine Abgaben…'; return; }
+
+  const html = rows.slice(0,25).map(r=>{
+    const when = fmtTime(r.submitted_at||r.t);
+    const name = escapeHtml(r.display_name||r.student_name||'-');
+    const lvl  = (r.level||'').replace('_','.');
+    const pts  = `${r.points_ok||0}/${r.points_total||0}`;
+    const wrongTxt = (Array.isArray(r.wrong_indices) && r.wrong_indices.length)
+      ? ` (falsch Nr.: ${r.wrong_indices.join(', ')})`
+      : '';
+    return `<div>• "${when}: <strong>${name}</strong> – Level ${lvl||'–'}, Seite ${r.page||'-'}, Punkte ${pts}${wrongTxt}"</div>`;
+  }).join('');
+  box.innerHTML = html;
+}
+
+/* ===== Modal ===== */
+function openDetailsModal(student, rec){
+  const modal = document.getElementById('detailsModal');
+  document.getElementById('modalTitle').textContent = student.display_name || 'Teilnehmer';
+  document.getElementById('modalSub').textContent = `Abgabe: ${fmtTime(rec.submitted_at||rec.t)}`;
+  const wrong = Array.isArray(rec.wrong_indices)&&rec.wrong_indices.length ? rec.wrong_indices.join(', ') : '—';
+  const kv = document.getElementById('modalKV');
+  kv.innerHTML = `
+    <div>Level</div><div>${(rec.level||'').replace('_','.')||'–'}</div>
+    <div>Seite</div><div>${rec.page||'–'}</div>
+    <div>Punkte</div><div>${rec.points_ok||0} / ${rec.points_total||0}</div>
+    <div>Falsche Lücken</div><div>${wrong}</div>
+  `;
+  modal.style.display = 'flex';
+}
+(function(){
+  const modal = document.getElementById('detailsModal');
+  document.getElementById('modalClose').addEventListener('click', ()=> modal.style.display='none');
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.style.display='none'; });
+})();
+
+/* ===== Papierkorb (UI) ===== */
+function renderTrashDrawer(){
+  const code = getCurrentCodeUC(); if(!code) return;
+  const deleted = Array.from(getDeletedSet(code));
+  const list = document.getElementById('trashList');
+  if(!deleted.length){ list.textContent = 'Keine gelöschten Teilnehmer.'; updateTrashCount(0); return; }
+  const nameById = {}; groups.forEach(g=> nameById[g.primaryId] = g.name );
+  list.innerHTML = deleted.map(id=>{
+    const nm = escapeHtml(nameById[id] || '(unbekannt)');
+    return `<div class="row"><span class="name">${nm}</span><span class="tiny mono">${id}</span><button data-id="${id}">Wiederherstellen</button></div>`;
+  }).join('');
+  list.querySelectorAll('button[data-id]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const pid = btn.getAttribute('data-id');
+      const set = getDeletedSet(code); set.delete(pid); saveDeletedSet(code, set);
+      renderTrashDrawer();
+      updateTrashCount();
+      const pos = getLocalPositions(code) || {};
+      renderBoard(groups, attemptsMapByName, code, pos);
+      saveRemotePositionsDebounced(code, pos, Array.from(set));
+    });
+  });
+  updateTrashCount(deleted.length);
+}
+
+/* ===== Realtime (optional Supabase) ===== */
+let attemptsChannel=null, studentsChannel=null, seatingChannel=null;
+function unsubscribeAll(){
+  [attemptsChannel, studentsChannel, seatingChannel].forEach(ch=>{ try{ ch && ch.unsubscribe(); }catch(_){/*noop*/} });
+  attemptsChannel = studentsChannel = seatingChannel = null;
+}
+function subscribeRealtime(codeRaw){
+  if(!supa) return;
+  const code = String(codeRaw||'').toUpperCase();
+  unsubscribeAll();
+
+  attemptsChannel = supa
+    .channel('realtime:attempts:'+code)
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'attempts', filter:`class_code=eq.${code}`}, payload=>{
+      const r = payload.new;
+      latestAttempts.unshift(r);
+      renderAttemptsCompact(latestAttempts);
+
+      const key = normalizeName(r.display_name||r.student_name);
+      if(!key) return;
+      (attemptsMapByName[key] = attemptsMapByName[key] || []).unshift(r);
+
+      const sel = document.querySelector(`.tile[data-name-key="${key}"]`);
+      if(sel){
+        const scoreEl = sel.querySelector('.score strong');
+        if(scoreEl) scoreEl.textContent = `${r.points_ok||0}/${r.points_total||0}`;
+
+        const lvlChip = sel.querySelector('.lvlchip');
+        if(lvlChip) lvlChip.textContent = r.level ? `Level ${String(r.level).replace('_','.')}` : 'Level –';
+        sel.classList.remove('lvl-A1_1','lvl-A1_2','lvl-A2','lvl-B1');
+        const cls = levelClass(r.level); if(cls) sel.classList.add(cls);
+
+        const list = attemptsMapByName[key] || [];
+        const { pct } = avgScore(list);
+        const avgEl = sel.querySelector('.meta .avg');
+        if(avgEl) avgEl.textContent = `· Ø ${pct}%`;
+
+        const arr = countsLastNDays(list, 14);
+        const hist = sel.querySelector('.hist');
+        if(hist){
+          hist.innerHTML = arr.map((c,idx)=>{
+            if(idx===0) return `<div class="item">heute: ${c} Ü.</div>`;
+            if(idx===1) return `<div class="item">gestern: ${c} Ü.</div>`;
+            if(idx===2) return `<div class="item">vorgestern: ${c} Ü.</div>`;
+            return `<div class="item">vor ${idx} Tagen: ${c} Ü.</div>`;
+          }).join('');
+        }
+      }
+    })
+    .subscribe();
+
+  studentsChannel = supa
+    .channel('realtime:students:'+code)
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'students', filter:`class_code=eq.${code}`}, async payload=>{
+      const s = payload.new;
+      currentStudentsRaw.push(s);
+      groups = groupStudents(currentStudentsRaw);
+      attemptsMapByName = attemptsByName(latestAttempts, groups);
+
+      const pos = getLocalPositions(code) || {};
+      const has = !!pos[groups[groups.length-1]?.primaryId];
+      if(!has){
+        const auto = autoLayoutByGroups(groups);
+        Object.assign(pos, auto);
+        saveLocalPositions(code, pos);
+        saveRemotePositionsDebounced(code, pos, Array.from(getDeletedSet(code)));
+      }
+      renderBoard(groups, attemptsMapByName, code, pos);
+      // Setup bleibt sichtbar (kein Ausblenden mehr)
+    })
+    .subscribe();
+
+  seatingChannel = supa
+    .channel('realtime:seating:'+code)
+    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'seating', filter:`class_code=eq.${code}`}, payload=>{
+      const row = payload.new;
+      if(!row) return;
+      if(row.positions) saveLocalPositions(code, row.positions || {});
+      try{
+        if(Array.isArray(row.removed_ids)){
+          const set = new Set(row.removed_ids);
+          saveDeletedSet(code, set);
+        }
+      }catch(_){}
+      renderBoard(groups, attemptsMapByName, code, row.positions || getLocalPositions(code) || {});
+      renderTrashDrawer();
+    })
+    .subscribe();
+}
+
+/* ===== Kompaktmodus ===== */
+/* Setup-Card bleibt sichtbar, damit Code & „sperren“ immer erreichbar sind. */
+function toggleCompactUI(){ /* absichtlich leer */ }
+
+/* ===== Zähler für Papierkorb ===== */
+function updateTrashCount(nOpt){
+  const code = getCurrentCodeUC();
+  const n = (typeof nOpt === 'number')
+    ? nOpt
+    : (code ? Array.from(getDeletedSet(code)).length : 0);
+  const el = document.getElementById('trashCount');
+  const btn = document.getElementById('btnTrash');
+  if(el) el.textContent = n;
+  if(btn) btn.classList.toggle('has-items', n > 0);
+}
+
+/* ===== Regler & Buttons ===== */
+function getCurrentCodeUC(){
+  return ((document.getElementById('classCode').value||'').trim().toUpperCase()) || (String(LS.get(K.CLASS)||'').toUpperCase());
+}
+
+function bind(){
+  document.getElementById('btnCreate').addEventListener('click', createClass);
+  document.getElementById('btnSave').addEventListener('click', async()=>{ await saveClass(); });
+  document.getElementById('btnCopyLink').addEventListener('click', copyLink);
+  document.getElementById('btnOpenLink').addEventListener('click', ()=>{
+    const code = getCurrentCodeUC();
+    if(!code){ alert('Kein Klassen-Code vorhanden. Bitte zuerst Speichern.'); return; }
+    const url = buildShareLink(code);
+    setShareLink(url);
+    window.open(url, '_blank');
+  });
+
+  // Code-Verlauf laden & bedienen
+  renderCodeHistory();
+  document.getElementById('btnLoadCode').addEventListener('click', async ()=>{
+    const sel = document.getElementById('codeHistory');
+    const val = sel?.value || '';
+    if(!val) return;
+    document.getElementById('classCode').value = val;
+    setShareLink(buildShareLink(val));
+    updateActiveBadge(val);
+    await refreshAll();
+    if(MODE==='SUPABASE'){ subscribeRealtime(val); }
+  });
+
+  // „sperren“-Klickfeld (3 Monate)
+  document.getElementById('btnBanCode').addEventListener('click', async () => {
+    const code = getCurrentCodeUC();
+    if (!code) { alert('Kein Klassen-Code eingegeben.'); return; }
+
+    const ok = confirm(`Achtung:\n\nDer Code ${code} wird SOFORT gelöscht (Klasse, Sitzplan, Schüler, Abgaben) und für ${DEFAULT_BAN_MONTHS} Monate gesperrt.\n\nBist du sicher?`);
+    if (!ok) return;
+
+    try {
+      if (MODE === 'SUPABASE') {
+        const { error } = await supa.rpc('ban_and_purge_class', { v_code: code, months: DEFAULT_BAN_MONTHS });
+        if (error) throw error;
+      } else {
+        // Demo/LOCAL: lokal „aufräumen“
+        const studs = LS.get(K.STUDENTS)||[];
+        LS.set(K.STUDENTS, studs.filter(s => String(s.class_code||'').toUpperCase() !== code));
+        const att = LS.get(K.ATTEMPTS)||[];
+        LS.set(K.ATTEMPTS, att.filter(a => String(a.class_code||'').toUpperCase() !== code));
+        LS.del(K.POS(code)); LS.del(K.REMOVED(code)); LS.del(K.DELETED(code));
+      }
+
+      // aktiven Code vergessen & aus History entfernen
+      if ((LS.get(K.CLASS)||'').toUpperCase() === code) { LS.del(K.CLASS); }
+      const list = (LS.get(K.CODES)||[]).filter(c => c !== code); LS.set(K.CODES, list); renderCodeHistory();
+
+      // UI zurücksetzen
+      const codeInput = document.getElementById('classCode'); if (codeInput) codeInput.value = '';
+      setShareLink('');
+      updateActiveBadge('—');
+      board().innerHTML = '';
+      const attList = document.getElementById('attemptsList'); if (attList) attList.textContent = 'Noch keine Abgaben…';
+      updateTrashCount(0);
+      undoStack = []; updateUndoBtn();
+
+      alert(`Code ${code} wurde gelöscht und für ${DEFAULT_BAN_MONTHS} Monate gesperrt.`);
+    } catch (e) {
+      console.error(e);
+      let msg = e.message || String(e);
+      if(/permission denied|execute on function/i.test(msg)){
+        msg += `\n\nHinweis (1x im SQL-Editor ausführen):\nGRANT EXECUTE ON FUNCTION public.ban_and_purge_class(text, int) TO anon;`;
+      }
+      if(/schema cache/i.test(msg)){
+        msg += `\n\nHinweis: Danach einmal ausführen:\nNOTIFY pgrst, 'reload schema';`;
+      }
+      alert('Fehler beim Löschen/Sperren: ' + msg);
+    }
+  });
+
+  const wRange = document.getElementById('widthRange');
+  const hRange = document.getElementById('heightRange');
+  const wVal = document.getElementById('widthVal');
+  const hVal = document.getElementById('heightVal');
+
+  const savedW = parseInt(LS.get(K.TW) || 220); document.documentElement.style.setProperty('--tile-w', savedW+'px'); wRange.value=savedW; wVal.textContent=savedW;
+  const savedH = parseInt(LS.get(K.TH) || 160); document.documentElement.style.setProperty('--tile-h', savedH+'px'); hRange.value=savedH; hVal.textContent=savedH;
+
+  function relayoutAfterSize(){
+    const code = getCurrentCodeUC(); if(!code) return;
+    const pos = getLocalPositions(code);
+    ensureBoardHeight(pos);
+  }
+
+  wRange.addEventListener('input', ()=>{
+    const v = parseInt(wRange.value); wVal.textContent=v;
+    document.documentElement.style.setProperty('--tile-w', v+'px');
+    LS.set(K.TW, v);
+    relayoutAfterSize();
+  });
+  hRange.addEventListener('input', ()=>{
+    const v = parseInt(hRange.value); hVal.textContent=v;
+    document.documentElement.style.setProperty('--tile-h', v+'px');
+    LS.set(K.TH, v);
+    relayoutAfterSize();
+  });
+
+  document.getElementById('btnAutoLayout').addEventListener('click', async ()=>{
+    const code = getCurrentCodeUC(); if(!code) return;
+    const auto = autoLayoutByGroups(groups);
+    saveLocalPositions(code, auto);
+    renderBoard(groups, attemptsMapByName, code, auto);
+    if(SEATING_REMOTE_OK || MODE==='SUPABASE'){ await saveRemotePositionsDebounced(code, auto, Array.from(getDeletedSet(code))); }
+  });
+
+  document.getElementById('btnClearPositions').addEventListener('click', async ()=>{
+    const code = getCurrentCodeUC(); if(!code) return;
+    LS.del(K.POS(code));
+    const auto = autoLayoutByGroups(groups);
+    renderBoard(groups, attemptsMapByName, code, auto);
+    if(SEATING_REMOTE_OK || MODE==='SUPABASE'){ await saveRemotePositionsDebounced(code, auto, Array.from(getDeletedSet(code))); }
+  });
+
+  document.getElementById('btnUndoHide').addEventListener('click', ()=>{
+    const code = getCurrentCodeUC(); if(!code) return;
+    const sid = undoStack.pop();
+    if(!sid) return;
+    const set = getRemovedSet(code);
+    set.delete(sid);
+    saveRemovedSet(code, set);
+    const el = document.querySelector(`.tile[data-sid="${sid}"]`);
+    if(el) el.classList.remove('hidden');
+    updateUndoBtn();
+  });
+
+  document.getElementById('btnTrash').addEventListener('click', ()=>{
+    const d = document.getElementById('trashDrawer');
+    d.style.display = (d.style.display==='block') ? 'none' : 'block';
+    renderTrashDrawer();
+  });
+  document.getElementById('btnTrashClose').addEventListener('click', ()=>{
+    document.getElementById('trashDrawer').style.display='none';
+  });
+}
+
+function updateUndoBtn(){
+  const btn = document.getElementById('btnUndoHide');
+  if(!btn) return;
+  btn.disabled = undoStack.length === 0;
+}
+
+/* ===== Refresh & Start ===== */
+async function refreshAll(){
+  let code = (document.getElementById('classCode').value||'').trim();
+  if(!code){ code = LS.get(K.CLASS)||''; if(code) document.getElementById('classCode').value=String(code).toUpperCase(); }
+  if(!code){
+    board().innerHTML='';
+    document.getElementById('attemptsList').textContent='Noch keine Abgaben…';
+    updateUndoBtn();
+    updateTrashCount(0);
+    updateActiveBadge('—');
+    setShareLink('');
+    return;
+  }
+  code = String(code).toUpperCase();
+  document.getElementById('classCode').value = code;
+  setShareLink(buildShareLink(code));
+  updateActiveBadge(code);
+  rememberCode(code);
+
+  currentStudentsRaw = await loadStudents(code);
+  groups = groupStudents(currentStudentsRaw);
+
+  latestAttempts  = await loadAttempts(code);
+  attemptsMapByName = attemptsByName(latestAttempts, groups);
+
+  let pos = null;
+  if(MODE==='SUPABASE'){
+    const remote = await loadRemotePositions(code);
+    if(remote && remote.positions){ pos = remote.positions; SEATING_REMOTE_OK = true; }
+    try{
+      if(remote && Array.isArray(remote.removed_ids)){
+        saveDeletedSet(code, new Set(remote.removed_ids));
+      }
+    }catch(_){}
+  }
+  if(!pos){ pos = getLocalPositions(code); }
+  if(!pos || !Object.keys(pos).length){ pos = autoLayoutByGroups(groups); }
+
+  renderBoard(groups, attemptsMapByName, code, pos);
+  renderAttemptsCompact(latestAttempts);
+  updateUndoBtn();
+  renderTrashDrawer();
+  updateTrashCount();
+}
+
+/* ===== Demo-Daten im LOCAL-Modus ===== */
+function demoEnsureSomeData(){
+  if(MODE!=='LOCAL') return;
+  const code = (LS.get(K.CLASS)||'') || 'DEMO01';
+  if(!LS.get(K.CLASS)) LS.set(K.CLASS, code);
+  const studs = LS.get(K.STUDENTS)||[];
+  if(!studs.some(s=>String(s.class_code||'').toUpperCase()===String(code).toUpperCase())){
+    const demo = ['Ali','Mina','Klaus','Sara','Noah','Lea','Yuna','Diego','Amina','Jonas','Ali','Mina'].map((n,i)=>({
+      id:`demo-${i}`, class_code:code, display_name:n, t:Date.now()-i*3600e3
+    }));
+    LS.set(K.STUDENTS, studs.concat(demo));
+  }
+  const att = LS.get(K.ATTEMPTS)||[];
+  if(!att.some(a=>String(a.class_code||'').toUpperCase()===String(code).toUpperCase())){
+    const lvls=['A1_1','A1_2','A2','B1'];
+    const names=['Ali','Mina','Klaus','Sara','Noah','Lea','Yuna','Diego','Amina','Jonas'];
+    const gen=[];
+    for(let i=0;i<30;i++){
+      const sid=`demo-${i%10}`;
+      const nm=names[i%10];
+      const ptsOk= 10+Math.floor(Math.random()*11);
+      const ptsTot= 20;
+      gen.push({class_code:code, student_id:sid, display_name:nm, level:lvls[i%4], page:(i%8)+1, points_ok:ptsOk, points_total:ptsTot, wrong_indices:[2,7].slice(0,Math.random()<.5?1:2), t:Date.now()-i*86400000});
+    }
+    LS.set(K.ATTEMPTS, att.concat(gen));
+  }
+}
+
+/* ===== Start ===== */
+(async function(){
+  try{
+    await initBackend();
+    bind();
+    const c = LS.get(K.CLASS);
+    if(c){
+      document.getElementById('classCode').value=String(c).toUpperCase();
+      setShareLink(buildShareLink(String(c).toUpperCase()));
+      updateActiveBadge(String(c).toUpperCase());
+    }
+    renderCodeHistory();
+    demoEnsureSomeData();
+    await refreshAll();
+    updateTrashCount();
+  }catch(e){
+    console.error(e);
+    alert('Ein Fehler ist aufgetreten. Bitte Seite neu laden. (Konsole zeigt Details)');
+  }
+})();
+</script>
+<script>try{ localStorage.setItem('lastTeacher','1'); }catch(e){}</script>
+</body>
+</html>

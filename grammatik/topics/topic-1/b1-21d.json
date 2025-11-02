@@ -1,0 +1,12 @@
+[
+  { "text":"Bezüglich __GAP__ Bewerbung rufe ich zurück.", "ans":["meiner"], "art":"die" },
+  { "text":"Trotz __GAP__ Schmerzen joggte er weiter.", "ans":["seiner"], "art":"die" },
+  { "text":"Ich archiviere __GAP__ Mails regelmäßig.", "ans":["meine"], "art":"die" },
+  { "text":"Ihr habt __GAP__ Ziel klar erklärt.", "ans":["euer"], "art":"das" },
+  { "text":"Er überträgt __GAP__ Daten auf den Stick.", "ans":["seine"], "art":"die" },
+  { "text":"Wir dokumentieren __GAP__ Schritte (Pl).", "ans":["unsere"], "art":"die" },
+  { "text":"Du bestätigst __GAP__ Termin schriftlich.", "ans":["deinen"], "art":"der" },
+  { "text":"Sie fand __GAP__ Schlüssel im Flur.", "ans":["ihren"], "art":"der" },
+  { "text":"Ich lade jetzt __GAP__ Bilder hoch.", "ans":["meine"], "art":"die" },
+  { "text":"Walter repariert __GAP__ Motorrad und mach viel Lärm, deshalb macht das Fenster zu.", "ans":["sein"], "art":"das" }
+]

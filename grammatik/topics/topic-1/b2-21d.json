@@ -1,0 +1,12 @@
+[
+  { "text":"Im Hinblick auf __GAP__ Risiko wählen wir Plan B. (wir)", "ans":["unser"], "art":"das" },
+  { "text":"Sobald Klaus __GAP__ Rückmeldung da ist, schließen wir ab. (er)", "ans":["seine"], "art":"die" },
+  { "text":"Unter Maria __GAP__ Leitung gelang die Präsentation. (ihr)", "ans":["ihrer"], "art":"die" },
+  { "text":"Wäre __GAP__ Zeitrahmen weiter, gäbe es für uns alle weniger Druck. (wir)", "ans":["unser"], "art":"der" },
+  { "text":"Obgleich Wilhelm __GAP__ Argument überzeugte, prüfen wir weiter. (er)", "ans":["sein"], "art":"das" },
+  { "text":"Mit Peter __GAP__ Protokoll sind alle auf dem aktuellen Stand. (er)", "ans":["seinem"], "art":"das" },
+  { "text":"Ungeachtet __GAP__ Erfolgs trainineren wir weiter. (wir)", "ans":["unseres"], "art":"der" },
+  { "text":"Soweit wir __GAP__ Tests bestehen, liefern wir die Produkte aus. (wir)", "ans":["unsere"], "art":"die" },
+  { "text":"Dank Susi __GAP__ Übersicht finden sich jetzt alle zurecht. (sie)", "ans":["ihrer"], "art":"die" },
+  { "text":"Im Rahmen __GAP__ Pilotprojekts messen wir wöchentlich die Erfolge. (wir)", "ans":["unseres"], "art":"das" }
+]

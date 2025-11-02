@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kontakt & Testzugang – SprachCoach</title>
+<meta name="description" content="Kontakt zu SprachCoach: Allgemeine Anfrage, 21-Tage-Testzugang, Angebot für Kursträger (−30 %), Support/Technik." />
+<style>
+  :root{ --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+         --ok:#16a34a; --warn:#f59e0b; --info:#60a5fa; --brand1:#93c5fd; --brand2:#67e8f9; }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 16px;width:100%}
+  h1{line-height:1.12;margin:.25rem 0 .5rem;font-size:clamp(26px,4.4vw,40px)}
+  h2{line-height:1.2;margin:0 0 .6rem;font-size:clamp(18px,3vw,22px)}
+  p.muted{color:var(--muted)}
+  a{color:#cfe6ff;text-decoration:none} a:hover{text-decoration:underline}
+
+  .hero{
+    display:grid; gap:10px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line); border-radius:16px; padding:22px;
+    box-shadow:0 14px 40px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+
+  .card{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line);
+    border-radius:16px; padding:18px;
+    box-shadow:0 12px 28px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+
+  form{ display:grid; gap:12px }
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+  @media (max-width:720px){ .row{ grid-template-columns:1fr } }
+
+  label{ display:flex; flex-direction:column; gap:6px; font-weight:600 }
+  input, select, textarea{
+    background:rgba(255,255,255,.06); border:1px solid var(--line); color:var(--ink);
+    border-radius:10px; padding:10px 12px; font:inherit; width:100%;
+  }
+  textarea{ min-height:120px; resize:vertical }
+  .hint{ color:var(--muted); font-size:13px }
+  .req::after{ content:"*"; color:#fbbf24; margin-left:4px; font-weight:900 }
+
+  .fieldset{ border:1px solid var(--line); border-radius:12px; padding:12px }
+  .fieldset legend{ padding:0 6px; font-weight:800; color:#eaf1ff }
+
+  .hide{ display:none !important }
+
+  .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:12px; cursor:pointer; user-select:none;
+    background:linear-gradient(135deg,#ff9800 0%, #ffd54a 50%, #ff9800 100%);
+    color:#2a1700; border:1px solid rgba(255,149,0,.65); font-weight:900;
+    box-shadow:0 10px 26px rgba(255,152,0,.35), inset 0 0 0 1px rgba(255,255,255,.35);
+  }
+  .btn:disabled{ opacity:.6; cursor:not-allowed }
+  .btn-ghost{
+    background:transparent; color:#eaf1ff; border:1px solid var(--line); padding:10px 12px; border-radius:10px; text-decoration:none
+  }
+
+  .status{ font-size:13px; color:var(--muted) }
+  .ok{ color:#86efac } .warn{ color:#fde68a }
+
+  footer{margin-top:auto;color:var(--muted);font-size:12px;text-align:center;padding:14px 16px}
+  .pill{ display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.06); font-size:12px; color:var(--muted) }
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="h1">
+    <h1 id="h1">Kontakt & Testzugang</h1>
+    <p class="muted">Wir melden uns in der Regel innerhalb eines Werktags. Alternativ E-Mail an
+      <a href="mailto:kvhs@pramann.de">kvhs@pramann.de</a>.
+    </p>
+  </section>
+
+  <!-- FORM -->
+  <section class="card" style="margin-top:14px" aria-labelledby="f-h">
+    <h2 id="f-h" style="margin:0 0 .25rem">Ihre Nachricht</h2>
+
+    <!-- Netlify Forms: data-netlify + hidden form-name + honeypot + optional reCAPTCHA -->
+    <form name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/kontakt-danke.html" id="contactForm" novalidate>
+      <input type="hidden" name="form-name" value="kontakt" />
+      <p class="hide">
+        <label>Bot-Feld: <input name="bot-field" /></label>
+      </p>
+
+      <div class="row">
+        <label class="req">Vor- und Nachname
+          <input type="text" name="name" autocomplete="name" required aria-required="true" />
+        </label>
+        <label class="req">E-Mail
+          <input type="email" name="email" inputmode="email" autocomplete="email" required aria-required="true" />
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Telefon (optional)
+          <input type="tel" name="phone" inputmode="tel" autocomplete="tel" />
+        </label>
+        <label class="req">Anliegen
+          <select name="topic" id="topic" required aria-required="true">
+            <option value="" selected disabled>Bitte wählen …</option>
+            <option value="general">Allgemeine Anfrage</option>
+            <option value="trial">21-Tage-Testzugang anfordern</option>
+            <option value="carrier">Angebot für Kursträger (−30 %)</option>
+            <option value="support">Support / Technik</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Zusatzfelder: werden je nach Anliegen ein-/ausgeblendet -->
+      <fieldset class="fieldset hide" id="fs-trial">
+        <legend>Testzugang</legend>
+        <div class="row">
+          <label>Modul (optional)
+            <select name="trial_module">
+              <option value="">Beide</option>
+              <option>Grammatik-Trainer</option>
+              <option>Dialog-Partner</option>
+            </select>
+          </label>
+          <label>Hinweis (optional)
+            <input type="text" name="trial_note" placeholder="z. B. Kurs/Gruppe" />
+          </label>
+        </div>
+        <p class="hint">Der 21-Tage-Test wird per Token aktiviert. Anleitung: <a href="/hilfe.html#howto-h">Hilfe</a>.</p>
+      </fieldset>
+
+      <fieldset class="fieldset hide" id="fs-carrier">
+        <legend>Kursträger-Anfrage</legend>
+        <div class="row">
+          <label>Gesamt-Teilnehmende (Schätzung)
+            <input type="number" name="carrier_participants" min="1" step="1" placeholder="z. B. 30" />
+          </label>
+          <label>Kurse × TN/Kurs (optional)
+            <input type="text" name="carrier_courses" placeholder="z. B. 3 × 10" />
+          </label>
+        </div>
+        <div class="row">
+          <label>Laufzeit-Option (optional)
+            <select name="carrier_term">
+              <option value="">Bitte wählen …</option>
+              <option>1 Monat</option>
+              <option>3 Monate</option>
+              <option>6 Monate</option>
+              <option>9 Monate</option>
+              <option>12 Monate</option>
+            </select>
+          </label>
+          <label>Bemerkung (optional)
+            <input type="text" name="carrier_note" placeholder="z. B. Starttermin, Besonderheiten" />
+          </label>
+        </div>
+        <p class="hint">Preisbeispiele siehe <a href="/executive.html">Executive</a> und <a href="/preise.html">Preise</a>.</p>
+      </fieldset>
+
+      <fieldset class="fieldset hide" id="fs-support">
+        <legend>Support / Technik</legend>
+        <div class="row">
+          <label>Gerät / Betriebssystem
+            <input type="text" name="sup_device" placeholder="z. B. iPhone 13 / iOS 17.5" />
+          </label>
+          <label>Browser
+            <input type="text" name="sup_browser" placeholder="z. B. Safari, Chrome 128" />
+          </label>
+        </div>
+        <div class="row">
+          <label>Fehlermeldung (falls vorhanden)
+            <input type="text" name="sup_error" placeholder="z. B. Zugriff auf Mikrofon verweigert" />
+          </label>
+          <label>Uhrzeit des Problems (optional)
+            <input type="text" name="sup_time" placeholder="z. B. 10:35 Uhr" />
+          </label>
+        </div>
+        <p class="hint">Tipp: Mikrofonfreigabe Schritt-für-Schritt in der <a href="/hilfe.html#mic">Hilfe</a>.</p>
+      </fieldset>
+
+      <label>Nachricht
+        <textarea name="message" placeholder="Wie können wir helfen?"></textarea>
+      </label>
+
+      <label class="req">
+        <input type="checkbox" name="consent" value="yes" required aria-required="true" />
+        Ich habe die <a href="/datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und bin einverstanden.
+      </label>
+
+      <!-- Optional: reCAPTCHA (in Netlify aktivieren) -->
+      <!-- <div data-netlify-recaptcha="true"></div> -->
+
+      <div class="actions">
+        <button type="submit" class="btn" id="submitBtn">Senden</button>
+        <a class="btn-ghost" href="mailto:kvhs@pramann.de">Oder per E-Mail senden</a>
+        <span class="status" id="status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <p class="hint" style="margin-top:8px">
+      <span class="pill">Hinweis</span> Die Form-Verarbeitung (Routing, Benachrichtigungen) erfolgt über <em>Netlify Forms</em>.
+      Funktioniert automatisch nach dem Hochladen/Deploy.
+    </p>
+  </section>
+
+  <!-- Links unten -->
+  <p class="muted" style="margin-top:12px;text-align:center">
+    <a href="/executive.html">Executive</a> ·
+    <a href="/preise.html">Preise</a> ·
+    <a href="/hilfe.html">Hilfe</a> ·
+    <a href="/faq.html">FAQ</a> ·
+    <a href="/impressum.html">Impressum</a> ·
+    <a href="/datenschutz.html">Datenschutz</a>
+  </p>
+</main>
+
+<footer>
+  © <span id="year"></span> Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+
+<script>
+  // Jahr
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Anliegen → Zusatzfelder ein-/ausblenden
+  const topic = document.getElementById('topic');
+  const fsTrial = document.getElementById('fs-trial');
+  const fsCarrier = document.getElementById('fs-carrier');
+  const fsSupport = document.getElementById('fs-support');
+
+  function toggleSections(){
+    const v = (topic.value||'').toLowerCase();
+    const map = {
+      trial: fsTrial,
+      carrier: fsCarrier,
+      support: fsSupport
+    };
+    [fsTrial, fsCarrier, fsSupport].forEach(fs=>{
+      const active = map[v]===fs;
+      fs.classList.toggle('hide', !active);
+      // Felder innerhalb deaktivieren/aktivieren (damit nur Relevantes gesendet wird)
+      fs.querySelectorAll('input,select,textarea').forEach(el => el.disabled = !active);
+    });
+  }
+  topic.addEventListener('change', toggleSections);
+  // Init: alles deaktivieren
+  [fsTrial, fsCarrier, fsSupport].forEach(fs=>{
+    fs.querySelectorAll('input,select,textarea').forEach(el => el.disabled = true);
+  });
+
+  // Kleines UX-Feedback beim Senden (Netlify übernimmt eig. den POST)
+  const form = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('status');
+
+  form.addEventListener('submit', ()=>{
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Wird gesendet…';
+  });
+</script>
+</body>
+</html>

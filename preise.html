@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Preise – SprachCoach</title>
+<meta name="description" content="Drei dynamische Preis-Schieber für Grammatik, Dialog-Partner und die Kombination – je länger die Laufzeit, desto niedriger der Monatspreis.">
+<style>
+  :root{
+    --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+    --thumb:22px; /* muss zur JS-Berechnung passen */
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 16px;width:100%}
+  h1{line-height:1.15;margin:.5rem 0 1rem;font-size:clamp(24px,4vw,32px)}
+  h2{line-height:1.2;margin:1.25rem 0 .5rem;font-size:clamp(18px,3vw,22px)}
+  a{color:#cfe6ff}
+  .muted{color:var(--muted)}
+  .card{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line);
+    border-radius:16px; padding:20px; margin:0 0 16px;
+    box-shadow:0 12px 28px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+
+  /* Dezent unterschiedliche Kachel-Hintergründe */
+  #g-card{ background:linear-gradient(180deg, rgba(99,102,241,.10), rgba(99,102,241,.05)); border-color:rgba(99,102,241,.28) }
+  #s-card{ background:linear-gradient(180deg, rgba(56,189,248,.10), rgba(56,189,248,.05)); border-color:rgba(56,189,248,.28) }
+  #c-card{ background:linear-gradient(180deg, rgba(16,185,129,.10), rgba(16,185,129,.05)); border-color:rgba(16,185,129,.28) }
+
+  .pr-grid{display:grid; grid-template-columns:1fr; gap:12px}
+  .pr-row{display:flex;align-items:center;justify-content:space-between}
+  .runtime{font-size:14px;color:var(--muted)}
+  .runtime .runtime-highlight{
+    background:rgba(96,165,250,.18);
+    border:1px solid rgba(96,165,250,.35);
+    color:#dbeafe;
+    padding:3px 10px;
+    border-radius:999px;
+    font-weight:800;
+    letter-spacing:.2px;
+    display:inline-block;
+  }
+
+  .range-center{ width:66.666%; margin:0 auto; position:relative; }
+  @media (max-width:900px){ .range-center{ width:90%; } }
+  @media (max-width:600px){ .range-center{ width:100%; } }
+  .pr-range-wrap{display:flex;flex-direction:column;gap:4px}
+
+  /* Slider */
+  input[type="range"]{
+    width:100%; -webkit-appearance:none; appearance:none; height:10px; border-radius:999px;
+    background:linear-gradient(90deg,#60a5fa 0%, #60a5fa var(--fill,0%), rgba(255,255,255,.12) var(--fill,0%));
+    outline:none; border:1px solid var(--line);
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:var(--thumb); height:var(--thumb); border-radius:50%;
+    background:#60a5fa; border:2px solid #bfdbfe; box-shadow:0 2px 10px rgba(96,165,250,.5); cursor:pointer;
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:var(--thumb); height:var(--thumb); border-radius:50%; background:#60a5fa; border:2px solid #bfdbfe; cursor:pointer;
+  }
+
+  /* Ticks (1..12) */
+  .ticks{ position:relative; height:18px; margin-top:0; user-select:none }
+  .tick{
+    position:absolute; bottom:0; transform:translateX(-50%);
+    font-size:12px; color:var(--muted); text-align:center; cursor:pointer; padding:0 3px;
+  }
+  .tick::before{
+    content:""; position:absolute; left:50%; transform:translateX(-50%);
+    top:-6px; width:2px; height:5px; background:rgba(207,230,255,.75); border-radius:2px;
+  }
+  .tick:hover{ color:#eaf1ff }
+
+  /* Preisbox & Buttons */
+  .pricebox{margin-top:6px}
+  .price-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .price-label{color:var(--muted); font-size:13px}
+  .price-val{font-size:28px;font-weight:900;letter-spacing:.2px}
+  .pill{background:linear-gradient(135deg,#93c5fd,#67e8f9); color:#06122a; padding:6px 12px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.35); font-weight:800; letter-spacing:.2px; white-space:nowrap}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;color:var(--muted)}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .btn-primary{
+    background:linear-gradient(135deg,#ff9800 0%, #ffd54a 50%, #ff9800 100%);
+    border:1px solid rgba(255,149,0,.65);
+    color:#2a1700; padding:10px 14px; border-radius:10px; font-weight:900; cursor:pointer; text-decoration:none;
+    box-shadow:0 10px 26px rgba(255,152,0,.35), inset 0 0 0 1px rgba(255,255,255,.35)
+  }
+  footer{margin-top:auto;padding:12px 16px;text-align:center;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+  <h1>Preise</h1>
+  <p class="muted">Wähle die Laufzeit – der Monatspreis sinkt mit der Dauer.</p>
+
+  <!-- 1) Grammatik -->
+  <section class="card" id="g-card" aria-labelledby="g-title">
+    <h2 id="g-title">Grammatik-Trainer</h2>
+    <div class="pr-grid" aria-live="polite">
+      <div class="pr-row">
+        <span class="runtime" id="g-runtime">
+          Die Laufzeit der Freischaltung ist:
+          <span class="runtime-highlight">3 Monate</span>
+          und endet dann automatisch
+        </span>
+      </div>
+      <label class="pr-field">
+        <div class="pr-range-wrap">
+          <div class="range-center">
+            <input id="g-range" type="range" min="1" max="12" value="3" step="any" aria-label="Laufzeit Grammatik wählen">
+            <div class="ticks" id="g-ticks" aria-hidden="true"></div>
+          </div>
+        </div>
+      </label>
+
+      <div class="pricebox card">
+        <div class="price-row">
+          <div>
+            <div class="price-label">Monatspreis</div>
+            <div class="price-val" id="g-price">4,60 €</div>
+          </div>
+          <div class="pill">Modul: Grammatik-Trainer</div>
+        </div>
+        <div class="meta">
+          <span>Gesamt: <strong id="g-total">13,80 €</strong></span>
+          <span>•</span>
+          <span id="g-save-text">Ich spare 0,00 € gegenüber 1-Monats-Buchung</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a id="g-book" class="btn-primary" href="#">Hier buchen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2) Dialog-Partner -->
+  <section class="card" id="s-card" aria-labelledby="s-title">
+    <h2 id="s-title">Sprech-Trainer</h2>
+    <div class="pr-grid" aria-live="polite">
+      <div class="pr-row">
+        <span class="runtime" id="s-runtime">
+          Die Laufzeit der Freischaltung ist:
+          <span class="runtime-highlight">3 Monate</span>
+          und endet dann automatisch
+        </span>
+      </div>
+      <label class="pr-field">
+        <div class="pr-range-wrap">
+          <div class="range-center">
+            <input id="s-range" type="range" min="1" max="12" value="3" step="any" aria-label="Laufzeit Dialog-Partner wählen">
+            <div class="ticks" id="s-ticks" aria-hidden="true"></div>
+          </div>
+        </div>
+      </label>
+
+      <div class="pricebox card">
+        <div class="price-row">
+          <div>
+            <div class="price-label">Monatspreis</div>
+            <div class="price-val" id="s-price">6,60 €</div>
+          </div>
+          <div class="pill">Modul: Dialog-Partner</div>
+        </div>
+        <div class="meta">
+          <span>Gesamt: <strong id="s-total">19,80 €</strong></span>
+          <span>•</span>
+          <span id="s-save-text">Ich spare 0,00 € gegenüber 1-Monats-Buchung</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a id="s-book" class="btn-primary" href="#">Hier buchen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3) Kombination -->
+  <section class="card" id="c-card" aria-labelledby="c-title">
+    <h2 id="c-title">Kombination Grammatik- und Dialog-Training</h2>
+    <div class="pr-grid" aria-live="polite">
+      <div class="pr-row">
+        <span class="runtime" id="c-runtime">
+          Die Laufzeit der Freischaltung ist:
+          <span class="runtime-highlight">3 Monate</span>
+          und endet dann automatisch
+        </span>
+      </div>
+      <label class="pr-field">
+        <div class="pr-range-wrap">
+          <div class="range-center">
+            <input id="c-range" type="range" min="1" max="12" value="3" step="any" aria-label="Laufzeit Kombination wählen">
+            <div class="ticks" id="c-ticks" aria-hidden="true"></div>
+          </div>
+        </div>
+      </label>
+
+      <div class="pricebox card">
+        <div class="price-row">
+          <div>
+            <div class="price-label">Monatspreis</div>
+            <div class="price-val" id="c-price">8,40 €</div>
+          </div>
+          <div class="pill">Alle Module frei nutzen</div>
+        </div>
+        <div class="meta">
+          <span>Gesamt: <strong id="c-total">25,20 €</strong></span>
+          <span>•</span>
+          <span id="c-save-text">Ich spare 0,00 € gegenüber 1-Monats-Buchung</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a id="c-book" class="btn-primary" href="#">Hier buchen</a>
+      </div>
+    </div>
+  </section>
+
+  <p class="muted"><a href="/">Zur Startseite</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a></p>
+</main>
+
+<footer>
+  © Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+
+<script>
+  const fmt = n => n.toFixed(2).replace('.', ',') + ' €';
+
+  /* URL-Parameter: topic → teacher-Mapping */
+  const params = new URLSearchParams(location.search);
+  const topic = (params.get('topic') || '').toLowerCase();  // 'poss' | 'artda' | 'adj'
+  const TOPIC_TO_TEACHER = { poss: 1, artda: 2, adj: 3 };
+
+  /* Fülleffekt passend zur Value */
+  function setFill(input){
+    const min = +input.min, max = +input.max, val = +input.value;
+    input.style.setProperty('--fill', ((val - min)/(max - min))*100 + '%');
+  }
+
+  /* Ticks exakt zur Thumb-Mitte in px positionieren */
+  function placeTicks(range, ticks, min, max){
+    const width = range.clientWidth;
+    const thumb = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thumb')) || 22;
+    const usable = Math.max(0, width - thumb);
+    const leftPad = thumb / 2;
+    ticks.style.width = width + 'px';
+    ticks.querySelectorAll('.tick').forEach((t, idx)=>{
+      const i = min + idx;
+      const x = leftPad + ((i - min) / (max - min)) * usable;
+      t.style.left = x + 'px';
+    });
+  }
+
+  function makeTicks(range, ticks){
+    const min = +range.min, max = +range.max;
+    ticks.innerHTML = '';
+    for(let i=min;i<=max;i++){
+      const el = document.createElement('span');
+      el.className = 'tick';
+      el.textContent = i;
+      el.dataset.m = String(i);
+      ticks.appendChild(el);
+    }
+    placeTicks(range, ticks, min, max);
+    // Klick setzt exakt auf den Monat
+    ticks.querySelectorAll('.tick').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        range.value = el.dataset.m;
+        range.dispatchEvent(new Event('input', {bubbles:true}));
+      });
+    });
+  }
+
+  /* Resize-Handling, damit Ticks immer unter der Thumb sitzen */
+  const ro = new ResizeObserver(entries=>{
+    for(const e of entries){
+      const range = e.target.querySelector('input[type="range"]');
+      const ticks = e.target.querySelector('.ticks');
+      if(range && ticks) placeTicks(range, ticks, +range.min, +range.max);
+    }
+  });
+
+  /* Konfig: Basispreis (1 Monat) & Abschlag/Monat */
+  const CFG = [
+    { key:'g', base:5.00, step:0.20 },   // Grammatik
+    { key:'s', base:7.00, step:0.20 },   // Dialog-Partner
+    { key:'c', base:9.00, step:0.30 },   // Kombination
+  ];
+
+  function round2(n){ return Math.round(n*100)/100; }
+  const plural = m => m === 1 ? 'Monat' : 'Monate';
+
+  function initSlider({key, base, step}){
+    const range   = document.getElementById(key+'-range');
+    const runtime = document.getElementById(key+'-runtime');
+    const priceEl = document.getElementById(key+'-price');
+    const totalEl = document.getElementById(key+'-total');
+    const saveEl  = document.getElementById(key+'-save-text');
+    const ticks   = document.getElementById(key+'-ticks');
+    const bookEl  = document.getElementById(key+'-book');
+    const container = range.closest('.range-center');
+
+    makeTicks(range, ticks);
+    ro.observe(container);
+
+    const monthly = m => round2(Math.max(0, base - (m-1)*step));
+
+    function updateLink(m){
+      if(!bookEl) return;
+      const extraTopic = topic ? `&topic=${encodeURIComponent(topic)}` : '';
+      if(key === 'g'){
+        const teacher = TOPIC_TO_TEACHER[topic] ?? 1; // Standard Teacher-1
+        bookEl.href = `/lizenz-zugang.html?product=PG&months=${m}&teacher=${teacher}${extraTopic}`;
+      }else if(key === 's'){
+        bookEl.href = `/lizenz-zugang.html?product=PD&months=${m}${extraTopic}`;
+      }else if(key === 'c'){
+        const teacher = TOPIC_TO_TEACHER[topic] ?? 1;
+        bookEl.href = `/lizenz-zugang.html?product=PK&months=${m}&teacher=${teacher}${extraTopic}`;
+      }
+    }
+
+    function render(){
+      // Frei ziehbar, Anzeige auf ganze Monate gerundet
+      const raw = parseFloat(range.value);
+      const min = +range.min, max = +range.max;
+      const m = Math.min(max, Math.max(min, Math.round(raw)));
+
+      // Laufzeit
+      runtime.innerHTML = `Die Laufzeit der Freischaltung ist: <span class="runtime-highlight">${m} ${plural(m)}</span> und endet dann automatisch`;
+
+      // Preise
+      const mp = monthly(m);                 // rabattierter Monatspreis
+      const discountedTotal = round2(mp * m);
+      const baselineTotal   = round2(base * m); // 1-Monats-Preis × Monate
+      const savingsTotal    = round2(baselineTotal - discountedTotal);
+
+      priceEl.textContent = fmt(mp);
+      totalEl.textContent = fmt(discountedTotal);
+      saveEl.textContent  = `Ich spare ${fmt(savingsTotal)} gegenüber 1-Monats-Buchung`;
+
+      // Link aktualisieren
+      updateLink(m);
+
+      // Fülleffekt
+      setFill(range);
+    }
+
+    range.addEventListener('input', render);
+    render(); // Start (3 Monate)
+  }
+
+  CFG.forEach(initSlider);
+</script>
+</body>
+</html>

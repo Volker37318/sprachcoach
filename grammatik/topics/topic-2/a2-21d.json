@@ -1,0 +1,12 @@
+[
+  { "text": "Ich schicke __GAP__ Kollegin __GAP__ Einladung.",                  "ans": ["der","eine"] },
+  { "text": "Wir bestätigen __GAP__ Kunden (Sg) __GAP__ Termin.",               "ans": ["dem","einen"] },
+  { "text": "Das Hotel schickt __GAP__ Gast __GAP__ Rechnung.",                 "ans": ["dem","eine"] },
+  { "text": "Die Sekretärin gibt __GAP__ Besucher __GAP__ Formular.",           "ans": ["dem","ein"] },
+  { "text": "Der Arzt erklärt __GAP__ Patientin __GAP__ Rezept.",               "ans": ["der","ein"] },
+  { "text": "Die Bibliothek leiht __GAP__ Studenten (Sg) __GAP__ Buch.",        "ans": ["dem","ein"] },
+  { "text": "Der Kursleiter empfiehlt __GAP__ Teilnehmern (Pl) __GAP__ Übung.", "ans": ["den","eine"] },
+  { "text": "Die Firma liefert __GAP__ Kundin __GAP__ Paket.",                  "ans": ["der","ein"] },
+  { "text": "Ich bringe __GAP__ Nachbarn (Sg) __GAP__ Schlüssel.",              "ans": ["dem","einen"] },
+  { "text": "Das Amt sendet __GAP__ Antragsteller __GAP__ Bescheid.",           "ans": ["dem","einen"] }
+]

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Artikel im Dativ & Akkusativ – 21 Tage Testzugang</title>
+<!-- Zugriffsschutz: erlaubt nur bei aktivem Trial oder PRO -->
+<script defer src="/assets/js/access.js"></script>
+<style>
+  :root{--bg:#0b1020;--panel:#121a35;--text:#eaf1ff;--muted:#b7c4e1;--line:#223055;--btn:#1ea7ff;--ok:#16a34a;--err:#ef4444}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  header{padding:24px 16px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#0b1020 0%,#121a35 100%)}
+  h1{margin:0 0 6px}
+  .sub{color:var(--muted)}
+  main{max-width:760px;margin:0 auto;padding:18px 16px 60px;display:grid;gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .muted{color:var(--muted);font-size:13px}
+  .ok{color:var(--ok);font-size:13px}
+  .err{color:var(--err);font-size:13px}
+  button{cursor:pointer;border:1px solid #2a3a6a;background:var(--btn);color:var(--text);font-weight:600;
+          width:100%;padding:12px 14px;border-radius:12px}
+  .row{display:grid;gap:10px}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  footer{padding:12px;text-align:center;color:#fff;font-size:12px}
+  footer a{color:inherit;text-decoration:underline}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Teil 2: Artikel im Dativ & Akkusativ</h1>
+  <div class="sub">21 Tage kostenlos testen – mit Lehrer-Dashboard</div>
+</header>
+
+<main>
+  <section class="card">
+    <h2 style="margin:0 0 10px">Was passiert?</h2>
+    <ul style="margin:0 0 10px 18px; line-height:1.6">
+      <li>Lehrer-Bereich wird lokal für <strong>21 Tage</strong> freigeschaltet.</li>
+      <li>Die Freischaltung endet automatisch.</li>
+      <li>Daten bleiben nur lokal auf diesem Gerät (Demo) – optional mit Supabase live.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="statusCard">
+    <h2 style="margin:0 0 10px">Status</h2>
+    <div id="trialStatus" class="muted">Noch kein Testzugang aktiviert.</div>
+    <div id="trialUntil" class="muted"></div>
+  </section>
+
+  <section class="card">
+    <div class="row grid-2" style="align-items:end">
+      <div>
+        <label for="trialDays" class="muted">Zugangstage (1–30)</label>
+        <input id="trialDays" type="number" min="1" max="30" value="21"
+               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
+                      background:#0f1630;color:var(--text)">
+      </div>
+      <button id="btnStart">⏩ Testzugang starten &amp; Lehrer-Dashboard öffnen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin:0 0 10px">Nach dem Start</h2>
+    <div class="muted">
+      Das Dashboard erzeugt automatisch einen <strong>Klassen-Code</strong> sowie einen <strong>Teilnehmer-Link</strong> (Alias genügt).<br>
+      Auswertung: Teilnehmende sehen Punkte; im Dashboard sind <strong>Fortschritt und Ergebnisse pro Alias</strong> sichtbar.
+    </div>
+  </section>
+</main>
+
+<footer>
+  © Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a>
+</footer>
+
+<script type="module">
+  import { setTrial, hasActiveTrial } from '/js/core-access.js';
+
+  const TOPIC = 'artda'; // exakt wie in teacher-2.html
+  const $ = (id)=>document.getElementById(id);
+
+  function fmtDate(ts){
+    const d = new Date(ts);
+    return isNaN(d) ? '-' : d.toLocaleString();
+  }
+
+  function updateStatus(){
+    const active = hasActiveTrial(TOPIC);
+    const until = Number(localStorage.getItem('cc_trial_until::'+TOPIC) || 0);
+    if(active){
+      const rest = Math.max(0, Math.ceil((until - Date.now())/86400000));
+      $('trialStatus').textContent = `Trial aktiv – noch ${rest} Tag(e).`;
+      $('trialStatus').className = 'ok';
+      $('trialUntil').textContent = 'Gültig bis: ' + fmtDate(until);
+    }else{
+      $('trialStatus').textContent = 'Noch kein Testzugang aktiviert.';
+      $('trialStatus').className = 'muted';
+      $('trialUntil').textContent = '';
+    }
+  }
+
+  $('btnStart').addEventListener('click', () => {
+    let days = parseInt($('trialDays').value, 10);
+    if(!(days >= 1 && days <= 30)) days = 21;
+
+    // Trial + Lehrerflag setzen
+    setTrial({ topic: TOPIC, days, mode: 'trial-teacher' });
+
+    // Weiter zum Lehrer-Dashboard dieses Themas
+    window.location.href = '/grammatik/teacher-2.html';
+  });
+
+  // Query-Override ?days=7
+  (function(){
+    const p = new URLSearchParams(location.search);
+    const d = parseInt(p.get('days')||'', 10);
+    if(d && d >= 1 && d <= 30){
+      $('trialDays').value = String(d);
+    }
+    updateStatus();
+  })();
+</script>
+
+</body>
+</html>

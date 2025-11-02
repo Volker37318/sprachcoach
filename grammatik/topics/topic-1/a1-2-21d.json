@@ -1,0 +1,12 @@
+[
+  { "text":"Ich starte __GAP__ Programm neu.", "ans":["mein"], "art":"das" },
+  { "text":"Du aktualisierst __GAP__ App heute Abend.", "ans":["deine"], "art":"die" },
+  { "text":"Er lädt __GAP__ Dokument in den Ordner hoch.", "ans":["sein"], "art":"das" },
+  { "text":"Sie speichert __GAP__ Foto auf dem Desktop.", "ans":["ihr"], "art":"das" },
+  { "text":"Wir teilen __GAP__ Dateien per Link.", "ans":["unsere"], "art":"die" },
+  { "text":"Ihr aktualisiert __GAP__ Profil mit einem Bild.", "ans":["euer"], "art":"das" },
+  { "text":"Sie (pl) prüfen __GAP__ Rechnungen erneut.", "ans":["ihre"], "art":"die" },
+  { "text":"Noah sendet __GAP__ Bewerbung.", "ans":["seine"], "art":"die" },
+  { "text":"Liana schreibt __GAP__ Text neu.", "ans":["ihren"], "art":"der" },
+  { "text":"Diego kopiert __GAP__ Hausaufgaben.", "ans":["seine"], "art":"die" }
+]

@@ -1,0 +1,14 @@
+[
+  { "text": "Die Redaktion sendet __GAP__ Autorin __GAP__ Gutachten.",             "ans": ["der","ein"] },
+  { "text": "Der Ausschuss legt __GAP__ Vorsitzenden __GAP__ Protokoll vor.",      "ans": ["dem","ein"] },
+  { "text": "Die Universität verleiht __GAP__ Forscherin __GAP__ Stipendium.",     "ans": ["der","ein"] },
+  { "text": "Die Behörde erteilt __GAP__ Antragsteller __GAP__ Genehmigung.",      "ans": ["dem","eine"] },
+  { "text": "Der Verlag schickt __GAP__ Lektor __GAP__ Manuskript.",               "ans": ["dem","ein"] },
+  { "text": "Die Organisation übermittelt __GAP__ Mitgliedern (Pl) __GAP__ Bericht.","ans": ["den","einen"] },
+  { "text": "Das Gericht gewährt __GAP__ Klägerin __GAP__ Einsicht.",              "ans": ["der","eine"] },
+  { "text": "Der Dozent bietet __GAP__ Studierenden (Pl) __GAP__ Zusatztermin an.","ans": ["den","einen"] },
+  { "text": "Die Redaktion stellt __GAP__ Autor __GAP__ Rückmeldung bereit.",      "ans": ["dem","eine"] },
+  { "text": "Das Team liefert __GAP__ Partnerfirma __GAP__ Prototyp.",             "ans": ["der","einen"] },
+  { "text": "Die Stiftung gibt __GAP__ Bewerbern (Pl) __GAP__ Empfehlung.",        "ans": ["den","eine"] },
+  { "text": "Der Leiter vermittelt __GAP__ Kollegin __GAP__ Kontakt.",             "ans": ["der","einen"] }
+]

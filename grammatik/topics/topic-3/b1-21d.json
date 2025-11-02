@@ -1,0 +1,42 @@
+[
+  { "adjStem": "zuverlässig",
+    "text": "Mir gefällt __GAP__ __GAP__ Freund (zuverlässig) |SEP| Ich möchte __GAP__ __GAP__ Freund (zuverlässig) |SEP| Ich mag die __GAP__ Freunde (zuverlässig) |SEP| Ich mag __GAP__ __GAP__ Freunde (zuverlässig)",
+    "ans": ["den","zuverlässige","einen","zuverlässigen","die","zuverlässigen","viele","zuverlässige"]
+  },
+  { "adjStem": "stabil",
+    "text": "Mir gefällt __GAP__ __GAP__ Koffer (stabil) |SEP| Ich möchte __GAP__ __GAP__ Koffer kaufen (stabil) |SEP| Ich mag die __GAP__ Koffer (stabil) |SEP| Ich mag __GAP__ __GAP__ Koffer (robust)",
+    "ans": ["der","stabile","einen","stabilen","die","stabilen","viele","stabile"]
+  },
+  { "adjStem": "komfortabel",
+    "text": "Mir gefällt __GAP__ __GAP__ Sessel (komfortabel) |SEP| Ich möchte __GAP__ __GAP__ Sessel kaufen (komfortabel) |SEP| Ich mag die __GAP__ Sessel (komfortabel) |SEP| Ich mag __GAP__ __GAP__ Sessel (komfortabel)",
+    "ans": ["der","komfortable","einen","komfortablen","die","komfortablen","viele","komfortable"]
+  },
+  { "adjStem": "preiswert",
+    "text": "Mir gefällt __GAP__ __GAP__ Laptop (preiswert) |SEP| Ich möchte __GAP__ __GAP__ Laptop kaufen (preiswert) |SEP| Ich mag die __GAP__ Laptops (Pl) (preiswert) |SEP| Ich würde gern __GAP__ __GAP__ Laptops kaufen. (Pl) (preiswert)",
+    "ans": ["der","preiswerte","einen","preiswerten","die","preiswerten","viele","preiswerte"]
+  },
+  { "adjStem": "übersichtlich",
+    "text": "Mir gefällt __GAP__ __GAP__ Kalender (übersichtlich) |SEP| Ich möchte __GAP__ __GAP__ Kalender kaufen (übersichtlich) |SEP| Ich mag die __GAP__ Kalender (übersichtlich) |SEP| Ich mag __GAP__ __GAP__ Kalender (übersichtlich)",
+    "ans": ["der","übersichtliche","einen","übersichtlichen","die","übersichtlichen","viele","übersichtliche"]
+  },
+  { "adjStem": "praktisch",
+    "text": "Mir gefällt __GAP__ __GAP__ Werkzeug (praktisch) |SEP| Ich möchte __GAP__ __GAP__ Werkzeug kaufen (praktisch) |SEP| Ich mag die __GAP__ Werkzeuge (praktisch) |SEP| Ich mag __GAP__ __GAP__ Werkzeuge (praktisch)",
+    "ans": ["das","praktische","ein","praktisches","die","praktischen","viele","praktische"]
+  },
+  { "adjStem": "geeignet",
+    "text": "Mir gefällt __GAP__ __GAP__ Kursbuch (neu) |SEP| Ich möchte __GAP__ __GAP__ Kursbuch kaufen (neu) |SEP| Ich mag die __GAP__ Kursbücher (neu) |SEP| Ich mag __GAP__ __GAP__ Kursbücher (neu)",
+    "ans": ["das","neue","ein","neues","die","neuen","viele","neue"]
+  },
+  { "adjStem": "digital",
+    "text": "Mir gefällt __GAP__ __GAP__ Uhr (digital) |SEP| Ich möchte __GAP__ __GAP__ Uhr kaufen (digital) |SEP| Ich mag die __GAP__ Uhren (digital) |SEP| Ich mag __GAP__ __GAP__ Uhren (digital)",
+    "ans": ["die","digitale","eine","digitale","die","digitalen","viele","digitale"]
+  },
+  { "adjStem": "regional",
+    "text": "Mir gefällt __GAP__ __GAP__ Produkt (regional) |SEP| Ich möchte __GAP__ __GAP__ Produkt kaufen (regional) |SEP| Ich mag die __GAP__ Produkte (regional) |SEP| Ich mag __GAP__ __GAP__ Produkte (regional)",
+    "ans": ["das","regionale","ein","regionales","die","regionalen","viele","regionale"]
+  },
+  { "adjStem": "professionell",
+    "text": "Mir gefällt __GAP__ __GAP__ Kamera (professionell) |SEP| Ich möchte __GAP__ __GAP__ Kamera kaufen (professionell) |SEP| Ich mag die __GAP__ Kameras (professionell) |SEP| Ich mag __GAP__ __GAP__ Kameras (professionell)",
+    "ans": ["die","professionelle","eine","professionelle","die","professionellen","viele","professionelle"]
+  }
+]

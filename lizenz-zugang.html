@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lizenz freischalten – SprachCoach</title>
+<style>
+  :root{--bg:#0b1020;--panel:#121a35;--ink:#eaf1ff;--muted:#9fb0d3;--line:#223055;--ok:#16a34a;--err:#ef4444;--btn:#1ea7ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  .wrap{max-width:760px;margin:0 auto;padding:22px 16px 64px}
+  header{padding:18px 0 8px}
+  h1{margin:.2rem 0 .2rem;font-size:clamp(24px,4vw,34px)}
+  p.sub{color:var(--muted);margin:0 0 10px}
+  .card{background:#121a35;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 12px 28px rgba(0,0,0,.25)}
+  label{display:block;font-size:14px;color:var(--muted);margin:0 0 6px}
+  input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f1630;color:var(--ink)}
+  .row{display:grid;grid-template-columns:1fr;gap:10px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:14px}
+  .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:8px}
+  .btn{background:var(--btn);border:1px solid #2a3a6a;color:#fff;font-weight:700;padding:10px 14px;border-radius:12px;cursor:pointer}
+  .ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px;cursor:pointer}
+  .muted{color:var(--muted)}
+  .ok{color:var(--ok)} .err{color:var(--err)}
+  [aria-live]{margin-top:8px;min-height:1.4em}
+  footer{margin-top:24px;text-align:center;color:var(--muted);font-size:12px}
+  a{color:#cfe6ff}
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+  <header>
+    <h1>Lizenz freischalten</h1>
+    <p class="sub">Gekauft über Digistore? Bestell-ID und E-Mail eingeben → Zugang wird lokal freigeschaltet.</p>
+  </header>
+
+  <section class="card" aria-labelledby="h-claim">
+    <h2 id="h-claim" style="margin:0 0 8px">PRO aktivieren</h2>
+
+    <!-- Paketinfo (aus URL übernommen) -->
+    <div class="meta" id="pkgInfo" style="margin-bottom:10px;display:none">
+      <span class="pill" id="pkgName"></span>
+      <span class="pill"><span id="pkgMonths"></span> Monate Laufzeit</span>
+    </div>
+
+    <form id="claimForm" class="row" novalidate>
+      <div>
+        <label for="email">E-Mail (Kauf)</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required>
+      </div>
+      <div>
+        <label for="orderId">Bestell-/Zahlungs-ID</label>
+        <input id="orderId" name="orderId" required>
+      </div>
+
+      <!-- versteckte Felder (falls via URL gesetzt) -->
+      <input type="hidden" id="productId" name="productId">
+      <input type="hidden" id="months" name="months">
+
+      <div class="actions">
+        <button type="button" class="ghost" id="btnBack">Zurück</button>
+        <button class="btn" id="btnClaim">PRO freischalten</button>
+      </div>
+      <div id="status" role="status" aria-live="polite" class="muted"></div>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="h-info">
+    <h2 id="h-info" style="margin:0 0 8px">Hinweis</h2>
+    <p class="muted">Die Lizenz gilt Geräte-/Browser-gebunden. Ein Nutzer kann die Freischaltung auf mehreren Geräten wiederholen, solange die Bestell-ID gültig ist. Keine automatische Verlängerung.</p>
+  </section>
+
+  <p class="muted" style="text-align:center;margin-top:10px">
+    <a href="/">Start</a> · <a href="/preise.html">Preise</a> · <a href="/faq.html">FAQ</a> · <a href="/hilfe.html">Hilfe</a>
+  </p>
+  <footer>© Content Connect Academy Thüringen · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a></footer>
+</main>
+
+<script type="module">
+const $ = (s)=>document.querySelector(s);
+
+// --- Paket aus URL übernehmen (product=PG|PD|PK, months=1..12, optional teacher=1|2|3 oder topic=poss|artda|adj)
+const params = new URLSearchParams(location.search);
+const product = (params.get('product')||'').toUpperCase(); // PG, PD, PK
+const months  = Math.max(1, Math.min(12, parseInt(params.get('months')||'1',10)));
+const teacherParam = parseInt(params.get('teacher')||'', 10);
+const topicParam   = (params.get('topic')||'').toLowerCase();
+
+const PRODUCT_LABEL = {
+  PG:'Modul: Grammatik-Trainer',
+  PD:'Modul: Dialog-Partner',
+  PK:'Kombination Grammatik- und Dialog-Training'
+};
+
+// Mapping Topic -> Teacher-Seite
+// Hinweis: teacher-1 = Possessivpronomen, teacher-2 = Artikel (Dativ/Akkusativ), teacher-3 = Adjektive
+const TOPIC_TO_TEACHER = { poss:1, artda:2, adj:3 };
+
+function showPkg(){
+  if(!PRODUCT_LABEL[product]) return; // kein Produkt übergeben
+  $('#productId').value = product;
+  $('#months').value = String(months);
+  $('#pkgName').textContent = PRODUCT_LABEL[product];
+  $('#pkgMonths').textContent = String(months);
+  $('#pkgInfo').style.display = 'flex';
+}
+
+function savePro(payload){
+  if(payload.proToken) localStorage.setItem('proToken', payload.proToken);
+  if(payload.entitlements) localStorage.setItem('entitlements', JSON.stringify(payload.entitlements));
+  if(payload.expiresAt!=null) localStorage.setItem('pro_expires_at', String(payload.expiresAt));
+}
+
+function chooseTarget(ent){
+  // 1) Explizit per URL: teacher=1|2|3
+  if(!Number.isNaN(teacherParam) && [1,2,3].includes(teacherParam)){
+    return `/grammatik/teacher-${teacherParam}.html`;
+  }
+  // 2) Oder topic=poss|artda|adj
+  if(TOPIC_TO_TEACHER[topicParam]){
+    const t = TOPIC_TO_TEACHER[topicParam];
+    return `/grammatik/teacher-${t}.html`;
+  }
+  // 3) Nur Dialog gebucht → Dialog-Start (bitte ggf. anpassen)
+  if(!ent.grammar && ent.dialog){
+    return `/dialog/`;
+  }
+  // 4) Grammatik gebucht → zuletzt genutzte Teacher-Seite (falls gesetzt)
+  if(ent.grammar){
+    const last = parseInt(localStorage.getItem('lastTeacher')||'', 10);
+    if([1,2,3].includes(last)){
+      return `/grammatik/teacher-${last}.html`;
+    }
+    // Fallback: Teacher-1
+    return `/grammatik/teacher-1.html`;
+  }
+  // 5) Fallback: Start
+  return `/`;
+}
+
+async function claim(){
+  const email = $('#email').value.trim();
+  const orderId = $('#orderId').value.trim();
+  const productId = $('#productId').value.trim() || null;
+  const m = $('#months').value ? parseInt($('#months').value,10) : null;
+
+  const status = $('#status');
+  status.className = 'muted';
+  status.textContent = 'Prüfe Bestellung …';
+
+  try{
+    const res = await fetch('/api/claim', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, orderId, productId, months: m })
+    });
+    if(!res.ok){
+      const t = await res.json().catch(()=>({error:'Unbekannter Fehler'}));
+      throw new Error(t.error || ('Fehler ('+res.status+')'));
+    }
+    const data = await res.json();
+    savePro(data);
+    status.className = 'ok';
+    status.textContent = 'Freigeschaltet – danke!';
+
+    const ent = data.entitlements || {};
+    const target = chooseTarget(ent);
+    setTimeout(()=>{ window.location.href = target; }, 500);
+  }catch(e){
+    status.className = 'err';
+    status.textContent = e.message || 'Freischaltung fehlgeschlagen';
+  }
+}
+
+document.getElementById('claimForm').addEventListener('submit', (e)=>{ e.preventDefault(); claim(); });
+document.getElementById('btnClaim').addEventListener('click', (e)=>{ e.preventDefault(); claim(); });
+document.getElementById('btnBack').addEventListener('click', ()=> history.length>1 ? history.back() : (window.location.href='/'));
+
+showPkg();
+</script>
+</body>
+</html>

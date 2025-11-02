@@ -1,0 +1,42 @@
+[
+  { "adjStem": "neu",
+    "text": "Mir gefällt __GAP__ __GAP__ Handy (neu) |SEP| Ich möchte __GAP__ __GAP__ Handy kaufen (neu) |SEP| Ich mag die __GAP__ Handys (neu) |SEP| Ich mag __GAP__ __GAP__ Handys (neu)",
+    "ans": ["das","neue","ein","neues","die","neuen","viele","neue"]
+  },
+  { "adjStem": "teuer",
+    "text": "Mir gefällt __GAP__ __GAP__ Mantel (teuer) |SEP| Ich möchte __GAP__ __GAP__ Mantel kaufen (teuer) |SEP| Ich mag die __GAP__ Mäntel (teuer) |SEP| Ich mag __GAP__ __GAP__ Mäntel (teuer)",
+    "ans": ["der","teure","einen","teuren","die","teuren","viele","teure"]
+  },
+  { "adjStem": "lecker",
+    "text": "Mir gefällt __GAP__ __GAP__ Pizza (lecker) |SEP| Ich möchte __GAP__ __GAP__ Pizza kaufen (lecker) |SEP| Ich mag die __GAP__ Pizzen (lecker) |SEP| Ich mag __GAP__ __GAP__ Pizzen (lecker)",
+    "ans": ["die","leckere","eine","leckere","die","leckeren","viele","leckere"]
+  },
+  { "adjStem": "bequem",
+    "text": "Mir gefällt __GAP__ __GAP__ Stuhl (bequem) |SEP| Ich möchte __GAP__ __GAP__ Stuhl kaufen (bequem) |SEP| Ich mag die __GAP__ Stühle (bequem) |SEP| Ich mag __GAP__ __GAP__ Stühle (bequem)",
+    "ans": ["der","bequeme","einen","bequemen","die","bequemen","viele","bequeme"]
+  },
+  { "adjStem": "schnell",
+    "text": "Mir gefällt __GAP__ __GAP__ Roller (schnell) |SEP| Ich möchte __GAP__ __GAP__ Roller kaufen (schnell) |SEP| Ich mag die __GAP__ Roller (Pl) (schnell) |SEP| Ich mag __GAP__ __GAP__ Roller (Pl) (schnell)",
+    "ans": ["der","schnelle","einen","schnellen","die","schnellen","viele","schnelle"]
+  },
+  { "adjStem": "sauber",
+    "text": "Mir gefällt __GAP__ __GAP__ Küche (sauber) |SEP| Ich möchte __GAP__ __GAP__ Küche kaufen (sauber) |SEP| Ich mag die __GAP__ Küchen (sauber) |SEP| Ich mag __GAP__ __GAP__ Küchen (sauber)",
+    "ans": ["die","saubere","eine","saubere","die","sauberen","viele","saubere"]
+  },
+  { "adjStem": "hell",
+    "text": "Mir gefällt __GAP__ __GAP__ Zimmer (hell) |SEP| Ich möchte __GAP__ __GAP__ Zimmer kaufen (hell) |SEP| Ich mag die __GAP__ Zimmer (Pl) (hell) |SEP| Ich mag __GAP__ __GAP__ Zimmer (Pl) (hell)",
+    "ans": ["das","helle","ein","helles","die","hellen","viele","helle"]
+  },
+  { "adjStem": "leise",
+    "text": "Mir gefällt __GAP__ __GAP__ Spülmaschine (leise) |SEP| Ich möchte __GAP__ __GAP__ Spülmaschine kaufen (leise) |SEP| Ich mag die __GAP__ Spülmaschinen (leise) |SEP| Ich mag __GAP__ __GAP__ Spülmaschinen (leise)",
+    "ans": ["die","leise","eine","leise","die","leisen","viele","leise"]
+  },
+  { "adjStem": "modern",
+    "text": "Mir gefällt __GAP__ __GAP__ Lampe (modern) |SEP| Ich möchte __GAP__ __GAP__ Lampe kaufen (modern) |SEP| Ich mag die __GAP__ Lampen (modern) |SEP| Ich mag __GAP__ __GAP__ Lampen (modern)",
+    "ans": ["die","moderne","eine","moderne","die","modernen","viele","moderne"]
+  },
+  { "adjStem": "praktisch",
+    "text": "Mir gefällt __GAP__ __GAP__ Rucksack (praktisch) |SEP| Ich möchte __GAP__ __GAP__ Rucksack kaufen (praktisch) |SEP| Ich mag die __GAP__ Rucksäcke (praktisch) |SEP| Ich mag __GAP__ __GAP__ Rucksäcke (praktisch)",
+    "ans": ["der","praktische","einen","praktischen","die","praktischen","viele","praktische"]
+  }
+]

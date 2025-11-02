@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Referenzen & Stimmen – SprachCoach</title>
+<meta name="description" content="Referenzen zu SprachCoach: Logos, Stimmen von Lehrkräften und Case-Studies aus A1–B2. Filterbar nach Modulen und Kursarten." />
+<style>
+  :root{
+    --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+    --brand1:#93c5fd; --brand2:#67e8f9; --ok:#16a34a; --warn:#f59e0b; --info:#60a5fa;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 16px;width:100%}
+  h1{line-height:1.12;margin:.25rem 0 .5rem;font-size:clamp(26px,4.4vw,40px)}
+  h2{line-height:1.2;margin:0 0 .6rem;font-size:clamp(18px,3vw,22px)}
+  h3{margin:.8rem 0 .4rem;font-size:18px}
+  p.muted{color:var(--muted)}
+  a{color:#cfe6ff;text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .hero{
+    display:grid; gap:10px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line); border-radius:16px; padding:22px;
+    box-shadow:0 14px 40px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+  .hero .sub{ color:var(--muted); font-size:clamp(16px,2.2vw,18px) }
+
+  .card{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line);
+    border-radius:16px; padding:18px;
+    box-shadow:0 12px 28px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+
+  /* Logos */
+  .logo-wall{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:10px; align-items:center;
+  }
+  .logo{
+    display:flex; align-items:center; justify-content:center;
+    height:64px; padding:10px; border:1px solid var(--line); border-radius:12px;
+    background:rgba(255,255,255,.04)
+  }
+  .logo img{ max-width:100%; max-height:40px; filter:grayscale(100%) contrast(1.1) opacity(.9) }
+
+  @media (max-width:1100px){ .logo-wall{ grid-template-columns:repeat(5,1fr) } }
+  @media (max-width:820px){ .logo-wall{ grid-template-columns:repeat(3,1fr) } }
+  @media (max-width:520px){ .logo-wall{ grid-template-columns:repeat(2,1fr) } }
+
+  /* Stimmen */
+  .quotes{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
+  @media (max-width:980px){ .quotes{ grid-template-columns:1fr 1fr } }
+  @media (max-width:680px){ .quotes{ grid-template-columns:1fr } }
+  .quote{
+    display:grid; gap:8px; padding:14px; border-radius:14px; border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(99,102,241,.10), rgba(99,102,241,.05));
+  }
+  .quote .who{ display:flex; gap:10px; align-items:center }
+  .avatar{ width:36px; height:36px; border-radius:999px; background:#1f2937; border:1px solid var(--line) }
+  .stars{ font-size:14px; color:#fde68a }
+
+  /* Filter & Cases */
+  .controls{
+    display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px
+  }
+  .search{
+    display:flex; gap:8px; align-items:center; padding:10px 12px;
+    background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:12px;
+  }
+  .search input{ flex:1; background:transparent; color:var(--ink); border:0; outline:none; font:inherit }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px;
+    border:1px solid var(--line); background:rgba(255,255,255,.06); color:#eaf1ff; cursor:pointer; user-select:none;
+    font-size:14px;
+  }
+  .chip[data-active="true"]{
+    background:linear-gradient(135deg,var(--brand1),var(--brand2)); color:#06122a; border-color:rgba(255,255,255,.5); font-weight:800
+  }
+  .count{ font-size:13px; color:var(--muted) }
+
+  details.case{
+    border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.04);
+    margin:8px 0; overflow:hidden
+  }
+  details.case[open]{ background:rgba(255,255,255,.06) }
+  details.case summary{
+    list-style:none; cursor:pointer; display:grid; grid-template-columns:1fr auto; gap:8px;
+    align-items:center; padding:12px 14px; outline:none
+  }
+  details.case summary::-webkit-details-marker{ display:none }
+  .case .body{ padding:0 14px 14px 14px; color:#dbeafe }
+  .meta{ display:flex; gap:8px; flex-wrap:wrap }
+  .pill{ display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line);
+         background:rgba(255,255,255,.06); font-size:12px; color:var(--muted) }
+  table.tbl{ width:100%; border-collapse:collapse; margin:.5rem 0 }
+  .tbl th,.tbl td{ border:1px solid var(--line); padding:8px; vertical-align:top }
+  .tbl th{ background:#0f1733 }
+
+  /* Buttons */
+  .cta-bottom{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:12px; cursor:pointer; user-select:none;
+    background:#1e90ff; color:#ffffff; border:1px solid rgba(255,255,255,.25);
+    font-weight:900; letter-spacing:.2px; box-shadow:0 10px 24px rgba(30,144,255,.35);
+    text-decoration:none;
+  }
+  .btn:focus-visible{ outline:3px solid rgba(147,197,253,.8); outline-offset:3px }
+  .btn-ghost{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:10px 12px; border-radius:10px; border:1px solid var(--line);
+    background:transparent; color:#eaf1ff; text-decoration:none;
+  }
+
+  footer{margin-top:auto;color:var(--muted);font-size:12px;text-align:center;padding:14px 16px}
+
+  /* Highlight für Suche */
+  mark{ background:rgba(147,197,253,.25); color:inherit; padding:0 2px; border-radius:4px }
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="h1">
+    <h1 id="h1">Referenzen & Stimmen</h1>
+    <p class="sub">Aus der Praxis: Grammatik-Trainer und Dialog-Partner im Unterricht (A1–B2). Automatische Korrektur, TELC/Goethe/DTZ-orientiertes Kurz-Feedback und klare Bewertungen – mehr Zeit fürs Unterrichten.</p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a class="btn" href="/executive.html">Executive-Überblick</a>
+      <a class="btn-ghost" href="/preise.html">Preise & Ersparnis</a>
+      <a class="btn-ghost" href="/assets/pdf/datenblatt.pdf">Datenblatt (PDF)</a>
+    </div>
+  </section>
+
+  <!-- LOGO WALL -->
+  <section class="card" style="margin-top:14px" aria-labelledby="logos-h">
+    <h2 id="logos-h" style="margin:0 0 .25rem">Ausgewählte Kursträger (Beispiele)</h2>
+    <div class="logo-wall" role="list">
+      <!-- Logos: bitte durch echte Dateien in /assets/img/logos-vhs/ ersetzen -->
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 1"><img src="/assets/img/logos-vhs/vhs-berlin.svg" alt="Beispiel Kursträger Berlin" loading="lazy"></div>
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 2"><img src="/assets/img/logos-vhs/vhs-thueringen.svg" alt="Beispiel Kursträger Thüringen" loading="lazy"></div>
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 3"><img src="/assets/img/logos-vhs/vhs-erfurt.svg" alt="Beispiel Kursträger Erfurt" loading="lazy"></div>
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 4"><img src="/assets/img/logos-vhs/vhs-nordhausen.svg" alt="Beispiel Kursträger Nordhausen" loading="lazy"></div>
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 5"><img src="/assets/img/logos-vhs/vhs-goettingen.svg" alt="Beispiel Kursträger Göttingen" loading="lazy"></div>
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 6"><img src="/assets/img/logos-vhs/vhs-jena.svg" alt="Beispiel Kursträger Jena" loading="lazy"></div>
+      <div class="logo" role="listitem" aria-label="Logo – Beispiel 7"><img src="/assets/img/logos-vhs/vhs-weimar.svg" alt="Beispiel Kursträger Weimar" loading="lazy"></div>
+    </div>
+    <p class="muted" style="margin-top:8px">Hinweis: Logos sind Platzhalter. Gern pflegen wir echte Logos/Verlinkungen nach Freigabe ein.</p>
+  </section>
+
+  <!-- STIMMEN -->
+  <section class="card" style="margin-top:14px" aria-labelledby="stimmen-h">
+    <h2 id="stimmen-h" style="margin:0 0 .25rem">Stimmen aus der Praxis</h2>
+    <div class="quotes">
+      <blockquote class="quote">
+        <div class="who">
+          <div class="avatar" aria-hidden="true"></div>
+          <div><strong>Lehrkraft, Integrationskurs</strong><br><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span></div>
+        </div>
+        <p>„Hausaufgaben sind jetzt wirklich <em>Zusatztraining</em> – die App korrigiert sofort und zeigt typische Fehler. Ich spare pro Woche mehrere Stunden.“</p>
+      </blockquote>
+      <blockquote class="quote" style="background:linear-gradient(180deg, rgba(16,185,129,.10), rgba(16,185,129,.05)); border-color:rgba(16,185,129,.28)">
+        <div class="who">
+          <div class="avatar" aria-hidden="true"></div>
+          <div><strong>Dozentin, Berufssprachkurs</strong><br><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span></div>
+        </div>
+        <p>„Dialog-Partner ist nah an Alltagssituationen. Lernende sprechen mehr – die Lehrkraft kann zwar keine Ergebnisse sehen, aber die Rückmeldung der Teilnehmenden ist sehr positiv, weil sie damit jederzeit und überall einen Gesprächspartner zu verschiedenen Alltagsthemen haben und am Ende des Dialogs eine sofortige Auswertung ihrer Leistung bekommen.“</p>
+      </blockquote>
+      <blockquote class="quote" style="background:linear-gradient(180deg, rgba(234,179,8,.12), rgba(234,179,8,.06)); border-color:rgba(234,179,8,.35)">
+        <div class="who">
+          <div class="avatar" aria-hidden="true"></div>
+          <div><strong>Koordination, Kursträger</strong><br><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span></div>
+        </div>
+        <p>„Wichtig war Datenschutz & EU-Betrieb. Beides passt – und die Ersparnis im Unterricht ist spürbar. Transparent in der Executive-Seite.“</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="card" style="margin-top:14px" aria-labelledby="cases-h">
+    <h2 id="cases-h" style="margin:0 0 .25rem">Case-Studies</h2>
+
+    <div class="controls" role="search">
+      <div class="search" aria-label="Case-Suche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 21l-4.3-4.3m1.3-5.2a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="q" type="search" placeholder="Nach Begriff filtern … (z. B. A2, Dialog, Berufsbezogen)" aria-label="Suchbegriff eingeben" />
+      </div>
+
+      <div class="chips" aria-label="Filter">
+        <button class="chip" data-tag="all" data-active="true">Alle</button>
+        <button class="chip" data-tag="grammatik">Grammatik-Trainer</button>
+        <button class="chip" data-tag="dialog">Dialog-Partner</button>
+        <button class="chip" data-tag="combo">Kombination</button>
+        <button class="chip" data-tag="a1">A1</button>
+        <button class="chip" data-tag="a2">A2</button>
+        <button class="chip" data-tag="b1">B1</button>
+        <button class="chip" data-tag="b2">B2</button>
+        <button class="chip" data-tag="beruf">Berufsbezogen</button>
+      </div>
+
+      <span class="count" id="count" aria-live="polite">0 Cases</span>
+    </div>
+
+    <div id="cases">
+      <!-- Case 1 -->
+      <details class="case" data-tags="grammatik a2" open>
+        <summary>
+          <div><strong>Landkreis Ost – A2</strong> · Grammatik-Trainer · 14 TN · 12 Wochen</div>
+          <div class="meta">
+            <span class="pill">Zeitersparnis ~ 18 h</span>
+            <span class="pill">Zufriedenheit 4.8/5</span>
+          </div>
+        </summary>
+        <div class="body">
+          <div class="meta" style="margin-bottom:8px">
+            <span class="pill">Automatische Korrektur</span>
+            <span class="pill">Typische Fehler im Blick</span>
+            <span class="pill">A2-Referenzwortschatz</span>
+          </div>
+          <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <h3>Ausgangslage</h3>
+              <ul>
+                <li>Viele identische Grammatikfehler in Hausaufgaben</li>
+                <li>Korrekturzeit blockierte Unterrichtsvorbereitung</li>
+              </ul>
+              <h3>Vorgehen</h3>
+              <ul>
+                <li>200 Übungen je Niveau, 3× pro Woche als Hausaufgabe</li>
+                <li>Kurz-Feedback ohne lange Textkorrekturen</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Ergebnis</h3>
+              <table class="tbl">
+                <tr><th>Teilnehmende</th><td>14</td></tr>
+                <tr><th>Laufzeit</th><td>12 Wochen</td></tr>
+                <tr><th>Ersparnis/Woche</th><td>~ 1,5 h</td></tr>
+                <tr><th>Bewertung</th><td>4.8 / 5</td></tr>
+              </table>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <a class="btn" href="/demo.html?view=teacher">Demo Lehrer-Dashboard</a>
+                <a class="btn-ghost" href="/preise.html">Preise ansehen</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Case 2 -->
+      <details class="case" data-tags="dialog a1 beruf">
+        <summary>
+          <div><strong>Stadt Mitte – A1</strong> · Dialog-Partner · 10 TN · 8 Wochen</div>
+          <div class="meta">
+            <span class="pill">Sprechanteil +40%</span>
+            <span class="pill">Zufriedenheit 4.7/5</span>
+          </div>
+        </summary>
+        <div class="body">
+          <div class="meta" style="margin-bottom:8px">
+            <span class="pill">Alltagsnahe Dialoge</span>
+            <span class="pill">TELC/Goethe/DTZ-orientiertes Feedback</span>
+          </div>
+          <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <h3>Ausgangslage</h3>
+              <ul>
+                <li>Wenig Sprechpraxis, Hemmungen in der Gruppe</li>
+                <li>Lehrkraft ohne Zeit für Einzel-Feedback</li>
+              </ul>
+              <h3>Vorgehen</h3>
+              <ul>
+                <li>2 Dialoge pro Woche, kurze Audio-Antworten</li>
+                <li>Kurz-Rückmeldung zu Wortschatz und Verständlichkeit</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Ergebnis</h3>
+              <table class="tbl">
+                <tr><th>Teilnehmende</th><td>10</td></tr>
+                <tr><th>Laufzeit</th><td>8 Wochen</td></tr>
+                <tr><th>Sprechanteil</th><td>+40 %</td></tr>
+                <tr><th>Bewertung</th><td>4.7 / 5</td></tr>
+              </table>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <a class="btn" href="/demo.html?view=participant">Demo Teilnehmer</a>
+                <a class="btn-ghost" href="/hilfe.html#mic">Mikrofon-Hilfe</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Case 3 -->
+      <details class="case" data-tags="combo b1">
+        <summary>
+          <div><strong>Region Süd – B1</strong> · Kombination · 22 TN · 12 Wochen</div>
+          <div class="meta">
+            <span class="pill">Ersparnis ~ 32 h</span>
+            <span class="pill">Zufriedenheit 4.9/5</span>
+          </div>
+        </summary>
+        <div class="body">
+          <div class="meta" style="margin-bottom:8px">
+            <span class="pill">Grammatik + Dialoge</span>
+            <span class="pill">Klassenstand im Blick</span>
+          </div>
+          <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <h3>Ausgangslage</h3>
+              <ul>
+                <li>Heterogene Gruppe; unterschiedliche Lernstände</li>
+                <li>Kaum Zeit für individuelle Rückmeldungen</li>
+              </ul>
+              <h3>Vorgehen</h3>
+              <ul>
+                <li>Kombi-Lizenz mit −30 % (Kursträger)</li>
+                <li>Hausaufgaben (Grammatik) + Sprechphasen (Dialoge)</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Ergebnis</h3>
+              <table class="tbl">
+                <tr><th>Teilnehmende</th><td>22</td></tr>
+                <tr><th>Laufzeit</th><td>12 Wochen</td></tr>
+                <tr><th>Ersparnis</th><td>~ 32 Stunden</td></tr>
+                <tr><th>Bewertung</th><td>4.9 / 5</td></tr>
+              </table>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <a class="btn" href="/executive.html">Zum ROI-Beispiel</a>
+                <a class="btn-ghost" href="/preise.html">Preise ansehen</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Case 4 -->
+      <details class="case" data-tags="grammatik b2 beruf">
+        <summary>
+          <div><strong>Berufssprachkurs – B2</strong> · Grammatik-Trainer · 16 TN · 6 Wochen</div>
+          <div class="meta">
+            <span class="pill">Fehlerquote −28%</span>
+            <span class="pill">Zufriedenheit 4.6/5</span>
+          </div>
+        </summary>
+        <div class="body">
+          <div class="meta" style="margin-bottom:8px">
+            <span class="pill">Gezieltes Fehlertraining</span>
+            <span class="pill">Schnelles Kurz-Feedback</span>
+          </div>
+          <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <h3>Ausgangslage</h3>
+              <ul>
+                <li>Viele „Fossilierungen“ (immer gleiche Fehler)</li>
+                <li>Knappe Zeitfenster zwischen Modulen</li>
+              </ul>
+              <h3>Vorgehen</h3>
+              <ul>
+                <li>Übungsblöcke vor Prüfungsphasen</li>
+                <li>Individuelle Serien je TN (A/B-Themen)</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Ergebnis</h3>
+              <table class="tbl">
+                <tr><th>Teilnehmende</th><td>16</td></tr>
+                <tr><th>Laufzeit</th><td>6 Wochen</td></tr>
+                <tr><th>Fehlerquote</th><td>−28 %</td></tr>
+                <tr><th>Bewertung</th><td>4.6 / 5</td></tr>
+              </table>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <a class="btn" href="/demo.html?view=teacher">Demo Lehrer-Dashboard</a>
+                <a class="btn-ghost" href="/faq.html">Zur FAQ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- CTA unten -->
+  <section class="cta-bottom" aria-label="Weiter">
+    <a class="btn" href="/kontakt.html">Kontakt aufnehmen</a>
+    <a class="btn" href="/preise.html">Preise & Schieberegler</a>
+    <a class="btn-ghost" href="/demo.html?view=teacher">Demo Lehrer-Dashboard</a>
+    <a class="btn-ghost" href="/demo.html?view=participant">Demo Teilnehmer</a>
+  </section>
+
+  <p class="muted" style="margin-top:12px;text-align:center">
+    <a href="/executive.html">Executive</a> ·
+    <a href="/technik.html">Technik</a> ·
+    <a href="/preise.html">Preise</a> ·
+    <a href="/hilfe.html">Hilfe</a> ·
+    <a href="/faq.html">FAQ</a> ·
+    <a href="/impressum.html">Impressum</a> ·
+    <a href="/datenschutz.html">Datenschutz</a>
+  </p>
+</main>
+
+<footer>
+  © <span id="year"></span> Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+
+<script>
+  // Jahr
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Suche & Filter für Cases
+  const qEl = document.getElementById('q');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const cases = Array.from(document.querySelectorAll('details.case'));
+  const countEl = document.getElementById('count');
+
+  let activeTags = new Set(['all']);
+  let query = '';
+
+  function visibleCases(){
+    return cases.filter(d => d.style.display !== 'none');
+  }
+
+  function enforceSingleOpen(preferred){
+    const list = visibleCases();
+    const opened = list.filter(d => d.open);
+    if(preferred && preferred.open){
+      list.forEach(d => { if(d !== preferred) d.open = false; });
+      return;
+    }
+    if(opened.length > 1){
+      const keep = opened[0];
+      list.forEach(d => { if(d !== keep) d.open = false; });
+    }
+  }
+
+  function applyFilter(){
+    const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let visible = 0;
+    const allMode = activeTags.has('all');
+
+    cases.forEach(d=>{
+      const tags = (d.dataset.tags||'').toLowerCase().split(/\s+/);
+      const text = (d.textContent||'').toLowerCase();
+      const tagOk = allMode ? true : tags.some(t => activeTags.has(t));
+      const qOk = terms.length===0 ? true : terms.every(t => text.includes(t));
+      const show = tagOk && qOk;
+      d.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
+
+    countEl.textContent = `${visible} ${visible===1?'Case':'Cases'}`;
+    enforceSingleOpen();
+  }
+
+  qEl.addEventListener('input', e=>{ query = e.target.value; applyFilter(); });
+
+  chips.forEach(c=>{
+    c.addEventListener('click', ()=>{
+      const tag = c.dataset.tag;
+      if(tag==='all'){
+        activeTags = new Set(['all']);
+        chips.forEach(x=> x.dataset.active = x.dataset.tag==='all' ? 'true' : 'false');
+      }else{
+        if(activeTags.has('all')) activeTags.delete('all');
+        if(c.dataset.active==='true'){ activeTags.delete(tag); c.dataset.active='false'; }
+        else { activeTags.add(tag); c.dataset.active='true'; }
+        if(activeTags.size===0){ activeTags.add('all'); chips.find(x=>x.dataset.tag==='all').dataset.active='true'; }
+        chips.find(x=>x.dataset.tag==='all').dataset.active = activeTags.has('all')?'true':'false';
+      }
+      applyFilter();
+    });
+  });
+
+  // Single-Accordion bei Klick
+  cases.forEach(d=>{
+    d.addEventListener('toggle', ()=>{ if(d.open) enforceSingleOpen(d); });
+  });
+
+  // Initial
+  applyFilter();
+</script>
+</body>
+</html>

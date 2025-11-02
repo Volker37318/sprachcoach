@@ -1,0 +1,12 @@
+[
+  { "text": "Ich reiche __GAP__ Ausländeramt __GAP__ Antrag ein.",                "ans": ["dem","einen"] },
+  { "text": "Die Redaktion sendet __GAP__ Autorin __GAP__ Bestätigung.",          "ans": ["der","eine"] },
+  { "text": "Die Behörde erteilt __GAP__ Antragsteller __GAP__ Genehmigung.",     "ans": ["dem","eine"] },
+  { "text": "Der Dozent händigt __GAP__ Teilnehmern (Pl) __GAP__ Teilnahmebescheinigung aus.", "ans": ["den","eine"] },
+  { "text": "Die Chefin übergibt __GAP__ Team __GAP__ Projektplan.",              "ans": ["dem","einen"] },
+  { "text": "Er legt __GAP__ Arzthelferin __GAP__ Bescheinigung vor.",            "ans": ["der","eine"] },
+  { "text": "Wir schicken __GAP__ Versicherung __GAP__ Schadensmeldung.",         "ans": ["der","eine"] },
+  { "text": "Die Bank bewilligt __GAP__ Kunden (Sg) __GAP__ Kredit.",             "ans": ["dem","einen"] },
+  { "text": "Der Veranstalter kündigt __GAP__ Besuchern (Pl) __GAP__ Programmänderung an.", "ans": ["den","eine"] },
+  { "text": "Die Personalabteilung schickt __GAP__ Bewerberin __GAP__ Arbeitsvertrag.", "ans": ["der","einen"] }
+]

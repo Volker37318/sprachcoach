@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FAQ – SprachCoach</title>
+<meta name="description" content="Häufige Fragen zu SprachCoach: Zugang, Lizenzen, Datenschutz, Technik, Unterricht, Abrechnung, Support." />
+<style>
+  :root{ --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+         --chip:#1e293b; --brand:#93c5fd; --ok:#16a34a; --warn:#f59e0b; --info:#60a5fa; }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 16px;width:100%}
+  h1{line-height:1.12;margin:.25rem 0 .5rem;font-size:clamp(26px,4.4vw,40px)}
+  h2{line-height:1.2;margin:0 0 .6rem;font-size:clamp(18px,3vw,22px)}
+  h3{margin:.8rem 0 .4rem;font-size:18px}
+  p.muted{color:var(--muted)}
+  a{color:#cfe6ff;text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .hero{
+    display:grid; gap:10px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line); border-radius:16px; padding:22px;
+    box-shadow:0 14px 40px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+  .hero .sub{ color:var(--muted); font-size:clamp(16px,2.2vw,18px) }
+
+  .controls{
+    display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px
+  }
+  .search{
+    display:flex; gap:8px; align-items:center; padding:10px 12px;
+    background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:12px;
+  }
+  .search input{
+    flex:1; background:transparent; color:var(--ink); border:0; outline:none; font:inherit
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px;
+    border:1px solid var(--line); background:rgba(255,255,255,.06); color:#eaf1ff; cursor:pointer; user-select:none;
+    font-size:14px;
+  }
+  .chip[data-active="true"]{
+    background:linear-gradient(135deg,#93c5fd,#67e8f9); color:#06122a; border-color:rgba(255,255,255,.5); font-weight:800
+  }
+  .tools{ display:flex; gap:8px; flex-wrap:wrap }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:8px 12px; border-radius:10px; border:1px solid var(--line);
+    background:rgba(255,255,255,.06); color:#eaf1ff; cursor:pointer; user-select:none;
+  }
+  .btn:hover{ outline:2px solid rgba(99,102,241,.35) }
+  .count{ font-size:13px; color:var(--muted) }
+
+  .card{
+    background:rgba(255,255,255,.06); border:1px solid var(--line);
+    border-radius:16px; padding:18px; box-shadow:0 12px 28px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+
+  details.qa{
+    border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.04);
+    margin:8px 0; overflow:hidden
+  }
+  details.qa[open]{ background:rgba(255,255,255,.06) }
+  details.qa summary{
+    list-style:none; cursor:pointer; display:flex; align-items:flex-start; gap:10px; padding:12px 14px; outline:none
+  }
+  details.qa summary::-webkit-details-marker{ display:none }
+  .q{ font-weight:800; letter-spacing:.2px }
+  .tag{ font-size:12px; color:#06122a; background:linear-gradient(135deg,#93c5fd,#67e8f9); border:1px solid rgba(255,255,255,.35);
+        padding:2px 8px; border-radius:999px; margin-left:auto }
+  .qa .a{ padding:0 14px 14px 14px; color:#dbeafe }
+  .a ul{ margin:.4rem 0 .6rem 1.2rem }
+  .muted{ color:var(--muted) }
+  .k{ font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; background:rgba(0,0,0,.25); border:1px solid var(--line); padding:1px 6px; border-radius:6px; font-size:13px }
+
+  .cta-bottom{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+  .btn-blue{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:12px; cursor:pointer; user-select:none;
+    background:#1e90ff; color:#ffffff; border:1px solid rgba(255,255,255,.25);
+    font-weight:900; letter-spacing:.2px; box-shadow:0 10px 24px rgba(30,144,255,.35);
+    text-decoration:none;
+  }
+  .btn-blue:focus-visible{ outline:3px solid rgba(147,197,253,.8); outline-offset:3px }
+
+  footer{margin-top:auto;color:var(--muted);font-size:12px;text-align:center;padding:14px 16px}
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+  @media (max-width:900px){ .grid-2{ grid-template-columns:1fr } }
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-h">
+    <h1 id="hero-h">FAQ – Häufige Fragen</h1>
+    <p class="sub">Antworten zu Zugang & Lizenzen, Datenschutz, Technik, Unterricht, Abrechnung und Support. Filtern Sie unten nach Stichworten oder Kategorien.</p>
+
+    <div class="controls" role="search">
+      <div class="search" aria-label="FAQ-Suche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 21l-4.3-4.3m1.3-5.2a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="q" type="search" placeholder="Nach Thema/Begriff suchen … (z. B. Token, Kursträger, AV-Vertrag)" aria-label="Suchbegriff eingeben" />
+      </div>
+
+      <div class="chips" aria-label="FAQ-Kategorien">
+        <button class="chip" data-tag="all" data-active="true">Alle</button>
+        <button class="chip" data-tag="allgemein">Allgemein</button>
+        <button class="chip" data-tag="zugang">Zugang & Lizenzen</button>
+        <button class="chip" data-tag="datenschutz">Datenschutz</button>
+        <button class="chip" data-tag="technik">Technik</button>
+        <button class="chip" data-tag="unterricht">Unterricht</button>
+        <button class="chip" data-tag="abrechnung">Einkauf & Abrechnung</button>
+        <button class="chip" data-tag="support">Support</button>
+      </div>
+
+      <div class="tools">
+        <button class="btn" id="btn-open-first">Erste öffnen</button>
+        <button class="btn" id="btn-collapse">Alle zuklappen</button>
+        <span class="count" id="count" aria-live="polite">20 Antworten</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ-LISTE -->
+  <section class="card" style="margin-top:14px" aria-label="Fragenliste">
+    <div id="faqs">
+
+      <!-- Allgemein -->
+      <details class="qa" data-tags="allgemein">
+        <summary><span class="q">Was ist SprachCoach und wofür ist es gedacht?</span><span class="tag">Allgemein</span></summary>
+        <div class="a">
+          SprachCoach ist eine Unterrichts-Webapp mit zwei Modulen: <em>Grammatik-Trainer</em> (zielgenaue Übungen mit Auswertung) und <em>Dialog-Partner</em> (praxisnahe Sprechsituationen). Lehrkräfte erhalten Entlastung durch automatische Korrektur und klare Bewertungen.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="allgemein">
+        <summary><span class="q">Für wen eignet sich die App?</span><span class="tag">Allgemein</span></summary>
+        <div class="a">
+          Für Integrations-, Berufssprach- und allgemeinsprachliche Kurse (A1–B2). Die App ergänzt Präsenzunterricht und eignet sich für Hausaufgaben, Übungsphasen und Prüfungsvorbereitung.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="allgemein,zugang">
+        <summary><span class="q">Muss etwas installiert werden?</span><span class="tag">Allgemein</span></summary>
+        <div class="a">
+          Nein. SprachCoach läuft im Browser (Desktop, Tablet, Android, iOS). Teilnehmende starten per Code – keine Gerätebindung.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="allgemein,unterricht">
+        <summary><span class="q">Welche Module gibt es?</span><span class="tag">Allgemein</span></summary>
+        <div class="a">
+          <ul>
+            <li><strong>Grammatik-Trainer:</strong> 200 Übungen je Niveau (A1.1–B2), automatische Korrektur.</li>
+            <li><strong>Dialog-Partner:</strong> alltagsnahe Sprechsituationen mit kurzem, TELC/Goethe/DTZ-orientiertem Feedback.</li>
+            <li><strong>Kombination:</strong> beide Module im Paket.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Zugang & Lizenzen -->
+      <details class="qa" data-tags="zugang">
+        <summary><span class="q">Wie starte ich den 21-Tage-Test?</span><span class="tag">Zugang</span></summary>
+        <div class="a">
+          Auf der Startseite <span class="k">index.html</span> „Kostenlos testen“ wählen. Es wird lokal ein Trial-Token gesetzt. Optional kann eine E-Mail-Bestätigung mit Magic-Link erfolgen (<span class="k">/api/trial</span>).
+        </div>
+      </details>
+
+      <details class="qa" data-tags="zugang,abrechnung">
+        <summary><span class="q">Was passiert nach 21 Tagen?</span><span class="tag">Zugang</span></summary>
+        <div class="a">
+          Der Trial endet automatisch. Mit einem PRO-Token (Kauf/Claim) wird derselbe Zugang freigeschaltet – ohne neue Website. Claim via <span class="k">/api/claim</span> (Bestell-ID/E-Mail).
+        </div>
+      </details>
+
+      <details class="qa" data-tags="zugang,abrechnung">
+        <summary><span class="q">Wie wird die PRO-Lizenz freigeschaltet?</span><span class="tag">Zugang</span></summary>
+        <div class="a">
+          Nach Kauf (Teilnehmende oder Kursträger-Bündel) sendet Digistore einen Webhook. Der Code wird über <span class="k">/api/claim</span> geprüft und als <em>proToken</em> lokal gespeichert. Verifizierung: <span class="k">/api/verify</span>.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="zugang,abrechnung">
+        <summary><span class="q">Kann der Kursträger die Lizenzen übernehmen?</span><span class="tag">Zugang</span></summary>
+        <div class="a">
+          Ja. Übernimmt der Kursträger, gilt −30 % Rabatt auf den Monatslizenzpreis pro Teilnehmenden. Alternativ zahlen Teilnehmende selbst. Siehe <a href="/executive.html">Executive-Überblick</a> und <a href="/preise.html">Preise</a>.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="zugang">
+        <summary><span class="q">Wie erhalten Teilnehmende den Zugang?</span><span class="tag">Zugang</span></summary>
+        <div class="a">
+          Lehrkraft teilt den Kurs-/Startcode aus (kein QR). Teilnehmende geben den Code ein, schreiben ihren Alias-Phantasie-Namen in das Feld und starten. Die Übungen sind entsprechend dem vorgewählten Niveau conform mit dem Referenzwortschatz des gewählten Niveaus A1, A2, B1, B2. Der Fortschritt wird lokal gespeichert.
+        </div>
+      </details>
+
+      <!-- Datenschutz -->
+      <details class="qa" data-tags="datenschutz">
+        <summary><span class="q">Welche Daten speichert die App?</span><span class="tag">Datenschutz</span></summary>
+        <div class="a">
+          Primär lokale Werte im Browser (<span class="k">localStorage</span>), z. B. Trial/PRO-Token und Übungsfortschritte (<span class="k">sp_progress_*</span>). Serverseitig nur technische Kurz-Logs (Betrieb/Fehler).
+        </div>
+      </details>
+
+      <details class="qa" data-tags="datenschutz,technik">
+        <summary><span class="q">Wo werden Daten verarbeitet?</span><span class="tag">Datenschutz</span></summary>
+        <div class="a">
+          Statische Auslieferung über EU-CDN. Kurzzeit-Verarbeitung (z. B. Audio→Text) über EU-Proxy (z. B. Region Frankfurt). KI-Dienste werden in EU-Region konfiguriert.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="datenschutz">
+        <summary><span class="q">Gibt es einen AV-Vertrag?</span><span class="tag">Datenschutz</span></summary>
+        <div class="a">
+          Ja, ein AV-Vertrag steht bereit. Anfrage an <a href="mailto:kvhs@pramann.de">kvhs@pramann.de</a>. Details: <a href="/technik.html">Technik</a> · <a href="/datenschutz.html">Datenschutz</a>.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="datenschutz">
+        <summary><span class="q">Setzt ihr Cookies oder Tracking ein?</span><span class="tag">Datenschutz</span></summary>
+        <div class="a">
+          Standardmäßig kein Tracking. Cookies nur technisch erforderlich (z. B. Session-Schutz). Optionale Analysen nur nach Einwilligung (Consent).
+        </div>
+      </details>
+
+      <details class="qa" data-tags="datenschutz">
+        <summary><span class="q">Wie lösche ich meine Daten?</span><span class="tag">Datenschutz</span></summary>
+        <div class="a">
+          Im Browser: Website-Daten/LocalStorage löschen. Serverlogs rotieren turnusmäßig. Auf Anfrage unterstützen wir bei der Datenauskunft/Löschung gem. DSGVO.
+        </div>
+      </details>
+
+      <!-- Technik -->
+      <details class="qa" data-tags="technik,kompat">
+        <summary><span class="q">Welche Browser und Geräte werden unterstützt?</span><span class="tag">Technik</span></summary>
+        <div class="a">
+          Aktuelle Versionen von Chrome, Edge, Firefox, Safari; Geräte: Desktop, Tablet, Android, iOS. Für Audiofunktionen wird ein Mikrofon benötigt (Berechtigung im Browser).
+        </div>
+      </details>
+
+      <details class="qa" data-tags="technik">
+        <summary><span class="q">Funktioniert die App offline?</span><span class="tag">Technik</span></summary>
+        <div class="a">
+          Zentrale Seiten und lokale Fortschritte funktionieren offline. Für Token-Prüfung sowie Sprach-/KI-Funktionen ist Verbindung erforderlich.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="technik">
+        <summary><span class="q">Was ist für Firewalls/Whitelisting relevant?</span><span class="tag">Technik</span></summary>
+        <div class="a">
+          Domänen für statische Auslieferung (Hosting/CDN) und den EU-Proxy müssen erreichbar sein. Konkrete Ziel-Hosts stellen wir dem Kursträger auf Anfrage bereit.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="technik">
+        <summary><span class="q">Wie ist die App gegen Missbrauch geschützt?</span><span class="tag">Technik</span></summary>
+        <div class="a">
+          TLS/HSTS, signierte Tokens, Ratelimits, Replay-Schutz, CSP/Referrer-Policy, getrennte Static- und Compute-Umgebungen, minimalistische Logs.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="technik,unterricht">
+        <summary><span class="q">Wie funktionieren Sprachaufnahme und Bewertung?</span><span class="tag">Technik</span></summary>
+        <div class="a">
+          Browseraufnahme → EU-Proxy → Transkription/Antwort (EU-Region). Feedback orientiert sich an TELC/Goethe/DTZ-Kriterien (verständliche Kurzrückmeldungen, keine Prüfungssimulation).
+        </div>
+      </details>
+
+      <!-- Unterricht -->
+      <details class="qa" data-tags="unterricht">
+        <summary><span class="q">Wie entlastet die App Lehrkräfte konkret?</span><span class="tag">Unterricht</span></summary>
+        <div class="a">
+          Aufgaben werden vollautomatisch korrigiert; Lehrkräfte erhalten komprimierte Hinweise zu typischen Fehlern und Bewertungen auf einen Blick – mehr Zeit für Unterricht statt Korrektur.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="unterricht,zugang">
+        <summary><span class="q">Wie starte ich mit einer neuen Klasse?</span><span class="tag">Unterricht</span></summary>
+        <div class="a">
+          Die Lehrkraft gibt einen Klassen-Code an die Gruppe. Die Teilnehmenden öffnen die Seite, sehen den Klassencode, geben einen Alias-Phantasie-Namen ein und können mit den Übungen loslegen. Die Lehransicht der Klasse wird per Lehrercode aktiviert.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="unterricht">
+        <summary><span class="q">Wie viele Inhalte sind enthalten?</span><span class="tag">Unterricht</span></summary>
+        <div class="a">
+          Grammatik-Trainer: 200 Übungen je Niveau (A1.1, A1.2, A2, B1, B2). Dialog-Partner: umfangreiche, thematisch gruppierte Alltagsszenarien mit Feedback.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="unterricht,datenschutz">
+        <summary><span class="q">Werden Schülerprofile angelegt?</span><span class="tag">Unterricht</span></summary>
+        <div class="a">
+          Nein. Fortschritt ist lokal am Gerät. Es gibt keine serverseitigen personenbezogenen Schülerkonten.
+        </div>
+      </details>
+
+      <!-- Abrechnung -->
+      <details class="qa" data-tags="abrechnung">
+        <summary><span class="q">Welche Zahlarten gibt es?</span><span class="tag">Abrechnung</span></summary>
+        <div class="a">
+          Abwicklung über Digistore24 (u. a. Karte, SEPA, PayPal, Rechnung). Der Kursträger kann Sammelkontingente beziehen; Teilnehmende können auch selbst buchen.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="abrechnung,zugang">
+        <summary><span class="q">Endet die Laufzeit automatisch?</span><span class="tag">Abrechnung</span></summary>
+        <div class="a">
+          Ja. Die Freischaltung gilt für die gewählte Laufzeit und endet automatisch. Eine Verlängerung ist nicht möglich. Nach einer Neuanmeldung beginnt der neue Zeitraum erneut und endet wieder automatisch.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="abrechnung">
+        <summary><span class="q">Wie funktioniert die Kursträger-Buchung mit Rabatt?</span><span class="tag">Abrechnung</span></summary>
+        <div class="a">
+          Der Kursträger bucht Lizenzen gebündelt und erhält −30 % pro TN/Monat. Die Weitergabe an Teilnehmende (mit oder ohne Aufschlag) regelt der Kursträger selbst.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="abrechnung">
+        <summary><span class="q">Wo finde ich Preise und Rechenbeispiele?</span><span class="tag">Abrechnung</span></summary>
+        <div class="a">
+          Auf <a href="/preise.html">preise.html</a> (interaktive Schieberegler, Ersparnis) und im <a href="/executive.html">Executive-Überblick</a> (ROI-Beispiel pro Monat).
+        </div>
+      </details>
+
+      <!-- Support -->
+      <details class="qa" data-tags="support">
+        <summary><span class="q">Wie erreiche ich Support?</span><span class="tag">Support</span></summary>
+        <div class="a">
+          E-Mail: <a href="mailto:kvhs@pramann.de">kvhs@pramann.de</a>. Bitte möglichst mit kurzer Problembeschreibung, Gerät/Browser und Uhrzeit.
+        </div>
+      </details>
+
+      <details class="qa" data-tags="support,technik">
+        <summary><span class="q">Was tun bei Mikrofon-/Audio-Problemen?</span><span class="tag">Support</span></summary>
+        <div class="a">
+          Browserberechtigung prüfen (Mikrofon zulassen), anderes Gerät/Browser testen, Firewalls/Headset. Bleibt es bestehen: kurz an den Support schreiben (s. o.).
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- CTA unten -->
+  <section class="cta-bottom" aria-label="Weiter">
+    <a class="btn-blue" href="/demo.html?view=teacher">Demo Lehrer-Dashboard</a>
+    <a class="btn-blue" href="/demo.html?view=participant">Demo Teilnehmer</a>
+  </section>
+
+  <p class="muted" style="margin-top:12px;text-align:center">
+    <a href="/executive.html">Executive-Überblick</a> ·
+    <a href="/technik.html">Technik</a> ·
+    <a href="/preise.html">Preise</a> ·
+    <a href="/impressum.html">Impressum</a> ·
+    <a href="/datenschutz.html">Datenschutz</a>
+  </p>
+</main>
+
+<footer>
+  © <span id="year"></span> Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+
+<script>
+  // Jahr
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Suche/Filter
+  const qEl = document.getElementById('q');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const faqs = Array.from(document.querySelectorAll('details.qa'));
+  const countEl = document.getElementById('count');
+  const btnOpenFirst = document.getElementById('btn-open-first');
+  const btnCollapse = document.getElementById('btn-collapse');
+
+  // State
+  let activeTags = new Set(['all']); // 'all' oder spezifische Tags
+  let query = '';
+
+  // Persistenz
+  try{
+    const qSaved = sessionStorage.getItem('faq:q');
+    const tSaved = sessionStorage.getItem('faq:tags');
+    if(qSaved){ query = qSaved; qEl.value = qSaved; }
+    if(tSaved){
+      const arr = JSON.parse(tSaved);
+      activeTags = new Set(arr.length ? arr : ['all']);
+      chips.forEach(c=>{
+        const on = activeTags.has('all') ? c.dataset.tag==='all' : activeTags.has(c.dataset.tag);
+        c.dataset.active = on ? 'true' : 'false';
+      });
+    }
+  }catch(e){}
+
+  function visibleFaqs(){
+    return faqs.filter(d => d.style.display !== 'none');
+  }
+
+  function enforceSingleOpen(preferred){
+    const list = visibleFaqs();
+    let opened = list.filter(d => d.open);
+    if(preferred && preferred.open){
+      // schließe alle außer preferred
+      list.forEach(d => { if(d !== preferred) d.open = false; });
+      return;
+    }
+    if(opened.length > 1){
+      // lass nur das erste offen
+      const keep = opened[0];
+      list.forEach(d => { if(d !== keep) d.open = false; });
+    }
+  }
+
+  function applyFilter(){
+    const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let visible = 0;
+    const allMode = activeTags.has('all');
+
+    faqs.forEach(d=>{
+      const tags = (d.dataset.tags||'').toLowerCase().split(',').map(s=>s.trim());
+      const text = (d.textContent||'').toLowerCase();
+
+      const tagOk = allMode ? true : tags.some(t=> activeTags.has(t));
+      const qOk = terms.length===0 ? true : terms.every(t => text.includes(t));
+
+      const show = tagOk && qOk;
+      d.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
+
+    countEl.textContent = `${visible} ${visible===1?'Antwort':'Antworten'}`;
+
+    // Single-Accordion nach Filter erzwingen
+    enforceSingleOpen();
+    // Speichern
+    try{
+      sessionStorage.setItem('faq:q', query);
+      sessionStorage.setItem('faq:tags', JSON.stringify(Array.from(activeTags)));
+    }catch(e){}
+  }
+
+  qEl.addEventListener('input', e=>{ query = e.target.value; applyFilter(); });
+
+  chips.forEach(c=>{
+    c.addEventListener('click', ()=>{
+      const tag = c.dataset.tag;
+      if(tag==='all'){
+        activeTags = new Set(['all']);
+        chips.forEach(x=> x.dataset.active = x.dataset.tag==='all' ? 'true' : 'false');
+      }else{
+        if(activeTags.has('all')) activeTags.delete('all');
+        if(c.dataset.active==='true'){ activeTags.delete(tag); c.dataset.active='false'; }
+        else { activeTags.add(tag); c.dataset.active='true'; }
+        if(activeTags.size===0){ activeTags.add('all'); chips.find(x=>x.dataset.tag==='all').dataset.active='true'; }
+        chips.find(x=>x.dataset.tag==='all').dataset.active = activeTags.has('all')?'true':'false';
+      }
+      applyFilter();
+    });
+  });
+
+  // Single-Accordion: bei jedem Toggle alle anderen schließen
+  faqs.forEach(d=>{
+    d.addEventListener('toggle', ()=>{
+      if(d.open){ enforceSingleOpen(d); }
+    });
+  });
+
+  // Erste sichtbare öffnen
+  btnOpenFirst.addEventListener('click', ()=>{
+    const list = visibleFaqs();
+    if(list.length){
+      list[0].open = true;
+      enforceSingleOpen(list[0]);
+      list[0].scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+
+  // Alle schließen
+  btnCollapse.addEventListener('click', ()=>{
+    faqs.forEach(d=> d.open = false);
+  });
+
+  // Initial
+  applyFilter();
+</script>
+</body>
+</html>

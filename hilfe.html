@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hilfe & How-to – SprachCoach</title>
+<meta name="description" content="Hilfe, How-to, Problemlöser und Tipps zu SprachCoach: Startcode, Trial/PRO, Lizenzen, Mikrofonfreigabe (Android/iOS), Technik, Unterricht.">
+<style>
+  :root{ --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+         --ok:#16a34a; --warn:#f59e0b; --info:#60a5fa; --brand1:#93c5fd; --brand2:#67e8f9; }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 16px;width:100%}
+  h1{line-height:1.12;margin:.25rem 0 .5rem;font-size:clamp(26px,4.4vw,40px)}
+  h2{line-height:1.2;margin:0 0 .6rem;font-size:clamp(18px,3vw,22px)}
+  h3{margin:.8rem 0 .4rem;font-size:18px}
+  p.muted{color:var(--muted)}
+  a{color:#cfe6ff;text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .hero{
+    display:grid; gap:10px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line); border-radius:16px; padding:22px;
+    box-shadow:0 14px 40px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+  .hero .sub{ color:var(--muted); font-size:clamp(16px,2.2vw,18px) }
+
+  .controls{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px }
+  .search{
+    display:flex; gap:8px; align-items:center; padding:10px 12px;
+    background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:12px;
+  }
+  .search input{ flex:1; background:transparent; color:var(--ink); border:0; outline:none; font:inherit }
+  .count{ font-size:13px; color:var(--muted) }
+
+  .card{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line);
+    border-radius:16px; padding:18px;
+    box-shadow:0 12px 28px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+  @media (max-width:980px){ .grid-3{ grid-template-columns:1fr 1fr } }
+  @media (max-width:720px){ .grid-3,.grid-2{ grid-template-columns:1fr } }
+
+  .tile{
+    display:grid; gap:8px; padding:14px; border-radius:14px; border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(99,102,241,.10), rgba(99,102,241,.05));
+  }
+  .tile .tag{
+    display:inline-block; padding:4px 10px; border-radius:999px; font-weight:900; letter-spacing:.2px;
+    background:linear-gradient(135deg,var(--brand1),var(--brand2)); color:#06122a; border:1px solid rgba(255,255,255,.35)
+  }
+  .tile .actions{ display:flex; gap:10px; flex-wrap:wrap }
+
+  .pill{ display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.06); font-size:12px; color:var(--muted) }
+  .ok{ color:#ecfdf5; background:rgba(22,163,74,.18); border-color:rgba(22,163,74,.35) }
+  .warn{ color:#fff7ed; background:rgba(245,158,11,.15); border-color:rgba(245,158,11,.32) }
+  .info{ color:#eff6ff; background:rgba(96,165,250,.18); border-color:rgba(96,165,250,.35) }
+
+  details.acc{
+    border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.04);
+    margin:8px 0; overflow:hidden
+  }
+  details.acc[open]{ background:rgba(255,255,255,.06) }
+  details.acc summary{
+    list-style:none; cursor:pointer; display:flex; align-items:flex-start; gap:10px; padding:12px 14px; outline:none
+  }
+  details.acc summary::-webkit-details-marker{ display:none }
+  .acc .body{ padding:0 14px 14px 14px; color:#dbeafe }
+  .acc .body ul, .acc .body ol{ margin:.4rem 0 .6rem 1.2rem }
+  .acc .q{ font-weight:800; letter-spacing:.2px }
+
+  .kbd{ font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; background:rgba(0,0,0,.25); border:1px solid var(--line); padding:2px 6px; border-radius:6px; font-size:13px }
+
+  .btn-blue{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:12px; cursor:pointer; user-select:none;
+    background:#1e90ff; color:#ffffff; border:1px solid rgba(255,255,255,.25);
+    font-weight:900; letter-spacing:.2px; box-shadow:0 10px 24px rgba(30,144,255,.35);
+    text-decoration:none;
+  }
+  .btn-blue:focus-visible{ outline:3px solid rgba(147,197,253,.8); outline-offset:3px }
+  .btn-ghost{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:10px 12px; border-radius:10px; border:1px solid var(--line);
+    background:transparent; color:#eaf1ff; text-decoration:none;
+  }
+
+  .cta-bottom{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+  .sm{ font-size:13px; color:var(--muted) }
+  footer{margin-top:auto;color:var(--muted);font-size:12px;text-align:center;padding:14px 16px}
+
+  /* Suche-Highlight */
+  mark{ background:rgba(147,197,253,.25); color:inherit; padding:0 2px; border-radius:4px }
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-h">
+    <h1 id="hero-h">Hilfe & How-to</h1>
+    <p class="sub">Schritt-für-Schritt-Anleitungen, Problemlöser und Tipps für Lehrkräfte, Teilnehmende und Kursträger. Teilnehmerzugang per Code – geeignet für Desktop, Tablet, Android und iOS.</p>
+
+    <div class="controls" role="search">
+      <div class="search" aria-label="Hilfe-Suche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 21l-4.3-4.3m1.3-5.2a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="q" type="search" placeholder="Suche … (z. B. Mikrofon, Startcode, Token, Rabatt)" aria-label="Suchbegriff eingeben" />
+      </div>
+      <span class="count" id="count" aria-live="polite">0 Treffer</span>
+    </div>
+  </section>
+
+  <!-- SCHNELLZUGRIFF -->
+  <section class="card" style="margin-top:14px" aria-labelledby="quick-h">
+    <h2 id="quick-h" style="margin:0 0 .25rem">Schnellzugriff</h2>
+    <div class="grid-3">
+      <div class="tile">
+        <span class="tag">Lehrkraft</span>
+        <strong>Quickstart Lehrkraft</strong>
+        <p class="sm">Klasse starten, Code verteilen, Lehransicht aktivieren.</p>
+        <div class="actions">
+          <a class="btn-blue" href="/quickstart-lehrkraft.html">Öffnen</a>
+          <a class="btn-ghost" href="/executive.html">Executive</a>
+        </div>
+      </div>
+      <div class="tile" style="background:linear-gradient(180deg, rgba(16,185,129,.10), rgba(16,185,129,.05)); border-color:rgba(16,185,129,.28)">
+        <span class="tag">Teilnehmende</span>
+        <strong>Quickstart Teilnehmende</strong>
+        <p class="sm">Code eingeben, Alias-Name wählen, loslegen.</p>
+        <div class="actions">
+          <a class="btn-blue" href="/quickstart-lernende.html">Öffnen</a>
+          <a class="btn-ghost" href="/demo.html?view=participant">Demo</a>
+        </div>
+      </div>
+      <div class="tile" style="background:linear-gradient(180deg, rgba(234,179,8,.12), rgba(234,179,8,.06)); border-color:rgba(234,179,8,.35)">
+        <span class="tag">Technik & Recht</span>
+        <strong>Technik, Datenschutz, Preise</strong>
+        <p class="sm">EU-Proxy, Token, AV-Vertrag; interaktive Preisübersicht.</p>
+        <div class="actions">
+          <a class="btn-blue" href="/technik.html">Technik</a>
+          <a class="btn-ghost" href="/preise.html">Preise</a>
+        </div>
+      </div>
+    </div>
+    <p class="sm" style="margin-top:8px">Mehr Antworten in der <a href="/faq.html">FAQ</a> · Material: <a href="/assets/pdf/datenblatt.pdf">Datenblatt (PDF)</a></p>
+  </section>
+
+  <!-- SCHRITT-FÜR-SCHRITT -->
+  <section class="card" style="margin-top:14px" aria-labelledby="howto-h">
+    <h2 id="howto-h" style="margin:0 0 .25rem">Schritt-für-Schritt</h2>
+
+    <details class="acc howto" open>
+      <summary><span class="q">Lehrkraft: Klasse starten & Code verteilen</span></summary>
+      <div class="body">
+        <ol>
+          <li><a href="/index.html">Startseite</a> öffnen, Modul wählen (Grammatik-Trainer / Dialog-Partner).</li>
+          <li>„Code erzeugen“ (Lehransicht) klicken und Code im Kurs teilen – <strong>kein QR</strong>.</li>
+          <li>Teilnehmende geben den Code ein, wählen einen Alias-Namen und starten.</li>
+          <li>Lehransicht per Lehrercode aktivieren: Bewertungen & typische Fehler im Überblick.</li>
+        </ol>
+        <p class="sm">Tipp: Aufgaben werden vollautomatisch korrigiert → mehr Zeit für Unterricht.</p>
+      </div>
+    </details>
+
+    <details class="acc howto">
+      <summary><span class="q">Teilnehmende: So starten Sie mit dem Code</span></summary>
+      <div class="body">
+        <ol>
+          <li>Seite öffnen, <strong>Startcode</strong> eingeben (<a href="/quickstart-lernende.html">Kurzanleitung</a>).</li>
+          <li>Alias-Namen wählen (kein Klarnamen-Zwang).</li>
+          <li>Niveau wählen (A1–B2) – Inhalte entsprechen dem Referenzwortschatz.</li>
+          <li>Übungen/Dialogsituationen bearbeiten. Fortschritt wird lokal gespeichert.</li>
+        </ol>
+        <p class="sm">Für Sprechen: siehe unten <a href="#mic">Mikrofon freigeben</a>.</p>
+      </div>
+    </details>
+
+    <details class="acc howto">
+      <summary><span class="q">Trial/PRO & Lizenzen freischalten</span></summary>
+      <div class="body">
+        <ul>
+          <li><strong>21-Tage-Test:</strong> Button „Kostenlos testen“ → lokales Trial-Token (<code>localStorage</code>).</li>
+          <li><strong>PRO (Teilnehmende):</strong> Kauf → Claim mit Bestell-ID/E-Mail (<code>/api/claim</code>) → <em>proToken</em>.</li>
+          <li><strong>PRO (Kursträger):</strong> Bündelkauf mit −30 %/TN/Monat. Freischaltung via Webhook & Claim.</li>
+          <li><strong>Laufzeit:</strong> Gilt für die gebuchte Zeit und endet automatisch. <a href="/preise.html">Preise</a></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- PROBLEMLÖSER -->
+  <section class="card" style="margin-top:14px" aria-labelledby="triage-h">
+    <h2 id="triage-h" style="margin:0 0 .25rem">Probleme lösen</h2>
+
+    <details id="mic" class="acc triage" open>
+      <summary><span class="q">Mikrofon freigeben (Android & iOS)</span> <span class="pill warn">Audio</span></summary>
+      <div class="body">
+        <p><strong>Wichtig:</strong> Beim ersten Start fragt der Browser nach Zugriff auf das Mikrofon. Bitte <em>Zulassen</em> wählen. Wenn bereits blockiert wurde, so vorgehen:</p>
+
+        <h3 style="margin:.6rem 0 .2rem">Android – Chrome</h3>
+        <ol>
+          <li>Website öffnen (z. B. <a href="/demo.html?view=participant">Demo Teilnehmer</a>), rechts oben <strong>⋮</strong> <em>Einstellungen</em> → <em>Website-Einstellungen</em> → <em>Mikrofon</em>.</li>
+          <li><strong>Mikrofon aktivieren</strong> und unter „Blockiert“ unsere Domain antippen → <em>Zugriff zulassen</em>.</li>
+          <li>Zurück zur Seite, <strong>Neu laden</strong> (<span class="kbd">Strg</span>+<span class="kbd">R</span> bzw. Reload-Icon) und beim Hinweis <em>Zulassen</em>.</li>
+          <li><em>Falls weiterhin blockiert:</em> Android <em>Einstellungen</em> → <em>Apps</em> → <em>Chrome</em> → <em>Berechtigungen</em> → <strong>Mikrofon: Zulassen</strong>.</li>
+        </ol>
+
+        <h3 style="margin:.6rem 0 .2rem">Android – Samsung Internet (falls genutzt)</h3>
+        <ol>
+          <li>Menü <strong>≡</strong> → <em>Einstellungen</em> → <em>Websites und Downloads</em> → <em>Website-Berechtigungen</em> → <em>Mikrofon</em> → <strong>Zulassen</strong>.</li>
+          <li>Domain prüfen: falls unter „Blockiert“, auf <em>Zulassen</em> umstellen, Seite neu laden.</li>
+        </ol>
+
+        <h3 style="margin:.6rem 0 .2rem">iOS – Safari</h3>
+        <ol>
+          <li>iOS <em>Einstellungen</em> → <em>Safari</em> → <em>Mikrofon</em> → <strong>Zulassen</strong> (oder „Fragen“).</li>
+          <li>Optional pro Website: in Safari auf unserer Seite <strong>aA</strong> (Adressleiste) → <em>Website-Einstellungen</em> → <em>Mikrofon</em> → <strong>Zulassen</strong>.</li>
+          <li>Seite <strong>neu laden</strong> und beim Hinweis <em>Zulassen</em>.</li>
+        </ol>
+
+        <h3 style="margin:.6rem 0 .2rem">iOS – Chrome</h3>
+        <ol>
+          <li>iOS <em>Einstellungen</em> → <em>Datenschutz & Sicherheit</em> → <em>Mikrofon</em> → <strong>Chrome aktivieren</strong>.</li>
+          <li>Chrome öffnen, unsere Seite laden und den Zugriff <em>Zulassen</em>.</li>
+        </ol>
+
+        <p class="sm">
+          Tipps: Headset testen; prüfen, ob andere Apps (z. B. Recorder/WhatsApp) das Mikro blockieren; ggf. Gerät/Browser wechseln.
+          Bei Schul-Firewalls: Domains für Audio/KI laut <a href="/technik.html">Technik</a> freigeben.
+        </p>
+      </div>
+    </details>
+
+    <details class="acc triage">
+      <summary><span class="q">Trial startet nicht / Token verloren</span> <span class="pill info">Zugang</span></summary>
+      <div class="body">
+        <ul>
+          <li>Privatmodus? – Trial-Token liegt lokal (<code>sp_trial_started_at</code>).</li>
+          <li>Seite neu laden; Website-Daten nicht automatisch löschen lassen.</li>
+          <li>Bei Bedarf: neuen Trial anfordern (<code>/api/trial</code>) oder PRO claimen (<code>/api/claim</code>).</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc triage">
+      <summary><span class="q">„Zugriff verweigert“ oder Inhalte gesperrt</span> <span class="pill warn">PRO</span></summary>
+      <div class="body">
+        <ul>
+          <li>Trial abgelaufen? – PRO buchen/claimen; beim Kursträger gilt −30 %/TN.</li>
+          <li>Token prüfen: <code>/api/verify</code> → Status „trial / pro / expired“.</li>
+          <li>Bei Sammelkontingenten: Bestellnummer & E-Mail bereithalten (Support hilft).</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc triage">
+      <summary><span class="q">Lehransicht fehlt / Code wird nicht akzeptiert</span> <span class="pill info">Lehrkraft</span></summary>
+      <div class="body">
+        <ul>
+          <li>Richtige Instanz/Seite? – Lehrercode ist kursbezogen.</li>
+          <li>Code ohne Leerzeichen; Groß-/Kleinschreibung beachten.</li>
+          <li>Bei Browserwechsel Lehrfreischaltung erneut durchführen.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc triage">
+      <summary><span class="q">Zahlung & Rechnung</span> <span class="pill">Abrechnung</span></summary>
+      <div class="body">
+        <ul>
+          <li>Abwicklung über Digistore24 (Karte, SEPA, PayPal, ggf. Rechnung).</li>
+          <li>Kursträger-Buchung: −30 % pro TN/Monat; Weitergabe an TN durch Kursträger.</li>
+          <li>Rechnungsfragen: Bestell-ID/E-Mail an <a href="mailto:kvhs@pramann.de">kvhs@pramann.de</a>.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- TIPPS & SHORTCUTS -->
+  <section class="card" style="margin-top:14px" aria-labelledby="tips-h">
+    <h2 id="tips-h" style="margin:0 0 .25rem">Tipps & Shortcuts</h2>
+    <div class="grid-2">
+      <div>
+        <ul>
+          <li><strong>Zoom:</strong> <span class="kbd">Strg</span>+<span class="kbd">+</span> / <span class="kbd">−</span> (macOS: <span class="kbd">⌘</span>).</li>
+          <li><strong>Neuladen:</strong> <span class="kbd">Strg</span>+<span class="kbd">R</span> (macOS: <span class="kbd">⌘</span> <span class="kbd">R</span>).</li>
+          <li><strong>Audio schnell prüfen:</strong> System-Sprachrekorder öffnen; Pegel checken.</li>
+          <li><strong>Datenschutz:</strong> Alias statt Klarname verwenden.</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><strong>Geräte:</strong> Desktop, Tablet, Android, iOS – keine Gerätebindung.</li>
+          <li><strong>Fortschritt:</strong> lokal gespeichert; Website-Daten nicht automatisch löschen.</li>
+          <li><strong>Material:</strong> <a href="/assets/pdf/datenblatt.pdf">Datenblatt (PDF)</a> · <a href="/technik.html">Technik</a> · <a href="/faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA unten -->
+  <section class="cta-bottom" aria-label="Weiter">
+    <a class="btn-blue" href="/demo.html?view=teacher">Demo Lehrer-Dashboard</a>
+    <a class="btn-blue" href="/demo.html?view=participant">Demo Teilnehmer</a>
+    <a class="btn-ghost" href="/executive.html">Executive-Überblick</a>
+  </section>
+
+  <p class="sm" style="margin-top:12px;text-align:center">
+    <a href="/executive.html">Executive-Überblick</a> ·
+    <a href="/technik.html">Technik</a> ·
+    <a href="/preise.html">Preise</a> ·
+    <a href="/faq.html">FAQ</a> ·
+    <a href="/impressum.html">Impressum</a> ·
+    <a href="/datenschutz.html">Datenschutz</a>
+  </p>
+</main>
+
+<footer>
+  © <span id="year"></span> Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+
+<script>
+  // Jahr
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Suche (filtert & highlightet)
+  const qEl = document.getElementById('q');
+  const containers = Array.from(document.querySelectorAll('.tile, details.acc'));
+  const cnt = document.getElementById('count');
+
+  function stripTags(html){ const t = document.createElement('div'); t.innerHTML = html; return t.textContent||t.innerText||''; }
+  function clearMarks(el){ el.querySelectorAll('mark').forEach(m=>{ const p=m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize(); }); }
+  function highlight(el, term){
+    clearMarks(el); if(!term) return;
+    const w = term.toLowerCase();
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    const nodes = []; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(n=>{
+      const v = n.nodeValue; const i = v.toLowerCase().indexOf(w);
+      if(i>-1 && n.parentElement && !['SCRIPT','STYLE'].includes(n.parentElement.tagName)){
+        const span = document.createElement('span');
+        span.innerHTML = v.slice(0,i)+'<mark>'+v.slice(i,i+w.length)+'</mark>'+v.slice(i+w.length);
+        n.parentNode.replaceChild(span, n);
+      }
+    });
+  }
+
+  function visibleAcc(sel){ return Array.from(document.querySelectorAll(sel)).filter(d=> d.style.display !== 'none'); }
+  function enforceSingleOpen(preferred){
+    ['.howto', '.triage'].forEach(group=>{
+      const list = visibleAcc('details.acc'+group);
+      const opened = list.filter(d=> d.open);
+      if(preferred && list.includes(preferred)){
+        list.forEach(d=>{ if(d!==preferred) d.open = false; });
+        return;
+      }
+      if(opened.length>1){ const keep = opened[0]; list.forEach(d=>{ if(d!==keep) d.open=false; }); }
+    });
+  }
+
+  function applySearch(){
+    const q = (qEl.value||'').trim().toLowerCase();
+    let visible = 0;
+    containers.forEach(c=>{
+      const txt = stripTags(c.innerHTML).toLowerCase();
+      const show = !q || txt.includes(q);
+      c.style.display = show ? '' : 'none';
+      if(show) visible++;
+      highlight(c, q);
+    });
+    cnt.textContent = `${visible} Treffer`;
+    enforceSingleOpen();
+  }
+  qEl.addEventListener('input', applySearch);
+  applySearch();
+
+  // Single-Accordion beim Öffnen
+  document.querySelectorAll('details.acc').forEach(d=>{
+    d.addEventListener('toggle', ()=>{ if(d.open) enforceSingleOpen(d); });
+  });
+</script>
+</body>
+</html>

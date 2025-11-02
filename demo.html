@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Demo – SprachCoach</title>
+<meta name="description" content="Sofort ausprobieren: Grammatik-Trainer und Dialog-Partner im Demo-Modus – ohne Registrierung.">
+<style>
+  :root{
+    --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 16px;width:100%}
+  h1{line-height:1.15;margin:.5rem 0 .75rem;font-size:clamp(24px,4vw,32px)}
+  h2{line-height:1.2;margin:0 0 .25rem;font-size:clamp(18px,3vw,22px)}
+  p.muted{color:var(--muted); margin:.25rem 0 .75rem}
+  a{color:#cfe6ff}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+  @media (max-width:840px){ .grid{ grid-template-columns:1fr } }
+
+  .card{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 12px 28px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
+  }
+  /* dezente Systemfarben analog Preise-Seite */
+  .card.g{ background:linear-gradient(180deg, rgba(99,102,241,.10), rgba(99,102,241,.05)); border-color:rgba(99,102,241,.28) }
+  .card.s{ background:linear-gradient(180deg, rgba(56,189,248,.10), rgba(56,189,248,.05)); border-color:rgba(56,189,248,.28) }
+
+  ul.clean{margin:.25rem 0 .75rem 1.2rem}
+  .kbd{display:inline-block;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:2px 8px;font-size:12px;color:#eaf1ff;background:rgba(255,255,255,.06)}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .btn{background:transparent;border:1px solid var(--line);color:#eaf1ff;padding:10px 14px;border-radius:10px;cursor:pointer;text-decoration:none}
+  .btn-primary{background:linear-gradient(135deg,#ff9800 0%, #ffd54a 50%, #ff9800 100%); border:1px solid rgba(255,149,0,.65);
+    color:#2a1700; font-weight:900; box-shadow:0 10px 26px rgba(255,152,0,.35), inset 0 0 0 1px rgba(255,255,255,.35)}
+  .hint{font-size:13px;color:#ffe9b3;margin-top:6px}
+  .badge{background:linear-gradient(135deg,#93c5fd,#67e8f9); color:#06122a; padding:4px 10px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.35); font-weight:800; letter-spacing:.2px; display:inline-block; margin-left:8px}
+  .muted-sm{font-size:13px;color:var(--muted)}
+  footer{margin-top:auto;color:var(--muted);font-size:12px;text-align:center;padding:14px 16px}
+  .hr{height:1px;background:var(--line);margin:12px 0}
+</style>
+</head>
+<body>
+<main class="wrap" id="main" tabindex="-1">
+  <header>
+    <h1>Demo-Hub</h1>
+    <p class="muted">Sofort testen – ohne Registrierung. Die Demo speichert nur lokal und kann jederzeit zurückgesetzt werden.</p>
+    <div class="hint">Tipp: Demo öffnet in der gleichen App-Umgebung wie später PRO – <span class="kbd">kein</span> separater Test-Server.</div>
+    <div id="demoStatus" class="muted-sm" role="status" aria-live="polite" style="margin-top:6px"></div>
+  </header>
+
+  <section class="grid" aria-label="Demos">
+    <!-- Grammatik -->
+    <article class="card g" aria-labelledby="g-h">
+      <h2 id="g-h">Grammatik-Trainer <span class="badge">Demo</span></h2>
+      <p class="muted">Trainiere typische Stolpersteine – mit Sofort-Feedback.</p>
+      <ul class="clean">
+        <li>• Possessivpronomen (A1/A2)</li>
+        <li>• Dativ/Akkusativ – Artikel (A1/A2)</li>
+        <li>• Adjektivdeklination (A2/B1)</li>
+      </ul>
+      <div class="btnrow">
+        <!-- Nur Beschriftungen geändert -->
+        <a class="btn btn-primary" data-demo-target="/grammatik/possessivpronomen.html" href="#">Demo Lehrerdashboard</a>
+        <a class="btn" data-demo-target="/grammatik/dativ-akkusativ.html" href="#">Demo A1-Training</a>
+        <a class="btn" data-demo-target="/grammatik/adjektivdeklination.html" href="#">Demo B1-Training</a>
+      </div>
+      <div class="hr"></div>
+      <p class="muted-sm">In PRO werden je Niveau 200 Übungen freigeschaltet (A1.1, A1.2, A2, B1, B2).</p>
+    </article>
+
+    <!-- Sprechen -->
+    <article class="card s" aria-labelledby="s-h">
+      <h2 id="s-h">Dialog-Partner <span class="badge">Demo</span></h2>
+      <p class="muted">Reale Gesprächssituationen mit Kurzfeedback.</p>
+      <ul class="clean">
+        <li>• Vorstellung der Person</li>
+        <li>• Ein Fotokurs in der VHS</li>
+      </ul>
+      <div class="btnrow">
+        <a class="btn btn-primary" data-demo-target="/dialog/vorstellung.html" href="#">Demo starten</a>
+        <a class="btn" data-demo-target="/dialog/fotokurs-vhs.html" href="#">Weitere Demo</a>
+      </div>
+      <div class="hr"></div>
+      <p class="muted-sm">Im Intensiv-Trainer warten 50 prüfungsnahe Themen (PRO).</p>
+    </article>
+  </section>
+
+  <section style="margin-top:16px">
+    <div class="card" aria-labelledby="howto">
+      <h2 id="howto">Wie funktioniert die Demo?</h2>
+      <ol class="clean" style="margin-left:1.2rem">
+        <li>„Demo starten“ klicken – wir setzen <code>sp_demo=true</code> und öffnen das Modul mit <code>?demo=1</code>.</li>
+        <li>Deine Demo läuft auf deinem Gerät, ohne Registrierung. Nichts verlässt den Browser.</li>
+        <li>„Demo zurücksetzen“ löscht nur Demo-Schalter und Übungsstände (lokal).</li>
+      </ol>
+      <div class="btnrow">
+        <button id="btnResetDemo" class="btn" type="button">Demo zurücksetzen</button>
+        <a class="btn" href="/">Zur Startseite</a>
+        <a class="btn" href="/preise.html">Preise & buchen</a>
+      </div>
+    </div>
+  </section>
+
+  <p class="muted"><a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a></p>
+</main>
+
+<footer>
+  © Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+
+<script>
+  // Ziele, die deine Module bereits (oder später) bereitstellen:
+  const DEFAULT_DEMOS = {
+    "/grammatik/possessivpronomen.html": true,
+    "/grammatik/dativ-akkusativ.html": true,
+    "/grammatik/adjektivdeklination.html": true,
+    "/dialog/vorstellung.html": true,
+    "/dialog/fotokurs-vhs.html": true
+  };
+
+  function openDemo(target){
+    // Markiere Demo-Modus lokal (Module können darauf reagieren)
+    try { localStorage.setItem('sp_demo', 'true'); } catch(e){}
+    try {
+      const until = Date.now() + 24*3600*1000;
+      localStorage.setItem('sp_demo_until', String(until));
+    } catch(e){}
+
+    const url = new URL(target, location.origin);
+    url.searchParams.set('demo','1');
+    // Empfehlung: Module sollten bei ?demo=1 keine Kontingente abbuchen
+    location.href = url.toString();
+  }
+
+  function resetDemo(){
+    // Nur sichere, demo-bezogene Schlüssel entfernen
+    const KEYS_PREFIX = ['sp_demo','sp_demo_until','sp_progress_'];
+    try {
+      const toDelete = [];
+      for(let i=0; i<localStorage.length; i++){
+        const k = localStorage.key(i);
+        if(!k) continue;
+        if(KEYS_PREFIX.some(p=>k.startsWith(p))) toDelete.push(k);
+      }
+      toDelete.forEach(k=>localStorage.removeItem(k));
+      // Optional den Trial-/Planstatus unangetastet lassen
+      announce('Demo wurde zurückgesetzt.');
+    } catch(e){
+      announce('Konnte Demo nicht zurücksetzen (Browservorgabe).');
+    }
+  }
+
+  function announce(msg){
+    const el = document.getElementById('demoStatus');
+    if(el){ el.textContent = msg; }
+  }
+
+  // Klick-Handler
+  document.querySelectorAll('[data-demo-target]').forEach(a=>{
+    const href = a.getAttribute('data-demo-target') || '#';
+    if(!DEFAULT_DEMOS[href]) a.classList.add('disabled');
+    a.addEventListener('click', (ev)=>{
+      ev.preventDefault();
+      if(!DEFAULT_DEMOS[href]) return announce('Demo-Ziel ist noch nicht hinterlegt.');
+      openDemo(href);
+    });
+  });
+
+  document.getElementById('btnResetDemo')?.addEventListener('click', resetDemo);
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+[
+  { "text":"Ich überarbeite __GAP__ Text gründlich.", "ans":["meinen"], "art":"der" },
+  { "text":"Du sicherst __GAP__ Fahrrad.", "ans":["dein"], "art":"das" },
+  { "text":"Er prüft morgen __GAP__ Rechnung.", "ans":["seine"], "art":"die" },
+  { "text":"Sie verschickt nach dem Meeting __GAP__ Einladung.", "ans":["ihre"], "art":"die" },
+  { "text":"Wir schreiben __GAP__ Notizen ins Heft.", "ans":["unsere"], "art":"die" },
+  { "text":"Ihr vergleicht __GAP__ Angebote vor der Entscheidung.", "ans":["eure"], "art":"die" },
+  { "text":"Sie (pl) speichern __GAP__ Dateien im Ordner.", "ans":["ihre"], "art":"die" },
+  { "text":"Ali aktualisiert __GAP__ Profilbild.", "ans":["sein"], "art":"das" },
+  { "text":"Liana sendet __GAP__ Fotos in WhatsApp.", "ans":["ihre"], "art":"die" },
+  { "text":"Jonas importiert __GAP__ Kontakte in die Datei.", "ans":["seine"], "art":"die" }
+]

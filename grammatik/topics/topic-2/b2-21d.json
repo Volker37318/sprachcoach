@@ -1,0 +1,12 @@
+[
+  { "text": "Die Verwaltung schickt __GAP__ Antragstellerin __GAP__ Bescheid.", "ans": ["der","einen"] },
+  { "text": "Der Ausschuss gewährt __GAP__ Verein __GAP__ Förderung.", "ans": ["dem","eine"] },
+  { "text": "Die Redaktion sendet __GAP__ Autor __GAP__ Rückmeldung.", "ans": ["dem","eine"] },
+  { "text": "Das Gericht erteilt __GAP__ Klägerin (Sg) __GAP__ Auflage.", "ans": ["der","eine"] },
+  { "text": "Die Hochschule stellt __GAP__ Studierenden (Pl) __GAP__ Teilnahmebescheinigung aus.", "ans": ["den","eine"] },
+  { "text": "Der Projektleiter weist __GAP__ Team __GAP__ Aufgabe zu.", "ans": ["dem","eine"] },
+  { "text": "Die Leitung gibt __GAP__ Praktikantin __GAP__ Feedback.", "ans": ["der","ein"] },
+  { "text": "Der Verlag schickt __GAP__ Lektorin __GAP__ Vertragsentwurf.", "ans": ["der","einen"] },
+  { "text": "Die Stadtverwaltung schickt __GAP__ Bürgern (Pl) __GAP__ Gebührenbescheid.", "ans": ["den","einen"] },
+  { "text": "Die Personalabteilung teilt __GAP__ Bewerber __GAP__ Entscheidung mit.", "ans": ["dem","eine"] }
+]

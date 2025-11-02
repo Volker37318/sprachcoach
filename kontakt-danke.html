@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Danke – Kontakt gesendet</title>
+<meta name="description" content="Bestätigung: Ihre Nachricht wurde übermittelt." />
+<style>
+  :root{ --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14) }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink); font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%); min-height:100dvh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:32px 16px;width:100%}
+  .card{ background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:0 12px 28px rgba(0,0,0,.25) }
+  h1{line-height:1.12;margin:.25rem 0 .5rem;font-size:clamp(26px,4.4vw,40px)}
+  p.muted{color:var(--muted)}
+  a{color:#cfe6ff;text-decoration:none} a:hover{text-decoration:underline}
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 16px; border-radius:12px;
+        background:#1e90ff; color:#fff; border:1px solid rgba(255,255,255,.25); font-weight:900; text-decoration:none }
+  footer{margin-top:auto;color:var(--muted);font-size:12px;text-align:center;padding:14px 16px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="card" aria-labelledby="h1">
+    <h1 id="h1">Danke! Ihre Nachricht ist angekommen.</h1>
+    <p class="muted">Wir antworten normalerweise innerhalb eines Werktags. Für dringende Anliegen: <a href="mailto:kvhs@pramann.de">kvhs@pramann.de</a></p>
+    <p style="margin-top:10px">
+      <a class="btn" href="/index.html">Zur Startseite</a>
+      <a class="btn" href="/hilfe.html">Zur Hilfe</a>
+    </p>
+  </section>
+
+  <p class="muted" style="margin-top:12px;text-align:center">
+    <a href="/executive.html">Executive</a> ·
+    <a href="/preise.html">Preise</a> ·
+    <a href="/faq.html">FAQ</a> ·
+    <a href="/impressum.html">Impressum</a> ·
+    <a href="/datenschutz.html">Datenschutz</a>
+  </p>
+</main>
+
+<footer>
+  © <span id="year"></span> Content Connect Academy Thüringen ·
+  <a href="/impressum.html">Impressum</a> ·
+  <a href="/datenschutz.html">Datenschutz</a> ·
+  <a href="/">Start</a>
+</footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

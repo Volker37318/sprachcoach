@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SprachCoach – Start</title>
+  <style>
+    :root{
+      --bg1:#070b17; --bg2:#0b1020; --ink:#eaf1ff; --muted:#9fb0d3; --line:rgba(255,255,255,.14);
+      --glass:rgba(255,255,255,.06); --radius:18px;
+      --tile:390px; /* Kachelbreite */
+      --tile-bg: conic-gradient(from 200deg at 30% 10%, rgba(103,232,249,.14), rgba(99,102,241,.12), rgba(103,232,249,.08));
+      --tile-inner: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--ink);
+      font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1200px 600px at 10% -20%, rgba(96,165,250,.18), transparent 60%),
+        radial-gradient(900px 500px at 90% -20%, rgba(34,211,238,.16), transparent 60%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      min-height:100dvh;
+      display:flex; flex-direction:column;
+    }
+    .wrap{max-width:1140px;margin:0 auto;padding:28px 16px 72px; width:100%}
+
+    header{border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero{padding:18px 0 12px; text-align:center}
+    h1{margin:.2rem 0 6px; font-size:clamp(28px,4.4vw,44px); line-height:1.12}
+    .subtitle{color:var(--muted); margin:0 auto 8px; max-width:64ch}
+
+    /* Trial/Pro Banner */
+    .banner{margin:12px auto 0; max-width:860px; border:1px solid var(--line); border-radius:14px; padding:10px 12px; display:flex; gap:10px; align-items:center; justify-content:space-between; background:linear-gradient(180deg, rgba(34,211,238,.12), rgba(99,102,241,.10)); box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .banner .left{display:flex; gap:10px; align-items:center}
+    .badge-t{font-weight:800; color:#06122a; background:linear-gradient(135deg,#a5b4fc,#67e8f9); padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.35)}
+    .banner .days{opacity:.95}
+    .banner .cta{background:#1ea7ff; border:1px solid #3aa4ff; color:#031525; font-weight:800; padding:8px 12px; border-radius:10px; cursor:pointer}
+
+    /* Kachel-Container */
+    .tiles{display:grid; grid-template-columns:repeat(2, var(--tile)); justify-content:center; gap:22px; margin-top:18px}
+    @media (max-width:860px){ .tiles{ grid-template-columns:1fr; justify-items:center } }
+
+    details.tile{
+      width:var(--tile); min-height:var(--tile);
+      background: var(--tile-bg); border:1px solid rgba(148,163,184,.25); border-radius:var(--radius);
+      position:relative; overflow:hidden; box-shadow:0 14px 40px rgba(0,0,0,.35);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      isolation:isolate;
+    }
+    details.tile::before{ /* inner glass */
+      content:""; position:absolute; inset:0; background:var(--tile-inner); z-index:0;
+    }
+    details.tile:focus-within{ outline:none; box-shadow:0 0 0 3px rgba(99,102,241,.45) inset }
+
+    /* Lock Overlay (für Pro) */
+    .lock {
+      position:absolute; inset:auto 10px 10px auto; z-index:2; display:flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,#ff9800 0%, #ffd54a 50%, #ff9800 100%);
+      border:1px solid rgba(255,149,0,.65); color:#2a1700; padding:8px 12px; border-radius:999px;
+      font-size:13px; font-weight:900; letter-spacing:.2px; text-shadow:0 1px 0 rgba(255,255,255,.35);
+      box-shadow:0 10px 26px rgba(255,152,0,.35), inset 0 0 0 1px rgba(255,255,255,.35);
+      backdrop-filter:blur(6px)
+    }
+    .lock svg{opacity:.9}
+
+    summary{
+      position:relative; z-index:1;
+      list-style:none; cursor:pointer; padding:20px; display:flex; flex-direction:column; align-items:center; gap:10px;
+      outline:none; user-select:none; text-align:center;
+    }
+    summary::-webkit-details-marker{display:none}
+    .badge{font-weight:800; letter-spacing:.2px; color:#07101e; background:linear-gradient(135deg,#a5b4fc,#67e8f9);
+      padding:6px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.35)}
+    .title{font-weight:700; font-size:20px}
+    .meta{font-size:13px; color:var(--muted)}
+
+    /* Panel */
+    .panel{ position:relative; z-index:1; padding:14px 16px 90px; border-top:1px solid rgba(255,255,255,.12); background:rgba(3,7,18,.35)}
+    .list{ display:flex; flex-direction:column; gap:10px }
+    /* Dialog-Nummerierung */
+    .dialog-list{ counter-reset: dlg }
+    .dialog-list .row[data-kind="dialog"]{ position:relative; padding-left:44px }
+    .dialog-list .row[data-kind="dialog"]::before{
+      counter-increment: dlg;
+      content: counter(dlg) ".";
+      position:absolute; left:12px; top:50%; transform:translateY(-50%);
+      font-weight:700; opacity:.9;
+      background:rgba(255,255,255,.08); border:1px solid var(--line);
+      border-radius:8px; padding:2px 8px; font-variant-numeric: tabular-nums;
+    }
+    .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px;
+      border-radius:12px; border:1px solid var(--line); background:rgba(255,255,255,.06) }
+    .row a{ color:#f4f8ff; text-decoration:none; font-weight:400; font-size:16px }
+    .row a:hover{ text-decoration:underline }
+    .tag{ font-size:12px; color:#06122a; background:linear-gradient(135deg,#93c5fd,#67e8f9); padding:3px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.35) }
+
+    details.tile[open]{ min-height:auto }
+
+    footer{ margin-top:auto; color:var(--muted); font-size:12px; text-align:center; padding:18px 0 }
+    .row.disabled{ opacity:.45; filter:grayscale(35%) }
+    .counter{ font-size:12px; color:#dbeafe; background:rgba(2,8,23,.5); border:1px solid rgba(148,163,184,.35); padding:4px 8px; border-radius:999px }
+    /* Gruppenüberschriften in Dialogliste */
+    .group{ display:flex; flex-direction:column; gap:8px; margin-top:10px }
+    .group .group-title{ font-size:13px; color:var(--muted); letter-spacing:.3px; text-transform:uppercase; padding:4px 2px 0 }
+    
+    /* Schloss links für gesperrte Reihen */
+    .row.locked{ position:relative }
+    .row.locked::before{
+      content:'🔒';
+      position:absolute; left:10px; top:50%; transform:translateY(-50%);
+      font-size:14px; opacity:.9; color:#cfe1ff;
+    }
+    .row.locked a{ padding-left:18px }
+    
+    /* Popup Intensiv-Trainer */
+    #trainerPopup{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:1200 }
+    #trainerPopup .box{ width:min(520px,92vw); background:#0f1630; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 30px 60px rgba(0,0,0,.6) }
+    #trainerPopup h3{ margin:0 0 6px 0 }
+    #trainerPopup p{ margin:0 0 12px 0; color:var(--muted) }
+    #trainerPopup .actions{ display:flex; gap:10px; justify-content:flex-end }
+    #trainerPopup .btn{ background:#1ea7ff; border:1px solid #3aa4ff; color:#031525; font-weight:800; padding:8px 12px; border-radius:10px; cursor:pointer }
+    #trainerPopup .ghost{ background:transparent; border:1px solid var(--line); color:#var(--ink); padding:8px 12px; border-radius:10px; cursor:pointer }
+    .hint{margin:6px 2px 10px;color:#ffe9b3;font-size:13px}
+    .cta-full{margin-top:12px; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px 14px; border-radius:12px;
+      background:linear-gradient(135deg,#ff9800 0%, #ffd54a 50%, #ff9800 100%);
+      color:#2a1700; font-weight:900; letter-spacing:.2px; border:1px solid rgba(255,149,0,.65);
+      box-shadow:0 10px 26px rgba(255,152,0,.35), inset 0 0 0 1px rgba(255,255,255,.35); cursor:pointer; user-select:none}
+    .cta-full:active{transform:translateY(1px)}
+    .hint .help{display:inline-block;margin-left:6px;padding:0 6px;border:1px dashed rgba(255,255,255,.35);border-radius:999px;cursor:help;font-weight:700}
+    .hint .help{position:relative}
+    .hint .help:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:130%;white-space:nowrap;background:#0b1020;color:#eaf1ff;border:1px solid rgba(255,255,255,.2);padding:8px 10px;border-radius:8px;box-shadow:0 8px 22px rgba(0,0,0,.35);font-size:12px;z-index:10}
+
+    .panel{display:flex;flex-direction:column;gap:10px}
+    .list{flex:1}
+    .cta-full.sticky{position:sticky;bottom:0;margin-top:auto}
+
+    /* Drawer (Kauf-Drawer) */
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.6);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:999}
+    .drawer{position:fixed;left:50%;bottom:-420px;transform:translateX(-50%);
+      width:min(720px,92vw);background:linear-gradient(180deg, rgba(34,211,238,.12), rgba(99,102,241,.10));
+      border:1px solid rgba(148,163,184,.35);border-radius:16px 16px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.45);
+      transition:bottom .25s ease;z-index:1000}
+    .drawer.open{bottom:0}
+    .drawer-backdrop.show{opacity:1;pointer-events:auto}
+    .drawer .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.14)}
+    .drawer .bd{padding:14px 16px;display:grid;gap:10px}
+    .drawer .ft{display:flex;gap:10px;justify-content:flex-end;padding:12px 16px;border-top:1px solid rgba(255,255,255,.14)}
+    .btn-ghost{background:transparent;border:1px solid var(--line);color:#eaf1ff;padding:8px 12px;border-radius:10px;cursor:pointer}
+    .btn-primary{background:linear-gradient(135deg,#ff9800 0%, #ffd54a 50%, #ff9800 100%);border:1px solid rgba(255,149,0,.65);color:#2a1700;padding:8px 12px;border-radius:10px;font-weight:900;cursor:pointer;box-shadow:0 10px 26px rgba(255,152,0,.35), inset 0 0 0 1px rgba(255,255,255,.35)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero" role="banner">
+      <h1>SprachCoach – Lehrer-Dashboard & Dialogtraining</h1>
+      <p class="subtitle">
+        Ihr digitaler Sprach-Coach im Unterricht: Die App prüft Hausaufgaben automatisch,
+        erkennt typische Grammatikfehler und bewertet Dialoge nach TELC-Kriterien.
+        Lehrkräfte sparen Zeit, behalten den Klassenstand im Blick und erhalten klare
+        Auswertungen – ohne zusätzlichen Korrekturaufwand.
+      </p>
+      <div id="trialBanner" class="banner" role="status" aria-live="polite" style="display:none">
+        <div class="left">
+          <span class="badge-t" id="trialBadge">TEST</span>
+          <span class="days" id="trialText">21 Tage kostenlos testen – 21 Tage verbleiben</span>
+        </div>
+        <button class="cta" id="btnUpgrade">⏩ 21-Tage-Zugang starten ⏪</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="tiles" aria-label="Module">
+      <!-- A: Grammatikübungen (immer frei, auch nach Trial) -->
+      <details class="tile" id="tile-gramm" data-access="free">
+        <summary>
+          <span class="badge">A</span>
+          <span class="title">Grammatikübungen</span>
+          <span class="meta">fokussiert auf die drei größten Probleme · Trainingsniveau A1–B2</span>
+        </summary>
+        <div class="panel">
+          <div class="hint">Testzugang: Je Niveau 10 Übungen <span class="help" aria-label="Info" data-tip="Während des Tests sind pro Niveau 10 zufällige Übungen frei. Danach schaltet PRO alle 200 je Niveau frei."ℹ︎</span></div>
+          <nav class="list" aria-label="Grammatik-Angebote">
+            <div class="row" data-kind="gramm">
+              <a href="/grammatik-trainer.html">1. Possessivpronomen trainieren</a>
+            </div>
+            <div class="row" data-kind="gramm">
+              <a href="/grammatik-trainer.html">2. Artikeländerung bei Dativ &amp; Akkusativ</a>
+            </div>
+            <div class="row" data-kind="gramm">
+              <a href="/grammatik-trainer.html">3. Deklination der Adjektive</a>
+            </div>
+          </nav>
+          <div class="cta-full sticky" id="grammCta">200 Übungen je Niveau freischalten</div>
+        </div>
+      </details>
+
+      <!-- B: Dialoge (im Trial frei, danach PRO) -->
+      <details class="tile" id="tile-dialoge" data-access="pro">
+        <div class="lock" id="lock-dialoge" style="display:none">⏩ HIER 50 Dialoge freischalten ⏪</div>
+        <summary>
+          <span class="badge" style="background:linear-gradient(135deg,#67e8f9,#a5b4fc)">B</span>
+          <span class="title">Dialoge</span>
+          <span class="meta">App-Unterhaltung wie mit einem realen Gesprächspartner</span>
+        </summary>
+        <div class="panel">
+          <nav class="list dialog-list" aria-label="Dialog-Angebote">
+            <!-- Zuerst 2 freie Dialoge -->
+            <div class="row" data-kind="dialog">
+              <a href="/sprech-trainer.html">Vorstellung der Person</a>
+            </div>
+            <div class="row" data-kind="dialog">
+              <a href="/sprech-trainer.html">Ein Fotokurs in der VHS</a>
+            </div>
+
+            <!-- Danach thematische Gruppen (alphabetisch innerhalb der Gruppen), alle gesperrt -->
+            <div class="group">
+              <div class="group-title">Alltag & Einkaufen</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Beim Arzt</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Das Wetter und die Jahreszeiten</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Ein kaputtes neues Gerät – Reklamation</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Ein neues Handy kaufen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Einen neuen Laptop kaufen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Im Supermarkt einkaufen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">In der Apotheke</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Arbeit, Bildung & Behörden</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Eine Präsentation machen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Einen neuen Job suchen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">In der Ausländerbehörde</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Schule und Schulzeit</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Weiterbildung und Qualifikation</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Der Traumberuf und die Berufswahl</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Einen Kurs oder Praktikum planen</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Familie, Freunde & Gesundheit</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Der erste Tag im Kindergarten</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Der Nachbar macht Urlaub – Katze betreuen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Dem Nachbarn helfen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Die Nachbarin ist krank</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Einen Krankenbesuch machen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Familie, Verwandte und Kinder</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Freizeit und Wochenende</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Freunde und soziale Kontakte</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Mobilität & Reisen</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Bus, Bahn – Ticket kaufen und Verspätungen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Ein Deutschlandticket kaufen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Einen Klassenausflug planen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Kursausflug planen</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Wohnen & Nachbarschaft</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Den Umzug planen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Der Wasserhahn tropft</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Eine Wohnungsbesichtigung</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Eine Wohnung besichtigen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Probleme mit dem Nachbarn</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Untermiete für einen Freund</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Waschmaschine ist kaputt</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Feiern & Freizeitorte</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Ausflug in den botanischen Garten</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Eine Silvesterparty organisieren</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Eine Weihnachtsfeier organisieren</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Einen Besuch im Theater planen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Geburtstagsfeier im Kurs organisieren</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Picknick im Park</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Finanzen & Verträge</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Ein Girokonto kündigen</a></div>
+            </div>
+
+            <div class="group">
+              <div class="group-title">Zusätzliche Prüfungsthemen (Platzhalter)</div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Arzttermin verschieben</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Der Krankenbesuch – Ablauf & Sprache</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Mietvertrag – Fragen & Fristen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Online-Bestellung & Rücksendung</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Termin beim Bürgeramt</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Terminabsage & neue Verabredung</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Teamarbeit – Aufgaben verteilen</a></div>
+              <div class="row disabled locked" data-kind="dialog"><a href="#">Zukunftspläne – Beruf und Leben</a></div>
+            </div>
+          </nav>
+          <div class="cta-full sticky" id="dlgCta" style="display:none">⏩ HIER 50 Dialoge freischalten ⏪</div>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <!-- Popup: Intensiv-Trainer -->
+  <div id="trainerPopup" role="dialog" aria-modal="true" aria-label="Intensiv-Trainer">
+    <div class="box">
+      <h3>Dialog nur im Intensiv-Trainer</h3>
+      <p id="trainerPopupText">Dieser Dialog ist Teil des Intensiv-Trainers mit 50 prüfungsnahen Themen.</p>
+      <div class="actions">
+        <button class="ghost" id="btnLater">Später</button>
+        <button class="btn" id="btnOpenTrainer">Zum Intensiv-Trainer</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>© Content Connect Academy Thüringen · <a href="mailto:info@sprachapp.de" style="color:#cfe6ff">info@sprachapp.de</a></footer>
+
+  <!-- Kauf-Drawer -->
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <div id="payDrawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+    <div class="hd">
+      <strong id="drawerTitle">Zugang freischalten</strong>
+      <button id="drawerClose" class="btn-ghost" aria-label="Schließen">Schließen</button>
+    </div>
+    <div class="bd">
+      <div>• 21 Tage voller Zugriff auf Dialoge & Intensivtrainer</div>
+      <div>• Keine automatische Verlängerung im Test</div>
+      <div>• PRO: Unbegrenzter Zugriff, Fortschritts-Export, Lehrer-Extras</div>
+    </div>
+    <div class="ft">
+      <button id="drawerLater" class="btn-ghost">Später</button>
+      <button id="drawerBuy" class="btn-primary">⏩ 21-Tage-Zugang starten ⏪</button>
+    </div>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // === Trial/Pro Logik (lokal) ===
+    const TRIAL_DAYS = 21;
+    const KEY_TRIAL_START = 'sp_trial_started_at';
+    const KEY_PAKET = 'paket'; // 1/3/lifetime (gemäß Projektkontext)
+    const KEY_TS = 'ts';       // optional Zeitstempel der Freischaltung
+
+    function daysBetween(a,b){ return Math.floor((b-a)/(24*3600*1000)); }
+    function isProUnlocked(){
+      const p = (localStorage.getItem(KEY_PAKET)||'').toLowerCase();
+      if(p==='1'||p==='3'||p==='lifetime') return true;
+      if(localStorage.getItem(KEY_TS)) return true;
+      return false;
+    }
+    function getTrialInfo(){
+      let start = parseInt(localStorage.getItem(KEY_TRIAL_START)||'');
+      if(!start){ start = Date.now(); localStorage.setItem(KEY_TRIAL_START, String(start)); }
+      const now = Date.now();
+      const used = daysBetween(start, now);
+      const left = Math.max(0, TRIAL_DAYS - used);
+      return { start, used, left, active: used < TRIAL_DAYS };
+    }
+
+    function applyAccess(){
+      const pro = isProUnlocked();
+      const trial = getTrialInfo();
+
+      const banner = document.getElementById('trialBanner');
+      const trialText = document.getElementById('trialText');
+      const trialBadge = document.getElementById('trialBadge');
+      const dlgCta = document.getElementById('dlgCta');
+      const lockBadge = document.getElementById('lock-dialoge');
+      const dlg = document.getElementById('tile-dialoge');
+
+      if(pro){
+        if(banner){ banner.style.display='flex'; trialBadge.textContent='PRO'; trialText.textContent='Freigeschaltet – Danke!'; }
+        if(lockBadge) lockBadge.style.display='none';
+        if(dlgCta) dlgCta.style.display='none';
+        if(dlg) dlg.open = false;
+        return;
+      }
+
+      if(banner){
+        banner.style.display = 'flex';
+        trialBadge.textContent = trial.active ? 'TEST' : 'ENDE';
+        trialText.textContent = trial.active
+          ? `21 Tage kostenlos testen – ${trial.left} Tage verbleiben`
+          : 'Testzeitraum beendet – Dialoge sind jetzt PRO';
+      }
+
+      // CTA für Dialoge immer anzeigen, solange nicht PRO
+      if(dlgCta) dlgCta.style.display='flex';
+      if(lockBadge) lockBadge.style.display='none';
+    }
+
+    function openDrawer(){
+      const d=document.getElementById('payDrawer');
+      const b=document.getElementById('drawerBackdrop');
+      if(!d||!b) return;
+      d.hidden=false; b.hidden=false;
+      requestAnimationFrame(()=>{ d.classList.add('open'); b.classList.add('show'); });
+    }
+    function closeDrawer(){
+      const d=document.getElementById('payDrawer');
+      const b=document.getElementById('drawerBackdrop');
+      if(!d||!b) return;
+      d.classList.remove('open'); b.classList.remove('show');
+      setTimeout(()=>{ d.hidden=true; b.hidden=true; }, 220);
+    }
+
+    document.getElementById('btnUpgrade')?.addEventListener('click', openDrawer);
+    document.getElementById('dlgCta')?.addEventListener('click', openDrawer);
+    document.getElementById('grammCta')?.addEventListener('click', openDrawer);
+    document.getElementById('drawerClose')?.addEventListener('click', closeDrawer);
+    document.getElementById('drawerLater')?.addEventListener('click', closeDrawer);
+    document.getElementById('drawerBackdrop')?.addEventListener('click', closeDrawer);
+    document.getElementById('drawerBuy')?.addEventListener('click', ()=>{
+      // TODO: Digistore24-Link setzen
+      alert('Weiter zur Kasse (Digistore24)…');
+    });
+
+    applyAccess();
+
+    // === Quoten-/Freischaltmodell ===
+    const TRIAL_MODEL = 'quota';      // 'quota' oder 'open'
+    const FREE_GRAMM = 5;             // freie Starts Grammatik gesamt
+    const FREE_DIALOG = 2;            // freie Starts Dialog gesamt (nur die 2 freien Dialoge)
+    const K_FREE_G = 'sp_free_gramm_left';
+    const K_FREE_D = 'sp_free_dialog_left';
+
+    function ensureQuotaInit(){
+      if(localStorage.getItem(K_FREE_G)==null) localStorage.setItem(K_FREE_G, String(FREE_GRAMM));
+      if(localStorage.getItem(K_FREE_D)==null) localStorage.setItem(K_FREE_D, String(FREE_DIALOG));
+    }
+    function left(kind){ return Math.max(0, parseInt(localStorage.getItem(kind==='gramm'?K_FREE_G:K_FREE_D)||'0')); }
+    function dec(kind){ const k = (kind==='gramm'?K_FREE_G:K_FREE_D); const v = left(kind); localStorage.setItem(k, String(Math.max(0, v-1))); }
+
+    function renderQuotaBadges(){
+      const pro = isProUnlocked();
+      const trial = getTrialInfo();
+
+      const g = left('gramm');
+      const d = left('dialog');
+
+      const banner = document.getElementById('trialBanner');
+      if(banner){
+        const exist = banner.querySelector('.counter');
+        if(exist) exist.remove();
+        const cnt = document.createElement('span');
+        cnt.className='counter';
+        cnt.textContent = pro ? 'PRO aktiv' : (TRIAL_MODEL==='open' && trial.active ? 'Trial offen' : `frei: Grammatik ${g}, Dialoge ${d}`);
+        banner.querySelector('.left')?.appendChild(cnt);
+      }
+
+      document.querySelectorAll('.row[data-kind]').forEach(row=>{
+        const kind = row.getAttribute('data-kind');
+        if(pro){ row.classList.remove('disabled','locked'); return; }
+        if(TRIAL_MODEL==='open' && trial.active){ row.classList.remove('disabled','locked'); return; }
+
+        if(kind==='dialog'){
+          const a = row.querySelector('a');
+          const isFreeDialog = a && (a.textContent.includes('Vorstellung') || a.textContent.includes('VHS'));
+          if(isFreeDialog){
+            row.classList.toggle('disabled', left('dialog')<=0);
+            row.classList.remove('locked');
+          } else {
+            row.classList.add('disabled','locked');
+          }
+        } else if(kind==='gramm'){
+          row.classList.toggle('disabled', left('gramm')<=0);
+        }
+      });
+
+      const dlgCta = document.getElementById('dlgCta');
+      const lock = document.getElementById('lock-dialoge');
+      if(pro){ if(dlgCta) dlgCta.style.display='none'; if(lock) lock.style.display='none'; return; }
+      if(TRIAL_MODEL==='open' && trial.active){ if(dlgCta) dlgCta.style.display='flex'; if(lock) lock.style.display='none'; return; }
+
+      // Quota-Modell: CTA weiterhin sichtbar (Upsell), auch wenn noch Rest frei ist
+      if(dlgCta) dlgCta.style.display = 'flex';
+      if(lock) lock.style.display='none';
+    }
+
+    function wireConsumption(){
+      // Click-Verbrauch für freie Links, Popup für gesperrte Dialoge
+      document.querySelectorAll('.row[data-kind] a').forEach(a=>{
+        a.addEventListener('click', (ev)=>{
+          const pro = isProUnlocked();
+          const trial = getTrialInfo();
+          if(pro || (TRIAL_MODEL==='open' && trial.active)) return; // alles frei
+
+          const row = a.closest('.row');
+          const kind = row?.getAttribute('data-kind');
+          if(!kind) return;
+
+          if(row.classList.contains('locked')){ ev.preventDefault(); openTrainerPopup(row.querySelector('a')?.textContent||'Dialog'); return; }
+
+          if(kind==='dialog'){
+            // Nur die zwei freien Dialoge dürfen das Kontingent nutzen
+            const title = a.textContent||'';
+            const isFree = title.includes('Vorstellung') || title.includes('VHS');
+            if(!isFree){ ev.preventDefault(); openTrainerPopup(title); return; }
+          }
+
+          if(left(kind)<=0){ ev.preventDefault(); document.getElementById('btnUpgrade')?.focus(); return; }
+          dec(kind); renderQuotaBadges();
+        });
+      });
+
+      document.querySelectorAll('.row.locked').forEach(r=>{
+        r.addEventListener('click', (ev)=>{ ev.preventDefault(); openTrainerPopup(r.querySelector('a')?.textContent||'Dialog'); });
+      });
+    }
+
+    function openTrainerPopup(title){
+      const p = document.getElementById('trainerPopup');
+      const t = document.getElementById('trainerPopupText');
+      if(t) t.textContent = `"${title}" ist Teil des Intensiv-Trainers mit 50 prüfungsnahen Themen.`;
+      p.style.display='flex';
+    }
+    function closeTrainerPopup(){ document.getElementById('trainerPopup').style.display='none'; }
+
+    document.getElementById('btnOpenTrainer')?.addEventListener('click', ()=>{
+      window.location.href = '/intensivtrainer.html';
+    });
+    document.getElementById('btnLater')?.addEventListener('click', closeTrainerPopup);
+    document.getElementById('trainerPopup')?.addEventListener('click', (e)=>{ if(e.target.id==='trainerPopup') closeTrainerPopup(); });
+
+    // Init
+    ensureQuotaInit();
+    renderQuotaBadges();
+    wireConsumption();
+  });
+</script>
+</body>
+</html>

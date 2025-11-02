@@ -1,0 +1,13 @@
+[
+  { "text": "Ich bringe __GAP__ Bruder __GAP__ Apfel.",                 "ans": ["dem","einen"] },
+  { "text": "Sie gibt __GAP__ Schwester __GAP__ Schokolade.",           "ans": ["der","eine"] },
+  { "text": "Wir geben __GAP__ Touristen (Pl) __GAP__ Stadtplan.",      "ans": ["den","einen"] },
+  { "text": "Der Kellner bringt __GAP__ Kunden (Sg) __GAP__ Kaffee.",   "ans": ["dem","einen"] },
+  { "text": "Die Mutter liest __GAP__ Kind __GAP__ Buch vor.",          "ans": ["dem","ein"] },
+  { "text": "Ich schenke __GAP__ Nachbarin __GAP__ Pflanze.",           "ans": ["der","eine"] },
+  { "text": "Der Koch gibt __GAP__ Gast (Sg) __GAP__ Salat.",           "ans": ["dem","einen"] },
+  { "text": "Der Postbote bringt __GAP__ Frau __GAP__ Zeitung.",        "ans": ["der","eine"] },
+  { "text": "Wir schreiben __GAP__ Chef __GAP__ Nachricht.",            "ans": ["dem","eine"] },
+  { "text": "Die Kinder malen __GAP__ Tante __GAP__ Bild.",             "ans": ["der","ein"] }
+]
+

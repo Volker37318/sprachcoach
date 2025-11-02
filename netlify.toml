@@ -3,7 +3,7 @@
 ###############################
 
 [build]
-  # Webroot
+  # Verzeichnis, das als Webroot veröffentlicht wird
   publish   = "."
   # Ordner für Netlify Functions
   functions = "netlify/functions"
@@ -18,7 +18,7 @@
   to   = "/.netlify/functions/:splat"
   status = 200
 
-# Alte /app-Pfade sauber auf neue Struktur umleiten (falls noch Links existieren)
+# Alte /app-Pfade sauber auf neue Struktur umleiten
 [[redirects]]
   from = "/app/grammatik/*"
   to   = "/grammatik/:splat"
@@ -29,29 +29,39 @@
   to   = "/dialog/:splat"
   status = 301
 
+# (Optional) Kanonische Domain weiterleiten:
+# Ersetze <DOMAIN> durch deine echte Domain, wenn du ohne www ausliefern willst.
+# [[redirects]]
+#   from = "https://www.<DOMAIN>/*"
+#   to   = "https://<DOMAIN>/:splat"
+#   status = 301
+#   force = true
+
 ###############################
 # Security & Performance Header
 ###############################
 
-# Basis-Sicherheitsheader
+# Basis-Sicherheitsheader für alle Routen
 [[headers]]
   for = "/*"
   [headers.values]
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
+    # Browser setzen eigene Schutzmechanismen ein; moderne CSP regelt XSS
     X-XSS-Protection = "0"
+    # HSTS nur über HTTPS aktivieren; Netlify liefert per HTTPS aus
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    # Mikrofon wird für Dialog-Partner benötigt
+    # Mikrofon wird für Dialog-Partner benötigt → erlauben
     Permissions-Policy = "camera=(), microphone=(self), geolocation=()"
 
-# HTML nicht hart cachen
+# HTML nie hart cachen (Stichwort: schnelle Iteration)
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "no-cache"
 
-# Statische Assets langfristig cachen
+# Statische Assets langfristig cachen (Versionierung über Dateinamen empfohlen)
 [[headers]]
   for = "/assets/*"
   [headers.values]
@@ -67,7 +77,7 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Topics/Übungen kurz cachen
+# Übungs-/Topic-Dateien lieber kurz cachen (können häufiger aktualisiert werden)
 [[headers]]
   for = "/grammatik/topics/*"
   [headers.values]

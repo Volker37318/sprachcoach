@@ -1,0 +1,12 @@
+[
+  { "text": "Ich gebe __GAP__ Mann __GAP__ Stift.", "ans": ["dem","einen"] },
+  { "text": "Sie zeigt __GAP__ Frau __GAP__ Foto.", "ans": ["der","ein"] },
+  { "text": "Wir bringen __GAP__ Kind __GAP__ Ball.", "ans": ["dem","einen"] },
+  { "text": "Ich schreibe __GAP__ Lehrerin __GAP__ Brief.", "ans": ["der","einen"] },
+  { "text": "Peter kauft __GAP__ Freundin __GAP__ Blumenstrauß.", "ans": ["der","einen"] },
+  { "text": "Oma erzählt __GAP__ Kindern (Pl) __GAP__ Märchen.", "ans": ["den","ein"] },
+  { "text": "Du gibst __GAP__ Nachbarn (Sg) __GAP__ Paket.", "ans": ["dem","ein"] },
+  { "text": "Sie kocht __GAP__ Familie __GAP__ Suppe.", "ans": ["der","eine"] },
+  { "text": "Ich zeige __GAP__ Kindern __GAP__ Weg.", "ans": ["den","einen"] },
+  { "text": "Wir schicken __GAP__ Tante __GAP__ Postkarte.", "ans": ["der","eine"] }
+]

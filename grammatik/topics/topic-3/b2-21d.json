@@ -1,0 +1,42 @@
+[
+  { "adjStem": "umfassend",
+    "text": "Mir gefällt __GAP__ __GAP__ Handbuch (umfassend) |SEP| Ich möchte __GAP__ __GAP__ Handbuch kaufen (umfassend) |SEP| Ich mag die __GAP__ Handbücher (umfassend) |SEP| Ich mag __GAP__ __GAP__ Handbücher (umfassend)",
+    "ans": ["das","umfassende","ein","umfassendes","die","umfassenden","viele","umfassende"]
+  },
+  { "adjStem": "innovativ",
+    "text": "Mir gefällt __GAP__ __GAP__ Konzept (innovativ) |SEP| Ich möchte __GAP__ __GAP__ Konzept kaufen (innovativ) |SEP| Ich mag die __GAP__ Konzepte (innovativ) |SEP| Ich mag __GAP__ __GAP__ Konzepte (innovativ)",
+    "ans": ["das","innovative","ein","innovatives","die","innovativen","viele","innovative"]
+  },
+  { "adjStem": "präzise",
+    "text": "Mir gefällt __GAP__ __GAP__ Messgerät (präzise) |SEP| Ich möchte __GAP__ __GAP__ Messgerät kaufen (präzise) |SEP| Ich mag die __GAP__ Messgeräte (präzise) |SEP| Ich mag __GAP__ __GAP__ Messgeräte (präzise)",
+    "ans": ["das","präzise","ein","präzises","die","präzisen","viele","präzise"]
+  },
+  { "adjStem": "benutzerfreundlich",
+    "text": "Mir gefällt __GAP__ __GAP__ Programm (benutzerfreundlich) |SEP| Ich möchte __GAP__ __GAP__ Programm kaufen (benutzerfreundlich) |SEP| Ich mag die __GAP__ Programme (benutzerfreundlich) |SEP| Ich mag __GAP__ __GAP__ Programme (benutzerfreundlich)",
+    "ans": ["das","benutzerfreundliche","ein","benutzerfreundliches","die","benutzerfreundlichen","viele","benutzerfreundliche"]
+  },
+  { "adjStem": "effizient",
+    "text": "Mir gefällt __GAP__ __GAP__ System (effizient) |SEP| Ich möchte __GAP__ __GAP__ System kaufen (effizient) |SEP| Ich mag die __GAP__ Systeme (effizient) |SEP| Ich mag __GAP__ __GAP__ Systeme (effizient)",
+    "ans": ["das","effiziente","ein","effizientes","die","effizienten","viele","effiziente"]
+  },
+  { "adjStem": "langfristig",
+    "text": "Mir gefällt __GAP__ __GAP__ Tarif (langfristig) |SEP| Ich möchte __GAP__ __GAP__ Tarif kaufen (langfristig) |SEP| Ich mag die __GAP__ Tarife (langfristig) |SEP| Ich mag __GAP__ __GAP__ Tarife (langfristig)",
+    "ans": ["der","langfristige","einen","langfristigen","die","langfristigen","viele","langfristige"]
+  },
+  { "adjStem": "maßgeschneidert",
+    "text": "Mir gefällt __GAP__ __GAP__ Anzug (maßgeschneidert) |SEP| Ich möchte __GAP__ __GAP__ Anzug kaufen (maßgeschneidert) |SEP| Ich mag die __GAP__ Anzüge (maßgeschneidert) |SEP| Ich mag __GAP__ __GAP__ Anzüge (maßgeschneidert)",
+    "ans": ["der","maßgeschneiderte","einen","maßgeschneiderten","die","maßgeschneiderten","viele","maßgeschneiderte"]
+  },
+  { "adjStem": "energieeffizient",
+    "text": "Mir gefällt __GAP__ __GAP__ Kühlschrank (energieeffizient) |SEP| Ich möchte __GAP__ __GAP__ Kühlschrank kaufen (energieeffizient) |SEP| Ich mag die __GAP__ Kühlschränke (energieeffizient) |SEP| Ich mag __GAP__ __GAP__ Kühlschränke (energieeffizient)",
+    "ans": ["der","energieeffiziente","einen","energieeffizienten","die","energieeffizienten","viele","energieeffiziente"]
+  },
+  { "adjStem": "hochwertig",
+    "text": "Mir gefällt __GAP__ __GAP__ Möbelstück (hochwertig) |SEP| Ich möchte __GAP__ __GAP__ Möbelstück kaufen (hochwertig) |SEP| Ich mag die __GAP__ Möbelstücke (hochwertig) |SEP| Ich mag __GAP__ __GAP__ Möbelstücke (hochwertig)",
+    "ans": ["das","hochwertige","ein","hochwertiges","die","hochwertigen","viele","hochwertige"]
+  },
+  { "adjStem": "vielseitig",
+    "text": "Mir gefällt __GAP__ __GAP__ Werkzeugset (vielseitig) |SEP| Ich möchte __GAP__ __GAP__ Werkzeugset kaufen (vielseitig) |SEP| Ich mag die __GAP__ Werkzeugsets (vielseitig) |SEP| Ich mag __GAP__ __GAP__ Werkzeugsets (vielseitig)",
+    "ans": ["das","vielseitige","ein","vielseitiges","die","vielseitigen","viele","vielseitige"]
+  }
+]
