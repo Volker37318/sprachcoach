@@ -1,0 +1,80 @@
+###############################
+# Netlify Konfiguration
+###############################
+
+[build]
+  # Webroot
+  publish   = "."
+  # Ordner für Netlify Functions
+  functions = "netlify/functions"
+
+###############################
+# Redirects / Rewrites
+###############################
+
+# /api/* → Netlify Functions (Rewrite; URL bleibt /api/…)
+[[redirects]]
+  from = "/api/*"
+  to   = "/.netlify/functions/:splat"
+  status = 200
+
+# Alte /app-Pfade sauber auf neue Struktur umleiten (falls noch Links existieren)
+[[redirects]]
+  from = "/app/grammatik/*"
+  to   = "/grammatik/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/app/dialog/*"
+  to   = "/dialog/:splat"
+  status = 301
+
+###############################
+# Security & Performance Header
+###############################
+
+# Basis-Sicherheitsheader
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "0"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Mikrofon wird für Dialog-Partner benötigt
+    Permissions-Policy = "camera=(), microphone=(self), geolocation=()"
+
+# HTML nicht hart cachen
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+# Statische Assets langfristig cachen
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Topics/Übungen kurz cachen
+[[headers]]
+  for = "/grammatik/topics/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# API-Responses nie cachen
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
