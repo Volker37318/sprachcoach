@@ -27,7 +27,7 @@
 [[redirects]]
   from = "/app/dialog/*"
   to   = "/dialog/:splat"
-  status = 301
+  status = 302 - noch kein dialogfeld vorhanden
 
 # (Optional) Kanonische Domain weiterleiten:
 # Ersetze <DOMAIN> durch deine echte Domain, wenn du ohne www ausliefern willst.
@@ -88,3 +88,4 @@
   for = "/api/*"
   [headers.values]
     Cache-Control = "no-store"
+
